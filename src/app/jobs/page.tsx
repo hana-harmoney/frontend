@@ -1,5 +1,6 @@
 'use client';
 import Badge from '@/components/common/badge';
+import Card from '@/components/jobs/card';
 const JobsPage = () => {
   const gun = () => {
     console.log('gml');
@@ -25,7 +26,9 @@ const JobsPage = () => {
           />
         ))}
       </div>
-      <div></div>
+      <div>
+        <Card />
+      </div>
     </div>
   );
 };

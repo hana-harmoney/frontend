@@ -5,7 +5,7 @@
 type BadgeProps = {
   active: boolean;
   text: string;
-  onClick: () => void;
+  onClick?: () => void;
 };
 const Badge = ({ active, text, onClick }: BadgeProps) => {
   return (
