@@ -1,30 +1,81 @@
-import Jobs from '@/assets/images/jobs.svg';
+import Image from 'next/image';
 import Badge from '@/components/common/badge';
 import Pin from '@/assets/icons/pin.svg';
 import Dollar from '@/assets/icons/dollar.svg';
-const Card = () => {
+
+type CardProps = {
+  title: string;
+  category: number;
+  created: string; // 등록된 날짜
+  content: string;
+  address: string;
+  wage: number;
+  imageUrl: string;
+};
+
+const Card = ({
+  title,
+  category,
+  created,
+  content,
+  address,
+  wage,
+  imageUrl,
+}: CardProps) => {
+  const categoryMap: Record<number, string> = {
+    1: '요리',
+    2: '육아',
+    3: '농업',
+    4: '청소',
+    5: '기술',
+    6: '기타',
+  };
+
+  const timeAgo = (dateString: string): string => {
+    const now = new Date();
+    const date = new Date(dateString);
+    const diff = (now.getTime() - date.getTime()) / 1000; // 초 단위 차이
+
+    if (diff < 60) return `${Math.floor(diff)}초 전`;
+    if (diff < 3600) return `${Math.floor(diff / 60)}분 전`;
+    if (diff < 86400) return `${Math.floor(diff / 3600)}시간 전`;
+    if (diff < 2592000) return `${Math.floor(diff / 86400)}일 전`;
+    if (diff < 31104000) return `${Math.floor(diff / 2592000)}개월 전`;
+    return `${Math.floor(diff / 31104000)}년 전`;
+  };
+
+  const formatNumber = (num: number): string => {
+    return num.toLocaleString('ko-KR');
+  };
+
   return (
-    <div className="border-teduri flex flex-col rounded-2xl">
-      <div className="border-bottom border-teduri flex items-center justify-center">
-        <Jobs width={32} height={32} fill="currentColor" />
+    <div className="border-teduri flex flex-col rounded-2xl border">
+      <div className="border-b-teduri flex items-center justify-center border-b">
+        <Image
+          src={imageUrl}
+          alt="profile"
+          width={120}
+          height={120}
+          className="object-cover"
+          unoptimized
+        />
       </div>
       <div className="flex flex-col gap-9 px-3 py-5">
         <div className="flex flex-col gap-2">
-          <div className="flex items-center gap-3">
-            <Badge active={true} text={'요리'} />
-            <span className="text-gray text-2xl font-semibold">2 시간 뒤</span>
-          </div>
-          <div className="flex flex-col gap-2">
-            <span className="text-text">
-              가정에서 건강한 집밥 요리를 도와주실 분을 찾습니다. 한식 위주로
-              2-3시간 근무.
-            </span>
-            <div className="flex items-center gap-2 text-black">
-              <Pin width={24} height={24} /> 성동구 성동구 성수동
+          <div className="flex flex-col gap-2 font-semibold">
+            <div className="flex items-center gap-3">
+              <Badge active={true} text={categoryMap[category]} />
+              <span className="text-gray">{timeAgo(created)}</span>
             </div>
-            <div className="flex items-center gap-2 text-black">
-              <Dollar width={22} height={22} className="border" /> 시급 15,000
-              원
+            <span className="text-gray text-2xl">{title}</span>
+          </div>
+          <div className="flex flex-col gap-2 text-black">
+            <span className="text-text">{content}</span>
+            <div className="flex items-center gap-2">
+              <Pin /> {address}
+            </div>
+            <div className="flex items-center gap-2">
+              <Dollar /> 시급 {formatNumber(wage)} 원
             </div>
           </div>
         </div>
