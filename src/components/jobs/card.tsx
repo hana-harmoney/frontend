@@ -2,16 +2,7 @@ import Image from 'next/image';
 import Badge from '@/components/common/badge';
 import Pin from '@/assets/icons/pin.svg';
 import Dollar from '@/assets/icons/dollar.svg';
-
-type CardProps = {
-  title: string;
-  category: number;
-  created: string; // 등록된 날짜
-  content: string;
-  address: string;
-  wage: number;
-  imageUrl: string;
-};
+import { CardProps } from '@/types/jobs';
 
 const Card = ({
   title,
