@@ -13,15 +13,6 @@ const Card = ({
   wage,
   imageUrl,
 }: CardProps) => {
-  const categoryMap: Record<number, string> = {
-    1: '요리',
-    2: '육아',
-    3: '농업',
-    4: '청소',
-    5: '기술',
-    6: '기타',
-  };
-
   const timeAgo = (dateString: string): string => {
     const now = new Date();
     const date = new Date(dateString);
@@ -55,7 +46,7 @@ const Card = ({
         <div className="flex flex-col gap-2">
           <div className="flex flex-col gap-2 font-semibold">
             <div className="flex items-center gap-3">
-              <Badge active={true} text={categoryMap[category]} />
+              <Badge active={true} text={category} />
               <span className="text-gray">{timeAgo(created)}</span>
             </div>
             <span className="text-gray text-2xl">{title}</span>

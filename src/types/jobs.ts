@@ -1,6 +1,6 @@
 export type CardProps = {
   title: string;
-  category: number;
+  category: string;
   created: string; // 등록된 날짜
   content: string;
   address: string;

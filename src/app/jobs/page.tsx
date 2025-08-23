@@ -21,7 +21,7 @@ const JobsPage = () => {
   const demos: CardProps[] = [
     {
       title: '집밥 요리 도우미',
-      category: 1,
+      category: badgeData[1].text,
       created: '2025-08-19T09:10:00',
       content:
         '가정에서 건강한 집밥 요리를 도와주실 분을 찾습니다. 한식 위주로 2-3시간 근무.',
@@ -32,7 +32,7 @@ const JobsPage = () => {
     },
     {
       title: '아이 돌봄 선생님',
-      category: 2,
+      category: badgeData[2].text,
       created: '2025-08-20T14:30:00',
       content:
         '3살 아이를 오후 시간에 돌봐주실 분을 찾습니다. 놀이 및 안전 관리 중심.',
@@ -43,7 +43,7 @@ const JobsPage = () => {
     },
     {
       title: '주말 농장 일손 돕기',
-      category: 3,
+      category: badgeData[3].text,
       created: '2025-08-21T07:00:00',
       content: '주말 농장에서 수확 및 간단한 잡일 도와주실 분 모집.',
       address: '경기도 파주시',
@@ -53,7 +53,7 @@ const JobsPage = () => {
     },
     {
       title: '사무실 청소 도우미',
-      category: 4,
+      category: badgeData[4].text,
       created: '2025-08-22T06:50:00',
       content: '소규모 사무실 청소 및 정리 정돈. 오전 2시간 근무.',
       address: '마포구 상암동',
@@ -62,10 +62,11 @@ const JobsPage = () => {
         'https://harmoneybucket.s3.ap-northeast-2.amazonaws.com/upload/profile/2025/08/22/sample4.jpeg',
     },
   ];
+
   // const demos: CardProps[] = [];
 
   return (
-    <div className="flex flex-col items-center gap-9 border px-6 py-3">
+    <div className="flex flex-col items-center gap-9 px-6 py-3">
       <div className="grid grid-cols-4 gap-3">
         {badgeData.map((item) => (
           <Badge
