@@ -1,13 +1,20 @@
+'use client';
+import { Map, MapMarker } from 'react-kakao-maps-sdk';
+import useKakaoLoader from '@/components/use-kakao-loader';
+
 import JobsProfileTest from '@/assets/images/jobs-profile-test.svg';
 import Badge from '@/components/common/badge';
 import Pin from '@/assets/icons/pin.svg';
 import Dollar from '@/assets/icons/dollar.svg';
+import { Button } from '@/components/ui/button';
 const JobDetailPage = () => {
+  useKakaoLoader();
+
   return (
-    <div className="flex w-full flex-col items-center gap-5 border">
+    <div className="flex w-full flex-col items-center gap-5">
       <div className=""></div> {/* 슬라이더 */}
-      <div className="flex w-full flex-col gap-5 border border-blue-950 px-6">
-        <div className="flex items-center gap-3 border border-red-700 text-xl font-semibold">
+      <div className="flex w-full flex-col gap-5 px-6">
+        <div className="flex items-center gap-3 text-xl font-semibold">
           <JobsProfileTest className="h-12 w-12" />
           <div className="flex flex-col">
             <div className="flex items-end gap-1">
@@ -26,7 +33,7 @@ const JobDetailPage = () => {
             소규모 사무실 청소 업무입니다. 주 3회, 오전 시간대 근무 가능하신 분.
           </span>
         </div>
-        <div className="flex flex-col gap-1 border border-yellow-900">
+        <div className="flex flex-col gap-1">
           <div className="flex items-center gap-2">
             <Pin /> 마포구 공덕동
           </div>
@@ -35,7 +42,23 @@ const JobDetailPage = () => {
             원
           </div>
         </div>
-        <div className="flex flex-col border border-red-700 text-2xl">장소</div>
+        <div className="flex flex-col text-2xl">장소</div>
+        <Map
+          id="map"
+          center={{ lat: 37.5448361732145, lng: 127.056563379345 }}
+          style={{ width: '100%', height: '350px' }}
+          level={3}
+        >
+          <MapMarker
+            position={{ lat: 37.5448361732145, lng: 127.056563379345 }}
+          />
+        </Map>
+        <div className="flex w-full gap-3 text-2xl">
+          <Button className="min-w-0 flex-1 !py-5">전화하기</Button>
+          <Button variant="destructive" className="min-w-0 flex-1 !py-5">
+            채팅하기
+          </Button>
+        </div>
       </div>
     </div>
   );
