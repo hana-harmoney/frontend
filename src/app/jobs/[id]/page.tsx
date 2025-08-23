@@ -2,44 +2,72 @@
 import { Map, MapMarker } from 'react-kakao-maps-sdk';
 import useKakaoLoader from '@/components/use-kakao-loader';
 
-import JobsProfileTest from '@/assets/images/jobs-profile-test.svg';
 import Badge from '@/components/common/badge';
 import Pin from '@/assets/icons/pin.svg';
 import Dollar from '@/assets/icons/dollar.svg';
 import { Button } from '@/components/ui/button';
+import ImageSlider from '@/components/jobs/ImageSlider';
+import { JobDetailProps } from '@/types/jobs';
+import Image from 'next/image';
+
 const JobDetailPage = () => {
   useKakaoLoader();
+  const boardData: JobDetailProps = {
+    nickname: '작성자 이름',
+    profile_url:
+      'https://harmoneybucket.s3.ap-northeast-2.amazonaws.com/upload/profile/2025/08/22/c47d3582-ef29-4b95-b06e-0fadc5a515d0.jpeg',
+    trust: 6,
+    title: '사무실 청소',
+    content:
+      '소규모 사무실 청소 업무입니다. 주 3회, 오전 시간대 근무 가능하신 분.',
+    wage: 15000,
+    category: '요리',
+    address: '마포구 공덕동',
+  };
+
+  const images = [
+    'https://harmoneybucket.s3.ap-northeast-2.amazonaws.com/upload/profile/2025/08/22/c47d3582-ef29-4b95-b06e-0fadc5a515d0.jpeg',
+    'https://harmoneybucket.s3.ap-northeast-2.amazonaws.com/upload/profile/2025/08/22/c47d3582-ef29-4b95-b06e-0fadc5a515d0.jpeg',
+  ];
 
   return (
     <div className="flex w-full flex-col items-center gap-5">
-      <div className=""></div> {/* 슬라이더 */}
+      <div className="">
+        <ImageSlider images={images} />
+      </div>
+
       <div className="flex w-full flex-col gap-5 px-6">
         <div className="flex items-center gap-3 text-xl font-semibold">
-          <JobsProfileTest className="h-12 w-12" />
+          <Image
+            src={boardData.profile_url}
+            alt="profile"
+            width={48}
+            height={48}
+            className="rounded-full object-cover object-center"
+            unoptimized
+          />
           <div className="flex flex-col">
             <div className="flex items-end gap-1">
-              <span className="text-2xl">작성자 이름</span>
-              <span className="text-hana-green">Lv.6</span>
+              <span className="text-2xl">{boardData.nickname}</span>
+              <span className="text-hana-green">Lv.{boardData.trust}</span>
             </div>
-            마포구 공덕동
+            {boardData.address}
           </div>
         </div>
         <div className="flex w-full flex-col gap-8">
           <div className="flex items-center gap-3">
-            <span className="text-3xl font-semibold">사무실 청소</span>
-            <Badge active={true} text={'요리'} />
+            <span className="text-3xl font-semibold">{boardData.title}</span>
+            <Badge active={true} text={boardData.category || '카테고리'} />
           </div>
-          <span className="text-xl font-semibold">
-            소규모 사무실 청소 업무입니다. 주 3회, 오전 시간대 근무 가능하신 분.
-          </span>
+          <span className="text-xl font-semibold">{boardData.content}</span>
         </div>
         <div className="flex flex-col gap-1">
           <div className="flex items-center gap-2">
-            <Pin /> 마포구 공덕동
+            <Pin /> {boardData.address}
           </div>
           <div className="flex items-center gap-2">
-            <Dollar /> 시급 <span className="text-main font-bold">15,000</span>
-            원
+            <Dollar /> 시급{' '}
+            <span className="text-main font-bold">{boardData.wage}</span>원
           </div>
         </div>
         <div className="flex flex-col text-2xl">장소</div>

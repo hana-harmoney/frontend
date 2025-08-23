@@ -2,7 +2,8 @@ import Image from 'next/image';
 import Badge from '@/components/common/badge';
 import Pin from '@/assets/icons/pin.svg';
 import Dollar from '@/assets/icons/dollar.svg';
-import { CardProps } from '@/types/jobs';
+import { JobsProps } from '@/types/jobs';
+import { formatNumber } from '@/lib/utils';
 
 const Card = ({
   title,
@@ -12,7 +13,7 @@ const Card = ({
   address,
   wage,
   imageUrl,
-}: CardProps) => {
+}: JobsProps) => {
   const timeAgo = (dateString: string): string => {
     const now = new Date();
     const date = new Date(dateString);
@@ -24,10 +25,6 @@ const Card = ({
     if (diff < 2592000) return `${Math.floor(diff / 86400)}일 전`;
     if (diff < 31104000) return `${Math.floor(diff / 2592000)}개월 전`;
     return `${Math.floor(diff / 31104000)}년 전`;
-  };
-
-  const formatNumber = (num: number): string => {
-    return num.toLocaleString('ko-KR');
   };
 
   return (

@@ -3,7 +3,7 @@ import Badge from '@/components/common/badge';
 import Card from '@/components/jobs/card';
 import NoData from '@/assets/images/no-data.svg';
 import { useState } from 'react';
-import { CardProps } from '@/types/jobs';
+import { JobsProps } from '@/types/jobs';
 
 const JobsPage = () => {
   const [selectedCategory, setSelectedCategory] = useState(0);
@@ -18,7 +18,7 @@ const JobsPage = () => {
     { id: 6, text: '기타' },
   ];
 
-  const demos: CardProps[] = [
+  const demos: JobsProps[] = [
     {
       title: '집밥 요리 도우미',
       category: badgeData[1].text,
