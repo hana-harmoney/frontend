@@ -1,16 +1,6 @@
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
-
-export type RegisterData = {
-  title: string;
-  content: string;
-  category: number | null;
-  address: string;
-  lat?: number;
-  lng?: number;
-  phone?: string;
-  image: string;
-};
+import type { RegisterData } from '@/types/jobs';
 
 type DraftStore = {
   data: RegisterData;
@@ -21,12 +11,13 @@ type DraftStore = {
 const initial: RegisterData = {
   title: '',
   content: '',
-  category: null,
+  categoryId: 0,
   address: '',
-  lat: undefined,
-  lng: undefined,
+  latitude: 37.5448361732145,
+  longitude: 127.056563379345,
   phone: '',
-  image: '',
+  imageUrl: '',
+  wage: 0,
 };
 
 export const useJobDraft = create<DraftStore>()(

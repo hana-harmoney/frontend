@@ -5,21 +5,24 @@ import { CustomInput } from '@/components/common/customInput';
 import { InputWithIcon } from '@/components/common/inputWithIcon';
 import { Textarea } from '@/components/ui/textarea';
 import Badge from '@/components/common/badge';
-import { useEffect, useMemo } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import Next from '@/assets/icons/next.svg';
 import { Button } from '@/components/ui/button';
 import { useRouter } from 'next/navigation';
 import CircleRemove from '@/assets/icons/circle_remove.svg';
 import { useJobDraft } from '@/stores/useJobDraft';
+import { createJob } from '@/lib/api/jobs';
+import toast from 'react-hot-toast';
 
 const JobsNewPage = () => {
   const { data: registerData, setData } = useJobDraft();
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
       const url = URL.createObjectURL(file);
-      setData({ image: url });
+      setData({ imageUrl: url });
     }
   };
 
@@ -29,29 +32,75 @@ const JobsNewPage = () => {
       setData({ [key]: value } as Partial<typeof registerData>);
 
   const badgeData = [
-    { id: 0, text: '요리' },
-    { id: 1, text: '육아' },
-    { id: 2, text: '농업' },
-    { id: 3, text: '청소' },
-    { id: 4, text: '기술' },
-    { id: 5, text: '기타' },
+    { id: 1, text: '요리' },
+    { id: 2, text: '육아' },
+    { id: 3, text: '농업' },
+    { id: 4, text: '청소' },
+    { id: 5, text: '기술' },
+    { id: 6, text: '기타' },
   ];
 
   const router = useRouter();
 
   const isEmpty = useMemo(() => {
-    const { title, content, category, address } = registerData;
-    return !(title && content && category !== null && address);
+    const { title, content, categoryId, address } = registerData;
+    return !(title && content && categoryId !== null && address);
   }, [registerData]);
+
+  useEffect(() => {
+    document.cookie = `accessToken=${process.env.NEXT_PUBLIC_TEMP_COOKIE}; path=/`;
+  }, []);
+
+  const getCookie = (key: string) => {
+    if (typeof document === 'undefined') return null;
+    const raw = document.cookie;
+    if (!raw) return null;
+    const items = raw.split('; ');
+    for (const item of items) {
+      const [k, ...rest] = item.split('=');
+      if (decodeURIComponent(k) === key) {
+        return decodeURIComponent(rest.join('='));
+      }
+    }
+    return null;
+  };
+
+  const handleSubmit = async () => {
+    if (registerData.categoryId === null) return;
+    const token = getCookie('accessToken') || '';
+
+    const job = {
+      title: registerData.title,
+      content: registerData.content,
+      wage: registerData.wage,
+      address: registerData.address,
+      imageUrl: registerData.imageUrl,
+      categoryId: registerData.categoryId,
+      latitude: registerData.latitude,
+      longitude: registerData.longitude,
+    };
+
+    try {
+      setIsLoading(true);
+      await createJob(job, token);
+      toast.success('성공적으로 등록되었습니다.');
+      router.push('/jobs');
+    } catch (e) {
+      console.error('createJob error:', e);
+      toast.error('등록에 실패하였습니다.');
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <div className="flex w-full flex-col items-center gap-5 px-6 py-3">
       <div className="flex w-full flex-col gap-3 text-2xl font-light">
         게시글 사진
         <label className="border-teduri relative flex h-32 w-32 cursor-pointer items-center justify-center overflow-hidden rounded-2xl border">
-          {registerData.image ? (
+          {registerData.imageUrl ? (
             <Image
-              src={registerData.image}
+              src={registerData.imageUrl}
               alt="uploaded"
               fill
               className="object-contain object-center"
@@ -60,11 +109,11 @@ const JobsNewPage = () => {
           ) : (
             <Plus />
           )}
-          {registerData.image ? (
+          {registerData.imageUrl ? (
             <CircleRemove
               className="absolute top-0 right-0"
               onClick={(e: React.MouseEvent<SVGSVGElement>) => {
-                setData({ image: '' });
+                setData({ imageUrl: '' });
                 e.preventDefault();
               }}
             />
@@ -87,6 +136,17 @@ const JobsNewPage = () => {
         />
       </div>
       <div className="flex w-full flex-col gap-3 text-2xl font-light">
+        급여 (시급)
+        <CustomInput
+          placeholder="예: 15000"
+          value={registerData.wage}
+          onChange={(e) => {
+            const onlyNum = e.target.value.replace(/[^0-9]/g, '');
+            updateField('wage')(onlyNum ? Number(onlyNum) : 0);
+          }}
+        />
+      </div>
+      <div className="flex w-full flex-col gap-3 text-2xl font-light">
         상세 설명
         <Textarea
           placeholder="어떤 일을 하게 될지, 어떤 분을 찾고 있는지 자세히 설명해주세요"
@@ -102,9 +162,9 @@ const JobsNewPage = () => {
           {badgeData.map((item) => (
             <Badge
               key={item.id}
-              active={registerData.category === item.id}
+              active={registerData.categoryId === item.id}
               text={item.text}
-              onClick={() => updateField('category')(item.id)}
+              onClick={() => updateField('categoryId')(item.id)}
             />
           ))}
         </div>
@@ -126,7 +186,11 @@ const JobsNewPage = () => {
           onChange={(e) => updateField('phone')(e.target.value)}
         />
       </div>
-      <Button className="w-full !py-6 text-xl" disabled={isEmpty}>
+      <Button
+        className="w-full !py-6 text-xl"
+        disabled={isEmpty || isLoading}
+        onClick={handleSubmit}
+      >
         작성완료
       </Button>
     </div>

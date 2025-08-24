@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import './globals.css';
 import localFont from 'next/font/local';
+import { Toaster } from 'react-hot-toast';
 
 const pretendard = localFont({
   src: '../fonts/PretendardVariable.woff2',
@@ -31,6 +32,7 @@ export default function RootLayout({
         // }}
       >
         {children}
+        <Toaster position="top-center" reverseOrder={false} />
       </body>
     </html>
   );

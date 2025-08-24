@@ -40,10 +40,6 @@ const JobDetailPage = () => {
     })();
   }, [jobId]);
 
-  // useEffect(() => {
-  //   console.log('boardData : ', boardData);
-  // }, [boardData]);
-
   if (loading)
     return (
       <div className="flex flex-col items-center justify-center gap-3 py-10 text-center text-gray-500">
@@ -68,14 +64,16 @@ const JobDetailPage = () => {
 
       <div className="flex w-full flex-col gap-5 px-6">
         <div className="flex items-center gap-3 text-xl font-semibold">
-          <Image
-            src={boardData.profileUrl}
-            alt="profile"
-            width={48}
-            height={48}
-            className="rounded-full object-cover object-center"
-            unoptimized
-          />
+          <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-full">
+            <Image
+              src={boardData.profileUrl}
+              alt="profile"
+              fill
+              className="object-cover object-center"
+              unoptimized
+              sizes="48px"
+            />
+          </div>
           <div className="flex flex-col">
             <div className="flex items-end gap-1">
               <span className="text-2xl">{boardData.nickname}</span>

@@ -31,6 +31,20 @@ export interface ApiResponse<T> {
   result: T;
 }
 
+export type RegisterData = {
+  title: string;
+  content: string;
+  categoryId: number;
+  address: string;
+  latitude?: number;
+  longitude?: number;
+  phone?: string;
+  imageUrl: string;
+  wage: number;
+};
+
 export type JobListResponse = ApiResponse<{ boardList: JobBoard[] }>;
 
 export type JobDetailResponse = ApiResponse<JobBoard>;
+
+export type JobCreateRequest = Omit<RegisterData, 'lat' | 'lng' | 'phone'>;

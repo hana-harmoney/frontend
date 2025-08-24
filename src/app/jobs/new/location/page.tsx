@@ -34,16 +34,16 @@ const JobsLocationPage = () => {
   };
 
   const defaultCenter = {
-    lat: registerData?.lat || 37.5448361732145,
-    lng: registerData?.lng || 127.056563379345,
+    lat: registerData?.latitude || 37.5448361732145,
+    lng: registerData?.longitude || 127.056563379345,
   };
 
   const handleComplete = () => {
     if (!selectedAddress || !selectedPosition) return;
     setData({
       address: selectedAddress,
-      lat: selectedPosition.lat,
-      lng: selectedPosition.lng,
+      latitude: selectedPosition.lat,
+      longitude: selectedPosition.lng,
     });
     router.back();
   };
@@ -52,10 +52,10 @@ const JobsLocationPage = () => {
     if (registerData.address) {
       setSelectedAddress(registerData.address);
     }
-    if (registerData.lat && registerData.lng) {
+    if (registerData.latitude && registerData.longitude) {
       setSelectedPosition({
-        lat: registerData.lat,
-        lng: registerData.lng,
+        lat: registerData.latitude,
+        lng: registerData.longitude,
       });
     }
   }, [registerData]);
