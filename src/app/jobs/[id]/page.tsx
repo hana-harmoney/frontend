@@ -14,7 +14,7 @@ const JobDetailPage = () => {
   useKakaoLoader();
   const boardData: JobDetailProps = {
     nickname: '작성자 이름',
-    profile_url:
+    profileUrl:
       'https://harmoneybucket.s3.ap-northeast-2.amazonaws.com/upload/profile/2025/08/22/c47d3582-ef29-4b95-b06e-0fadc5a515d0.jpeg',
     trust: 6,
     title: '사무실 청소',
@@ -39,7 +39,7 @@ const JobDetailPage = () => {
       <div className="flex w-full flex-col gap-5 px-6">
         <div className="flex items-center gap-3 text-xl font-semibold">
           <Image
-            src={boardData.profile_url}
+            src={boardData.profileUrl}
             alt="profile"
             width={48}
             height={48}

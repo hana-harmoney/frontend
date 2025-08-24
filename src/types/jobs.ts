@@ -10,6 +10,23 @@ export type JobsProps = {
 
 export type JobDetailProps = Partial<JobsProps> & {
   nickname: string;
-  profile_url: string;
+  profileUrl: string;
   trust: number;
 };
+
+export type JobBoard = JobsProps & {
+  boardId: number;
+  latitude: number;
+  longitude: number;
+  status: boolean;
+  createdAt: string;
+  updatedAt: string;
+} & Pick<JobDetailProps, 'nickname' | 'trust'>;
+
+export interface JobListResponse {
+  code: string;
+  message: string;
+  result: {
+    boardList: JobBoard[];
+  };
+}
