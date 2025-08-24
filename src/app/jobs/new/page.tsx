@@ -43,31 +43,17 @@ const JobsNewPage = () => {
   const router = useRouter();
 
   const isEmpty = useMemo(() => {
-    const { title, content, categoryId, address } = registerData;
-    return !(title && content && categoryId !== null && address);
+    const { title, content, categoryId, address, imageUrl } = registerData;
+    return !(title && content && categoryId !== null && address && imageUrl);
   }, [registerData]);
 
+  // 임시 쿠키 삽입 : 추후에 제거
   useEffect(() => {
     document.cookie = `accessToken=${process.env.NEXT_PUBLIC_TEMP_COOKIE}; path=/`;
   }, []);
 
-  const getCookie = (key: string) => {
-    if (typeof document === 'undefined') return null;
-    const raw = document.cookie;
-    if (!raw) return null;
-    const items = raw.split('; ');
-    for (const item of items) {
-      const [k, ...rest] = item.split('=');
-      if (decodeURIComponent(k) === key) {
-        return decodeURIComponent(rest.join('='));
-      }
-    }
-    return null;
-  };
-
   const handleSubmit = async () => {
     if (registerData.categoryId === null) return;
-    const token = getCookie('accessToken') || '';
 
     const job = {
       title: registerData.title,
@@ -82,7 +68,7 @@ const JobsNewPage = () => {
 
     try {
       setIsLoading(true);
-      await createJob(job, token);
+      await createJob(job);
       toast.success('성공적으로 등록되었습니다.');
       router.push('/jobs');
     } catch (e) {
@@ -158,7 +144,7 @@ const JobsNewPage = () => {
       </div>
       <div className="flex w-full flex-col gap-3 text-2xl font-light">
         카테고리 선택
-        <div className="flex flex-wrap justify-center gap-2">
+        <div className="grid grid-cols-3 gap-4 self-center">
           {badgeData.map((item) => (
             <Badge
               key={item.id}
