@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import './globals.css';
 import localFont from 'next/font/local';
+import { Toaster } from 'react-hot-toast';
 import BottomNav from '@/components/common/navbar/BottomNav';
 
 const pretendard = localFont({
@@ -23,7 +24,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${pretendard.className} flex justify-center overflow-x-hidden`}
+        className={`${pretendard.className} overflow-x-hidden pb-20`}
         // style={{
         //   paddingTop: 'env(safe-area-inset-top)',
         //   paddingBottom: 'env(safe-area-inset-bottom)',
@@ -33,6 +34,7 @@ export default function RootLayout({
       >
         {children}
         <BottomNav />
+        <Toaster position="top-center" reverseOrder={false} />
       </body>
     </html>
   );
