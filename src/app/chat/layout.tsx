@@ -6,7 +6,7 @@ export default function ChatLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div>
+    <div className="flex w-full flex-col">
       <Header title="채팅" centerTitle={false} showBackButton={false} />
       {children}
     </div>
