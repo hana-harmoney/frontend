@@ -13,6 +13,7 @@ const Card = ({
   address,
   wage,
   imageUrl,
+  onClick,
 }: JobsProps) => {
   const timeAgo = (dateString: string): string => {
     const now = new Date();
@@ -28,7 +29,10 @@ const Card = ({
   };
 
   return (
-    <div className="border-teduri flex flex-col rounded-2xl border">
+    <div
+      className="border-teduri flex flex-col rounded-2xl border"
+      onClick={onClick}
+    >
       <div className="border-b-teduri flex items-center justify-center border-b">
         <Image
           src={imageUrl}

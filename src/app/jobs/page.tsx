@@ -6,12 +6,14 @@ import { useEffect, useState } from 'react';
 import { JobsProps } from '@/types/jobs';
 import { fetchJobList } from '@/lib/api/jobs';
 import type { JobBoard } from '@/types/jobs';
+import { useRouter } from 'next/navigation';
 
 const JobsPage = () => {
   const [selectedCategory, setSelectedCategory] = useState(0);
   const [boards, setBoards] = useState<JobBoard[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const router = useRouter();
 
   useEffect(() => {
     (async () => {
@@ -43,6 +45,7 @@ const JobsPage = () => {
         : b.category === badgeData.find((x) => x.id === selectedCategory)?.text,
     )
     .map((b) => ({
+      boardId: b.boardId,
       title: b.title,
       category: b.category,
       created: b.createdAt,
@@ -53,9 +56,6 @@ const JobsPage = () => {
     }));
 
   // const demos: CardProps[] = [];
-  useEffect(() => {
-    console.log('cards : ', cards);
-  }, [cards]);
 
   return (
     <div className="flex flex-col items-center gap-9 px-6 py-3">
@@ -84,7 +84,12 @@ const JobsPage = () => {
         ) : (
           cards.map((item, idx) => (
             <div key={idx}>
-              <Card {...item} />
+              <Card
+                {...item}
+                onClick={() => {
+                  router.push(`/jobs/${item.boardId}`);
+                }}
+              />
             </div>
           ))
         )}

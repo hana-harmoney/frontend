@@ -1,4 +1,6 @@
 'use client';
+import { useEffect, useState } from 'react';
+import { useParams } from 'next/navigation';
 import { Map, MapMarker } from 'react-kakao-maps-sdk';
 import useKakaoLoader from '@/components/use-kakao-loader';
 
@@ -7,23 +9,51 @@ import Pin from '@/assets/icons/pin.svg';
 import Dollar from '@/assets/icons/dollar.svg';
 import { Button } from '@/components/ui/button';
 import ImageSlider from '@/components/jobs/ImageSlider';
-import { JobDetailProps } from '@/types/jobs';
+import { fetchJobDetail } from '@/lib/api/jobs';
+import type { JobBoard } from '@/types/jobs';
 import Image from 'next/image';
+import NoData from '@/assets/images/no-data.svg';
+import { formatNumber } from '@/lib/utils';
 
 const JobDetailPage = () => {
   useKakaoLoader();
-  const boardData: JobDetailProps = {
-    nickname: '작성자 이름',
-    profileUrl:
-      'https://harmoneybucket.s3.ap-northeast-2.amazonaws.com/upload/profile/2025/08/22/c47d3582-ef29-4b95-b06e-0fadc5a515d0.jpeg',
-    trust: 6,
-    title: '사무실 청소',
-    content:
-      '소규모 사무실 청소 업무입니다. 주 3회, 오전 시간대 근무 가능하신 분.',
-    wage: 15000,
-    category: '요리',
-    address: '마포구 공덕동',
-  };
+
+  const params = useParams();
+  const jobId = Number(params.id);
+
+  const [boardData, setBoardData] = useState<JobBoard | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        if (jobId) {
+          const data = await fetchJobDetail(jobId);
+          setBoardData(data.result);
+        }
+      } catch (e) {
+        setError('데이터를 불러오는 중 문제가 발생했습니다.');
+      } finally {
+        setLoading(false);
+      }
+    })();
+  }, [jobId]);
+
+  // useEffect(() => {
+  //   console.log('boardData : ', boardData);
+  // }, [boardData]);
+
+  if (loading)
+    return (
+      <div className="flex flex-col items-center justify-center gap-3 py-10 text-center text-gray-500">
+        불러오는 중…
+        <NoData className="h-24 w-24" />
+      </div>
+    );
+  if (error)
+    return <div className="p-10 text-center text-red-500">{error}</div>;
+  if (!boardData) return null;
 
   const images = [
     'https://harmoneybucket.s3.ap-northeast-2.amazonaws.com/upload/profile/2025/08/22/c47d3582-ef29-4b95-b06e-0fadc5a515d0.jpeg',
@@ -67,18 +97,27 @@ const JobDetailPage = () => {
           </div>
           <div className="flex items-center gap-2">
             <Dollar /> 시급{' '}
-            <span className="text-main font-bold">{boardData.wage}</span>원
+            <span className="text-main font-bold">
+              {formatNumber(boardData.wage)}
+            </span>
+            원
           </div>
         </div>
         <div className="flex flex-col text-2xl">장소</div>
         <Map
           id="map"
-          center={{ lat: 37.5448361732145, lng: 127.056563379345 }}
+          center={{
+            lat: boardData.latitude || 37.5448361732145,
+            lng: boardData.longitude || 127.056563379345,
+          }}
           style={{ width: '100%', height: '350px' }}
           level={3}
         >
           <MapMarker
-            position={{ lat: 37.5448361732145, lng: 127.056563379345 }}
+            position={{
+              lat: boardData.latitude || 37.5448361732145,
+              lng: boardData.longitude || 127.056563379345,
+            }}
           />
         </Map>
         <div className="flex w-full gap-3 text-2xl">

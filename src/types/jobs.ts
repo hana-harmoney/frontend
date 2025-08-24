@@ -1,4 +1,5 @@
 export type JobsProps = {
+  boardId: string;
   title: string;
   category: string;
   created: string; // 등록된 날짜
@@ -6,6 +7,7 @@ export type JobsProps = {
   address: string;
   wage: number;
   imageUrl: string;
+  onClick?: (event: React.MouseEvent<HTMLElement>) => void;
 };
 
 export type JobDetailProps = Partial<JobsProps> & {
@@ -21,12 +23,14 @@ export type JobBoard = JobsProps & {
   status: boolean;
   createdAt: string;
   updatedAt: string;
-} & Pick<JobDetailProps, 'nickname' | 'trust'>;
+} & Pick<JobDetailProps, 'nickname' | 'trust' | 'profileUrl'>;
 
-export interface JobListResponse {
+export interface ApiResponse<T> {
   code: string;
   message: string;
-  result: {
-    boardList: JobBoard[];
-  };
+  result: T;
 }
+
+export type JobListResponse = ApiResponse<{ boardList: JobBoard[] }>;
+
+export type JobDetailResponse = ApiResponse<JobBoard>;
