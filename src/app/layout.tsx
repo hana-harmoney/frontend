@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import './globals.css';
 import localFont from 'next/font/local';
 import { Toaster } from 'react-hot-toast';
+import BottomNav from '@/components/common/navbar/BottomNav';
 
 const pretendard = localFont({
   src: '../fonts/PretendardVariable.woff2',
@@ -32,6 +33,7 @@ export default function RootLayout({
         // }}
       >
         {children}
+        <BottomNav />
         <Toaster position="top-center" reverseOrder={false} />
       </body>
     </html>

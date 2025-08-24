@@ -232,3 +232,9 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
+@layer utilities {
+  .frame-container {
+    @apply mx-auto w-full max-w-[1024px];
+  }
+}
