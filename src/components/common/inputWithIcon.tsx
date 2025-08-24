@@ -11,7 +11,7 @@ function InputWithIcon({ icon, className, ...props }: InputWithIconProps) {
     <div className="relative w-full">
       <Input
         className={cn(
-          'placeholder:text-gray px-4 py-6 pr-10 text-xl font-normal',
+          'placeholder:text-gray truncate px-4 py-6 pr-10 text-xl font-normal',
           className,
         )}
         {...props}

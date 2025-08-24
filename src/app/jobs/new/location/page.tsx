@@ -1,11 +1,15 @@
 'use client';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { useJobDraft } from '@/stores/useJobDraft';
 import useKakaoLoader from '@/components/use-kakao-loader';
 import { Map, MapMarker } from 'react-kakao-maps-sdk';
 import { Button } from '@/components/ui/button';
 
 const JobsLocationPage = () => {
   useKakaoLoader();
+  const router = useRouter();
+  const { data: registerData, setData } = useJobDraft();
   const [selectedPosition, setSelectedPosition] = useState<{
     lat: number;
     lng: number;
@@ -29,10 +33,35 @@ const JobsLocationPage = () => {
     });
   };
 
-  const defaultCenter = { lat: 37.5448361732145, lng: 127.056563379345 };
+  const defaultCenter = {
+    lat: registerData?.lat || 37.5448361732145,
+    lng: registerData?.lng || 127.056563379345,
+  };
+
+  const handleComplete = () => {
+    if (!selectedAddress || !selectedPosition) return;
+    setData({
+      address: selectedAddress,
+      lat: selectedPosition.lat,
+      lng: selectedPosition.lng,
+    });
+    router.back();
+  };
+
+  useEffect(() => {
+    if (registerData.address) {
+      setSelectedAddress(registerData.address);
+    }
+    if (registerData.lat && registerData.lng) {
+      setSelectedPosition({
+        lat: registerData.lat,
+        lng: registerData.lng,
+      });
+    }
+  }, [registerData]);
 
   return (
-    <div className="flex w-full flex-col gap-3 border border-red-700 px-6 py-3 text-xl font-light">
+    <div className="flex w-full flex-col gap-3 px-6 py-3 font-light">
       <span className="text-2xl">원하시는 장소를 선택해주세요.</span>
 
       <span>
@@ -49,7 +78,9 @@ const JobsLocationPage = () => {
       >
         <MapMarker position={selectedPosition ?? defaultCenter} />
       </Map>
-      <Button className="w-full !py-6 text-xl">작성완료</Button>
+      <Button className="w-full !py-6 text-xl" onClick={handleComplete}>
+        선택 완료
+      </Button>
     </div>
   );
 };
