@@ -75,7 +75,7 @@ const JobDetailPage = () => {
       await deleteJob(boardData.boardId);
       setShowConfirm(false);
       toast.success('성공적으로 삭제되었습니다.');
-      router.push('/jobs');
+      router.back();
     } catch (e) {
       console.error('delete error', e);
       toast.error('본인이 작성한 글만 삭제할 수 있습니다.');
@@ -109,7 +109,7 @@ const JobDetailPage = () => {
           {showMenu && (
             <div
               id="kebab-menu"
-              className="absolute top-4 right-0 flex flex-col gap-3 rounded-xl border bg-white p-4"
+              className="absolute top-4 right-2 flex flex-col gap-3 rounded-xl border bg-white p-4"
             >
               <div className="flex items-center gap-2 text-xl">
                 <Edit className="h-7 w-7" />

@@ -12,15 +12,18 @@ import { useRouter } from 'next/navigation';
 import CircleRemove from '@/assets/icons/circle_remove.svg';
 import { useJobDraft } from '@/stores/useJobDraft';
 import { createJob } from '@/lib/api/jobs';
+import { JobCreateRequest } from '@/types/jobs';
 import toast from 'react-hot-toast';
 
 const JobsNewPage = () => {
   const { data: registerData, setData } = useJobDraft();
   const [isLoading, setIsLoading] = useState(false);
+  const [imageFile, setImageFile] = useState<File | null>(null);
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
+      setImageFile(file);
       const url = URL.createObjectURL(file);
       setData({ imageUrl: url });
     }
@@ -57,13 +60,17 @@ const JobsNewPage = () => {
   const handleSubmit = async () => {
     if (registerData.categoryId === null || registerData.categoryId === 0)
       return;
+    if (!imageFile) {
+      toast.error('이미지를 선택해주세요.');
+      return;
+    }
 
     const job = {
       title: registerData.title,
       content: registerData.content,
       wage: registerData.wage,
       address: registerData.address,
-      imageUrl: registerData.imageUrl,
+      // 이미지 파일은 multipart의 image 파트로 전송하므로 request JSON에는 포함하지 않아도 됨
       categoryId: registerData.categoryId,
       latitude: registerData.latitude,
       longitude: registerData.longitude,
@@ -71,7 +78,7 @@ const JobsNewPage = () => {
 
     try {
       setIsLoading(true);
-      await createJob(job);
+      await createJob(job as JobCreateRequest, imageFile);
       toast.success('성공적으로 등록되었습니다.');
       setData({
         title: '',
@@ -84,6 +91,7 @@ const JobsNewPage = () => {
         longitude: 127.056563379345,
         phone: '',
       });
+      setImageFile(null);
       router.push('/jobs');
     } catch (e) {
       console.error('createJob error:', e);
@@ -114,6 +122,7 @@ const JobsNewPage = () => {
               className="absolute top-0 right-0"
               onClick={(e: React.MouseEvent<SVGSVGElement>) => {
                 setData({ imageUrl: '' });
+                setImageFile(null);
                 e.preventDefault();
               }}
             />

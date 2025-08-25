@@ -21,16 +21,13 @@ export const fetchJobDetail = async (
   return res;
 };
 
-export async function createJob(job: JobCreateRequest) {
-  const res = await apiClient('/board', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(job),
-  });
-  if (res.code !== '200') throw new Error('일자리 등록 실패');
+export async function createJob(job: JobCreateRequest, image: File) {
+  const fd = new FormData();
+  fd.append('request', JSON.stringify(job)); // ← 문자열(JSON)
+  fd.append('image', image);
 
+  const res = await apiClient('/board', { method: 'POST', body: fd });
+  if (res.code !== '200') throw new Error(res.message ?? '일자리 등록 실패');
   return res;
 }
 
