@@ -153,8 +153,11 @@ const JobsNewPage = () => {
           className="placeholder:text-gray h-44 text-xl font-normal placeholder:text-xl"
           value={registerData.content}
           onChange={(e) => updateField('content')(e.target.value)}
+          maxLength={500}
         />
-        <span className="text-end text-xl">34/500</span>
+        <span className="text-end text-xl">
+          {registerData.content.length}/500
+        </span>
       </div>
       <div className="flex w-full flex-col gap-3 text-2xl font-light">
         카테고리 선택
