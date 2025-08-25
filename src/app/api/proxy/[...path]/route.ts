@@ -24,11 +24,14 @@ async function handler(
   let body: BodyInit | undefined;
   if (!['GET', 'HEAD'].includes(req.method)) {
     const ct = req.headers.get('content-type') ?? '';
-    body = ct.includes('json')
-      ? await req.text()
-      : ct.includes('multipart/form-data')
-        ? await req.formData()
-        : await req.blob();
+    if (ct.includes('multipart/form-data')) {
+      headers.delete('content-type');
+      body = await req.formData();
+    } else if (ct.includes('json')) {
+      body = await req.text();
+    } else {
+      body = await req.blob();
+    }
   }
 
   const res = await fetch(url, {

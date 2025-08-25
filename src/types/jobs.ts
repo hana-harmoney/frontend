@@ -44,4 +44,4 @@ export type JobListResponse = ApiResponse<{ boardList: JobBoard[] }>;
 
 export type JobDetailResponse = ApiResponse<JobBoard>;
 
-export type JobCreateRequest = Omit<RegisterData, 'lat' | 'lng' | 'phone'>;
+export type JobCreateRequest = Omit<RegisterData, 'phone' | 'imageUrl'>;
