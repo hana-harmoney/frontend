@@ -62,33 +62,42 @@ export default function Step3Page() {
       const day = String(date.getDate()).padStart(2, '0');
       return `${year}${month}${day}`;
     })();
+
     const genderValue = data.gender === '남자' ? 'MALE' : 'FEMALE';
 
     const formatPhone = data.phone
       .replace(/[^0-9]/g, '')
       .replace(/(\d{3})(\d{3,4})(\d{4})/, '$1-$2-$3');
 
-    const response = await fetch('/auth/signup', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        loginId: data.loginId,
-        password: data.password,
-        name: data.name,
-        birth: formatBirth,
-        gender: genderValue,
-        address: data.address,
-        phone: formatPhone,
-      }),
-    });
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/auth/signup`,
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            loginId: data.loginId,
+            password: data.password,
+            name: data.name,
+            birth: formatBirth,
+            gender: genderValue,
+            address: data.address,
+            phone: formatPhone,
+          }),
+        },
+      );
 
-    const result = await response.json();
-    console.log('서버 응답:', result);
+      const result = await response.json();
+      console.log('서버 응답:', result);
 
-    if (response.ok) {
-      //router.push('/auth/login');
-    } else {
-      alert(`회원가입 실패: ${result.message ?? '알 수 없는 오류'}`);
+      if (response.ok && result?.code === '200') {
+        router.push('/auth/login');
+      } else {
+        alert(`회원가입 실패: ${result?.message ?? '알 수 없는 오류'}`);
+      }
+    } catch (error) {
+      console.error('회원가입 오류:', error);
+      alert('회원가입 중 오류가 발생했습니다.');
     }
   };
 
