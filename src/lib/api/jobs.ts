@@ -33,3 +33,11 @@ export async function createJob(job: JobCreateRequest) {
 
   return res;
 }
+
+export const deleteJob = async (id: number): Promise<JobDetailResponse> => {
+  const res = await apiClient(`/board/${id}`, {
+    method: 'DELETE',
+  });
+  if (res.code !== '200') throw new Error('일자리 삭제 실패');
+  return res;
+};

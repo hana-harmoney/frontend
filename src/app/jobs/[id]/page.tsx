@@ -1,9 +1,9 @@
 'use client';
 import { useEffect, useState } from 'react';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import { Map, MapMarker } from 'react-kakao-maps-sdk';
 import useKakaoLoader from '@/components/use-kakao-loader';
-
+import Header from '@/components/common/header';
 import Badge from '@/components/common/badge';
 import Pin from '@/assets/icons/pin.svg';
 import Dollar from '@/assets/icons/dollar.svg';
@@ -13,6 +13,11 @@ import type { JobBoard } from '@/types/jobs';
 import Image from 'next/image';
 import NoData from '@/assets/images/no-data.svg';
 import { formatNumber } from '@/lib/utils';
+import Kebab from '@/assets/icons/kebab.svg';
+import Edit from '@/assets/icons/edit.svg';
+import Trash from '@/assets/icons/trash.svg';
+import { deleteJob } from '@/lib/api/jobs';
+import toast from 'react-hot-toast';
 
 const JobDetailPage = () => {
   useKakaoLoader();
@@ -20,9 +25,33 @@ const JobDetailPage = () => {
   const params = useParams();
   const jobId = Number(params.id);
 
+  const router = useRouter();
+  const [showConfirm, setShowConfirm] = useState(false);
+  const [deleting, setDeleting] = useState(false);
+
   const [boardData, setBoardData] = useState<JobBoard | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [showMenu, setShowMenu] = useState(false);
+
+  useEffect(() => {
+    function handleClickOutside(e: MouseEvent) {
+      const menu = document.getElementById('kebab-menu');
+      const trigger = document.getElementById('kebab-trigger');
+      if (
+        menu &&
+        !menu.contains(e.target as Node) &&
+        trigger &&
+        !trigger.contains(e.target as Node)
+      ) {
+        setShowMenu(false);
+      }
+    }
+    if (showMenu) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [showMenu]);
 
   useEffect(() => {
     (async () => {
@@ -39,6 +68,23 @@ const JobDetailPage = () => {
     })();
   }, [jobId]);
 
+  const handleDelete = async () => {
+    if (!boardData) return;
+    try {
+      setDeleting(true);
+      await deleteJob(boardData.boardId);
+      setShowConfirm(false);
+      toast.success('성공적으로 삭제되었습니다.');
+      router.push('/jobs');
+    } catch (e) {
+      console.error('delete error', e);
+      toast.error('본인이 작성한 글만 삭제할 수 있습니다.');
+      setShowConfirm(false);
+    } finally {
+      setDeleting(false);
+    }
+  };
+
   if (loading)
     return (
       <div className="flex flex-col items-center justify-center gap-3 py-10 text-center text-gray-500">
@@ -52,6 +98,36 @@ const JobDetailPage = () => {
 
   return (
     <div className="flex w-full flex-col items-center gap-5">
+      <Header title={boardData.title} centerTitle={false} showBackButton={true}>
+        <div className="relative flex w-screen justify-end px-2">
+          <Kebab
+            id="kebab-trigger"
+            onClick={() => {
+              setShowMenu(true);
+            }}
+          />
+          {showMenu && (
+            <div
+              id="kebab-menu"
+              className="absolute top-4 right-0 flex flex-col gap-3 rounded-xl border bg-white p-4"
+            >
+              <div className="flex items-center gap-2 text-xl">
+                <Edit className="h-7 w-7" />
+                수정하기
+              </div>
+              <button
+                type="button"
+                className="flex items-center gap-2 text-left text-xl"
+                onClick={() => setShowConfirm(true)}
+              >
+                <Trash className="h-7 w-7" />
+                삭제하기
+              </button>
+            </div>
+          )}
+        </div>
+      </Header>
+
       <div className="flex w-full px-20">
         <div className="relative h-60 w-full">
           <Image
@@ -129,6 +205,33 @@ const JobDetailPage = () => {
           </Button>
         </div>
       </div>
+      {showConfirm && (
+        <div className="fixed inset-0 z-51 flex items-center justify-center bg-black/50">
+          <div className="w-11/12 max-w-sm rounded-xl bg-white p-6 shadow-xl">
+            <h3 className="mb-2 text-lg font-semibold">정말 삭제하시겠어요?</h3>
+            <p className="mb-5 text-sm text-gray-600">
+              삭제 후에는 되돌릴 수 없습니다.
+            </p>
+            <div className="flex gap-3">
+              <Button
+                className="bg-text-2 flex-1"
+                onClick={() => setShowConfirm(false)}
+                disabled={deleting}
+              >
+                취소
+              </Button>
+              <Button
+                variant="destructive"
+                className="flex-1"
+                onClick={handleDelete}
+                disabled={deleting}
+              >
+                {deleting ? '삭제 중…' : '삭제하기'}
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
