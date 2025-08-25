@@ -1,13 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 
-const BACKEND = process.env.BACKEND_API_BASE!;
+const BACKEND = process.env.NEXT_PUBLIC_API_URL!;
 const SKIP = new Set(['/auth/login', '/auth/signup']);
 
 async function handler(
   req: NextRequest,
-  { params }: { params: { path?: string[] } },
+  ctx: { params: Promise<{ path: string[] }> },
 ) {
+  const params = await ctx.params;
   const path = `/${(params.path ?? []).join('/')}`;
   const url = new URL(path, BACKEND);
 
@@ -45,11 +46,9 @@ async function handler(
   });
 }
 
-export {
-  handler as GET,
-  handler as POST,
-  handler as PUT,
-  handler as PATCH,
-  handler as DELETE,
-  handler as OPTIONS,
-};
+export const GET = handler;
+export const POST = handler;
+export const PUT = handler;
+export const PATCH = handler;
+export const DELETE = handler;
+export const OPTIONS = handler;
