@@ -10,11 +10,11 @@ type Props = {
   centerTitle?: boolean;
   showBackButton?: boolean;
   scrollHide?: boolean;
-  color?: 'white' | 'black';
   className?: string;
+  titleClassName?: string;
 };
 
-const BackButton = ({ color }: { color: 'white' | 'black' }) => {
+const BackButton = () => {
   const router = useRouter();
 
   return (
@@ -23,12 +23,7 @@ const BackButton = ({ color }: { color: 'white' | 'black' }) => {
       type="button"
       onClick={() => router.back()}
     >
-      <LeftArrow
-        className={clsx(
-          'size-4 stroke-black stroke-[0.1rem]',
-          color === 'black' ? 'stroke-black' : 'stroke-white',
-        )}
-      />
+      <LeftArrow className={clsx('size-4 stroke-black stroke-[0.1rem]')} />
     </button>
   );
 };
@@ -38,12 +33,14 @@ export default function Header({
   centerTitle = true,
   showBackButton = true,
   scrollHide = true,
-  color = 'black',
   className,
+  titleClassName,
   children,
 }: PropsWithChildren<Props>) {
   const [show, setShow] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
+  const titleAlign = centerTitle ? 'text-center' : 'text-left';
+  const titleLeftPadding = centerTitle ? '' : showBackButton ? 'pl-12' : 'pl-8';
 
   useEffect(() => {
     if (!scrollHide) return;
@@ -78,13 +75,14 @@ export default function Header({
         )}
       >
         <div className="frame-container relative flex h-12 items-center">
-          {showBackButton && <BackButton color={color} />}
+          {showBackButton && <BackButton />}
 
           <h1
             className={clsx(
               'absolute right-0 left-0 text-2xl font-semibold',
-              centerTitle ? 'text-center' : 'pl-8 text-left',
-              color === 'black' ? 'text-text-primary' : 'text-white',
+              titleAlign,
+              titleLeftPadding,
+              titleClassName,
             )}
           >
             {title}
