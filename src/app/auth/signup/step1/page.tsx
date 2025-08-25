@@ -4,34 +4,25 @@ import Header from '@/components/common/header';
 import { CustomInput } from '@/components/common/customInput';
 import { Button } from '@/components/ui/button';
 import { DatePicker } from '@/components/ui/datepicker';
-import { useState } from 'react';
 import Head from 'next/head';
 import BottomButton from '@/components/common/bottomButton';
+import { useRegisterStore } from '@/stores/userRegisterStore';
+import { useRouter } from 'next/navigation';
 
 export default function Step1Page() {
-  const [gender, setGender] = useState<'남자' | '여자' | null>(null);
-  const [name, setName] = useState('');
-  const [birth, setBirth] = useState<Date | null>(null);
-
-  const [registerData, setRegisterData] = useState({
-    phone: '',
-    address: '',
-  });
-
-  const updateField = (field: 'phone' | 'address') => (value: string) => {
-    setRegisterData((prev) => ({ ...prev, [field]: value }));
-  };
+  const { data, setField } = useRegisterStore();
+  const router = useRouter();
 
   const formValid = !!(
-    name &&
-    birth &&
-    gender &&
-    registerData.phone &&
-    registerData.address
+    data.name &&
+    data.birth &&
+    data.gender &&
+    data.phone &&
+    data.address
   );
 
   return (
-    <div className="px-6 py-5" style={{ paddingBottom: 0 }}>
+    <div className="px-6 pt-5 pb-15">
       <div></div>
 
       <Header title={''} />
@@ -63,16 +54,16 @@ export default function Step1Page() {
           이름
           <CustomInput
             placeholder="이름을 입력하세요"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
+            value={data.name}
+            onChange={(e) => setField('name', e.target.value)}
           />
         </div>
 
         <div className="flex w-full flex-col gap-3 py-2 text-2xl font-light">
           생년월일
           <DatePicker
-            value={birth ?? undefined}
-            onChange={(date) => setBirth(date ?? null)}
+            value={data.birth ?? undefined}
+            onChange={(date) => setField('birth', date ?? null)}
             locale="ko-KR"
             formatOptions={{ day: '2-digit', month: 'long', year: 'numeric' }}
           />
@@ -85,9 +76,9 @@ export default function Step1Page() {
               <button
                 key={g}
                 type="button"
-                onClick={() => setGender(g as '남자' | '여자')}
+                onClick={() => setField('gender', g as '남자' | '여자')}
                 className={`flex-1 rounded-md border px-6 py-4 text-center font-medium ${
-                  gender === g
+                  data.gender === g
                     ? 'bg-hanagreen-normal/10 border-hanagreen-normal text-hanagreen-normal'
                     : 'border-gray-300 bg-white text-gray-400'
                 }`}
@@ -102,10 +93,10 @@ export default function Step1Page() {
           전화번호
           <CustomInput
             placeholder="010-1234-5678"
-            value={registerData.phone}
+            value={data.phone}
             onChange={(e) => {
               const onlyNum = e.target.value.replace(/[^0-9]/g, '');
-              updateField('phone')(onlyNum);
+              setField('phone', onlyNum);
             }}
           />
         </div>
@@ -114,13 +105,18 @@ export default function Step1Page() {
           주소
           <CustomInput
             placeholder="서울시 강남구 테헤란로 123"
-            value={registerData.address}
-            onChange={(e) => updateField('address')(e.target.value)}
+            value={data.address}
+            onChange={(e) => setField('address', e.target.value)}
           />
         </div>
       </div>
 
-      <BottomButton disabled={!formValid}>다음으로</BottomButton>
+      <BottomButton
+        disabled={!formValid}
+        onClick={() => router.push('/auth/signup/step2')}
+      >
+        다음으로
+      </BottomButton>
 
       <div className="mt-auto w-full"></div>
     </div>
