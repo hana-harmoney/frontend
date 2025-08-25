@@ -6,6 +6,7 @@ import ChatIcon from '@/assets/icons/chat.svg';
 import EducationIcon from '@/assets/icons/education.svg';
 import ProfileIcon from '@/assets/icons/profile.svg';
 import BottomNavButton from './BottomNavTab';
+import { usePathname } from 'next/navigation';
 
 const navItems = [
   { key: 'home', label: '홈', path: '/home', Icon: HomeIcon },
@@ -16,6 +17,10 @@ const navItems = [
 ] as const;
 
 export default function BottomNav() {
+  const pathname = usePathname();
+
+  if (pathname.startsWith('/auth')) return null;
+
   return (
     <nav>
       <div className="h-12" />
