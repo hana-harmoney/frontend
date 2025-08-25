@@ -2,10 +2,10 @@
 
 import * as React from 'react';
 import { Label } from '@/components/ui/label';
-import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Eye, EyeOff } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { CustomInput } from './customInput';
 
 type HTMLInputType = React.HTMLInputTypeAttribute;
 
@@ -58,7 +58,7 @@ export function InputWithLabel({
       </Label>
 
       <div className="relative">
-        <Input
+        <CustomInput
           id={fieldId}
           name={name}
           type={actualType}
@@ -70,7 +70,7 @@ export function InputWithLabel({
             [descId, errId].filter(Boolean).join(' ') || undefined
           }
           className={cn(
-            'h-14 pr-10', // 우측 아이콘 여백
+            'pr-10', // 우측 아이콘 여백
             error && 'border-destructive focus-visible:ring-destructive',
             inputClassName,
           )}
