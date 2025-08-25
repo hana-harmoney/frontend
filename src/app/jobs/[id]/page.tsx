@@ -8,7 +8,6 @@ import Badge from '@/components/common/badge';
 import Pin from '@/assets/icons/pin.svg';
 import Dollar from '@/assets/icons/dollar.svg';
 import { Button } from '@/components/ui/button';
-import ImageSlider from '@/components/jobs/ImageSlider';
 import { fetchJobDetail } from '@/lib/api/jobs';
 import type { JobBoard } from '@/types/jobs';
 import Image from 'next/image';
@@ -51,17 +50,20 @@ const JobDetailPage = () => {
     return <div className="p-10 text-center text-red-500">{error}</div>;
   if (!boardData) return null;
 
-  const images = [
-    'https://harmoneybucket.s3.ap-northeast-2.amazonaws.com/upload/profile/2025/08/22/c47d3582-ef29-4b95-b06e-0fadc5a515d0.jpeg',
-    'https://harmoneybucket.s3.ap-northeast-2.amazonaws.com/upload/profile/2025/08/22/c47d3582-ef29-4b95-b06e-0fadc5a515d0.jpeg',
-  ];
-
   return (
     <div className="flex w-full flex-col items-center gap-5">
-      <div className="">
-        <ImageSlider images={images} />
+      <div className="flex w-full px-20">
+        <div className="relative h-60 w-full">
+          <Image
+            src={boardData.imageUrl}
+            alt="profile"
+            fill
+            className="object-cover object-center"
+            unoptimized
+            sizes="48px"
+          />
+        </div>
       </div>
-
       <div className="flex w-full flex-col gap-5 px-6">
         <div className="flex items-center gap-3 text-xl font-semibold">
           <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-full">
@@ -119,7 +121,9 @@ const JobDetailPage = () => {
           />
         </Map>
         <div className="flex w-full gap-3 text-2xl">
-          <Button className="min-w-0 flex-1 !py-5">전화하기</Button>
+          <Button className="min-w-0 flex-1 !py-5">
+            <a href={`tel:${boardData.phone}`}>전화하기</a>
+          </Button>
           <Button variant="destructive" className="min-w-0 flex-1 !py-5">
             채팅하기
           </Button>

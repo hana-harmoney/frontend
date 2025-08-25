@@ -44,16 +44,19 @@ const JobsNewPage = () => {
 
   const isEmpty = useMemo(() => {
     const { title, content, categoryId, address, imageUrl } = registerData;
-    return !(title && content && categoryId !== null && address && imageUrl);
+    return !(
+      title &&
+      content &&
+      categoryId !== null &&
+      categoryId !== 0 &&
+      address &&
+      imageUrl
+    );
   }, [registerData]);
 
-  // 임시 쿠키 삽입 : 추후에 제거
-  useEffect(() => {
-    document.cookie = `accessToken=${process.env.NEXT_PUBLIC_TEMP_COOKIE}; path=/`;
-  }, []);
-
   const handleSubmit = async () => {
-    if (registerData.categoryId === null) return;
+    if (registerData.categoryId === null || registerData.categoryId === 0)
+      return;
 
     const job = {
       title: registerData.title,
@@ -70,6 +73,17 @@ const JobsNewPage = () => {
       setIsLoading(true);
       await createJob(job);
       toast.success('성공적으로 등록되었습니다.');
+      setData({
+        title: '',
+        content: '',
+        wage: 0,
+        address: '',
+        imageUrl: '',
+        categoryId: 0,
+        latitude: 37.5448361732145,
+        longitude: 127.056563379345,
+        phone: '',
+      });
       router.push('/jobs');
     } catch (e) {
       console.error('createJob error:', e);
@@ -162,14 +176,6 @@ const JobsNewPage = () => {
           icon={<Next className="h-5" />}
           onClick={() => router.push('/jobs/new/location')}
           readOnly
-        />
-      </div>
-      <div className="flex w-full flex-col gap-3 text-2xl font-light">
-        연락처 (선택)
-        <CustomInput
-          placeholder="010-1234-5678"
-          value={registerData.phone}
-          onChange={(e) => updateField('phone')(e.target.value)}
         />
       </div>
       <Button
