@@ -29,15 +29,18 @@ type DatePickerProps = {
 
 function formatDate(
   date: Date | undefined,
-  locale = 'en-US',
-  formatOptions: Intl.DateTimeFormatOptions = {
+  locale?: string,
+  formatOptions?: Intl.DateTimeFormatOptions,
+) {
+  const effectiveLocale = locale ?? 'ko-KR';
+  const effectiveFormatOptions = formatOptions ?? {
     day: '2-digit',
     month: 'long',
     year: 'numeric',
-  },
-) {
+  };
+
   if (!date || Number.isNaN(date.getTime())) return '';
-  return date.toLocaleDateString(locale, formatOptions);
+  return date.toLocaleDateString(effectiveLocale, effectiveFormatOptions);
 }
 
 function isValidDate(date: Date | undefined) {
@@ -45,8 +48,8 @@ function isValidDate(date: Date | undefined) {
 }
 
 export function DatePicker({
-  label = 'Subscription Date',
-  placeholder = 'June 01, 2025',
+  label = '',
+  placeholder = '1960-01-01',
   id = 'date',
   value,
   defaultValue,
@@ -72,10 +75,9 @@ export function DatePicker({
   // 외부 value가 바뀌면 인풋/달력 동기화
   React.useEffect(() => {
     if (isControlled) {
-      setInputValue(formatDate(value, locale, formatOptions));
+      setInputValue(formatDate(value));
       setMonth(value);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [value, isControlled, locale]);
 
   const commitDate = (next?: Date) => {
@@ -96,7 +98,7 @@ export function DatePicker({
           name={name}
           value={inputValue}
           placeholder={placeholder}
-          className="bg-background pr-10"
+          className="w-full px-4 py-6 text-xl font-normal"
           disabled={disabled}
           required={required}
           onChange={(e) => {
@@ -112,7 +114,7 @@ export function DatePicker({
           }}
           onBlur={() => {
             // 포맷 정규화: 포커스 아웃 시 보기 좋게 포맷 적용
-            setInputValue(formatDate(date, locale, formatOptions));
+            setInputValue(formatDate(date));
           }}
           onKeyDown={(e) => {
             if (e.key === 'ArrowDown') {
@@ -138,7 +140,7 @@ export function DatePicker({
               disabled={disabled}
               aria-label="달력 열기"
             >
-              <CalendarIcon className="size-3.5" />
+              <CalendarIcon className="h-7 w-7" />
               <span className="sr-only">날짜를 선택해주세요</span>
             </Button>
           </PopoverTrigger>
@@ -158,7 +160,7 @@ export function DatePicker({
               onMonthChange={setMonth}
               onSelect={(d) => {
                 commitDate(d);
-                setInputValue(formatDate(d, locale, formatOptions));
+                setInputValue(formatDate(d));
                 setOpen(false);
               }}
               disabled={disabled}
