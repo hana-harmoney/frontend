@@ -1,24 +1,11 @@
 'use client';
 
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useRegisterStore } from '@/stores/userRegisterStore';
 import LeftArrow from '@/assets/icons/left_arrow.svg';
 import DaumPostcode from 'react-daum-postcode';
 import Header from '@/components/common/header';
-
-// declare global {
-//   interface Window {
-//     daum?: {
-//       Postcode: new (opts: {
-//         oncomplete: (data: { address: string }) => void;
-//       }) => {
-//         embed: (container: HTMLElement) => void;
-//         open: () => void;
-//       };
-//     };
-//   }
-// }
 
 const LocationSearchPage = () => {
   const router = useRouter();
