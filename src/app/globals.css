@@ -75,6 +75,7 @@ body {
   overflow-y: scroll;
   word-break: keep-all;
 }
+
 * {
   box-sizing: border-box;
 }
@@ -173,7 +174,7 @@ body {
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
 
-  --hana-green: oklch(0.629 0.123 199.9);
+  --hana-green: oklch(0.6575 0.1106 184.82);
   --hana-green-light: oklch(0.965 0.014 211.4);
   --hana-mint: oklch(0.956 0.022 151.6);
   --gray: oklch(0.351 0.032 266.6);
