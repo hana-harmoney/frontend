@@ -1,7 +1,7 @@
 // const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080';
 
 export const apiClient = async (path: string, options?: RequestInit) => {
-  const res = await fetch(`api/proxy${path}`, {
+  const res = await fetch(`/api/proxy${path}`, {
     ...options,
     headers: {
       'Content-Type': 'application/json',

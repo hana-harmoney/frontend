@@ -25,6 +25,7 @@ export type JobBoard = JobsProps & {
   status: boolean;
   createdAt: string;
   updatedAt: string;
+  phone?: string;
 } & Pick<JobDetailProps, 'nickname' | 'trust' | 'profileUrl'>;
 
 export type RegisterData = {
