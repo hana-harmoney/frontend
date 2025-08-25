@@ -1,3 +1,5 @@
+import { ApiResponse } from './apiResponse';
+
 export type JobsProps = {
   boardId: string;
   title: string;
@@ -24,12 +26,6 @@ export type JobBoard = JobsProps & {
   createdAt: string;
   updatedAt: string;
 } & Pick<JobDetailProps, 'nickname' | 'trust' | 'profileUrl'>;
-
-export interface ApiResponse<T> {
-  code: string;
-  message: string;
-  result: T;
-}
 
 export type RegisterData = {
   title: string;
