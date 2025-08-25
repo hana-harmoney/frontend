@@ -72,7 +72,7 @@ export default function LoginForm() {
 
         {err && <p className="text-sm text-red-600">{err}</p>}
       </form>
-      <Link className="" href={'/auth/signup'}>
+      <Link className="" href={'/auth/signup/step1'}>
         <p className="text-text-secondary text-xl">회원가입 하러가기</p>
       </Link>
     </div>
