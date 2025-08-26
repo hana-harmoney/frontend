@@ -4,9 +4,8 @@ import Header from '@/components/common/header';
 import BottomButton from '@/components/common/bottomButton';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { useRegisterStore } from '@/stores/userRegisterStore';
-
-type AgreementKey = 'service' | 'privacy' | 'mydata' | 'account' | 'marketing';
+import { useRegisterStore } from '@/stores/useRegisterStore';
+import { AgreementKey } from '@/types/auth';
 
 const TERMS_DETAIL: Record<AgreementKey, string> = {
   service:
@@ -18,19 +17,20 @@ const TERMS_DETAIL: Record<AgreementKey, string> = {
   marketing: '새로운 일자리와 혜택 정보를 받아보실 수 있습니다.',
 };
 
+const AGREEMENT_ID: Record<AgreementKey, number> = {
+  service: 0,
+  privacy: 1,
+  mydata: 2,
+  account: 3,
+  marketing: 4,
+};
+
 export default function Step3Page() {
-  const [agreements, setAgreements] = useState<Record<AgreementKey, boolean>>({
-    service: false,
-    privacy: false,
-    mydata: false,
-    account: false,
-    marketing: false,
-  });
-
   const [modalKey, setModalKey] = useState<AgreementKey | null>(null);
-
   const router = useRouter();
-  const { data } = useRegisterStore();
+
+  const { data, toggleAgreement, setField } = useRegisterStore();
+  const agreements = data.agreements;
 
   const isAllRequiredChecked =
     agreements.service &&
@@ -39,17 +39,17 @@ export default function Step3Page() {
     agreements.account;
 
   const handleToggle = (key: AgreementKey) => {
-    setAgreements((prev) => ({ ...prev, [key]: !prev[key] }));
+    toggleAgreement(key);
   };
 
   const handleCheckAll = () => {
     const allChecked = isAllRequiredChecked;
-    setAgreements({
+    setField('agreements', {
       service: !allChecked,
       privacy: !allChecked,
       mydata: !allChecked,
       account: !allChecked,
-      marketing: !allChecked,
+      marketing: agreements.marketing,
     });
   };
 
@@ -126,7 +126,10 @@ export default function Step3Page() {
             {TERMS_DETAIL[keyName].split('\n')[0]}
           </div>
           <button
-            onClick={() => setModalKey(keyName)}
+            onClick={() => {
+              const id = AGREEMENT_ID[keyName];
+              router.push(`/auth/signup/step3/terms/${id}`);
+            }}
             className="text-hanagreen-normal text-left text-sm underline"
           >
             약관 전문 보기
@@ -198,7 +201,7 @@ export default function Step3Page() {
       </div>
 
       <BottomButton disabled={!isAllRequiredChecked} onClick={handleSubmit}>
-        가입하기
+        다음으로
       </BottomButton>
 
       {modalKey && (

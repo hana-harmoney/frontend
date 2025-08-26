@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-
+import { AgreementKey } from '@/types/auth';
 type RegisterData = {
   name: string;
   birth: Date | null;
@@ -8,6 +8,7 @@ type RegisterData = {
   address: string;
   loginId: string;
   password: string;
+  agreements: Record<AgreementKey, boolean>;
 };
 
 type RegisterStore = {
@@ -16,7 +17,16 @@ type RegisterStore = {
     field: K,
     value: RegisterData[K],
   ) => void;
+  toggleAgreement: (key: AgreementKey) => void;
   reset: () => void;
+};
+
+const initialAgreements: Record<AgreementKey, boolean> = {
+  service: false,
+  privacy: false,
+  mydata: false,
+  account: false,
+  marketing: false,
 };
 
 export const useRegisterStore = create<RegisterStore>((set) => ({
@@ -28,10 +38,21 @@ export const useRegisterStore = create<RegisterStore>((set) => ({
     address: '',
     loginId: '',
     password: '',
+    agreements: initialAgreements,
   },
   setField: (field, value) =>
     set((state) => ({
       data: { ...state.data, [field]: value },
+    })),
+  toggleAgreement: (key) =>
+    set((state) => ({
+      data: {
+        ...state.data,
+        agreements: {
+          ...state.data.agreements,
+          [key]: !state.data.agreements[key],
+        },
+      },
     })),
   reset: () =>
     set({
@@ -43,6 +64,7 @@ export const useRegisterStore = create<RegisterStore>((set) => ({
         address: '',
         loginId: '',
         password: '',
+        agreements: initialAgreements,
       },
     }),
 }));
