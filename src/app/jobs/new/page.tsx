@@ -14,6 +14,7 @@ import { useJobDraft } from '@/stores/useJobDraft';
 import { createJob } from '@/lib/api/jobs';
 import { JobCreateRequest } from '@/types/jobs';
 import toast from 'react-hot-toast';
+import { badgeData } from '@/lib/utils';
 
 const JobsNewPage = () => {
   const { data: registerData, setData } = useJobDraft();
@@ -33,15 +34,6 @@ const JobsNewPage = () => {
     <K extends keyof typeof registerData>(key: K) =>
     (value: (typeof registerData)[K]) =>
       setData({ [key]: value } as Partial<typeof registerData>);
-
-  const badgeData = [
-    { id: 1, text: '요리' },
-    { id: 2, text: '육아' },
-    { id: 3, text: '농업' },
-    { id: 4, text: '청소' },
-    { id: 5, text: '기술' },
-    { id: 6, text: '기타' },
-  ];
 
   const router = useRouter();
 
@@ -70,7 +62,6 @@ const JobsNewPage = () => {
       content: registerData.content,
       wage: registerData.wage,
       address: registerData.address,
-      // 이미지 파일은 multipart의 image 파트로 전송하므로 request JSON에는 포함하지 않아도 됨
       categoryId: registerData.categoryId,
       latitude: registerData.latitude,
       longitude: registerData.longitude,

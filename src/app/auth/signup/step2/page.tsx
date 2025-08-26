@@ -4,7 +4,7 @@ import Header from '@/components/common/header';
 import { CustomInput } from '@/components/common/customInput';
 import BottomButton from '@/components/common/bottomButton';
 import { useState } from 'react';
-import { useRegisterStore } from '@/stores/userRegisterStore';
+import { useRegisterStore } from '@/stores/useRegisterStore';
 import { useRouter } from 'next/navigation';
 
 const isValidLoginId = (id: string) => /^[a-zA-Z0-9]{6,}$/.test(id);

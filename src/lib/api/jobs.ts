@@ -23,7 +23,7 @@ export const fetchJobDetail = async (
 
 export async function createJob(job: JobCreateRequest, image: File) {
   const fd = new FormData();
-  fd.append('request', JSON.stringify(job)); // ← 문자열(JSON)
+  fd.append('request', JSON.stringify(job));
   fd.append('image', image);
 
   const res = await apiClient('/board', { method: 'POST', body: fd });

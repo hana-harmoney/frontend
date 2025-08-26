@@ -2,12 +2,12 @@
 
 import Header from '@/components/common/header';
 import { CustomInput } from '@/components/common/customInput';
-import { Button } from '@/components/ui/button';
 import { DatePicker } from '@/components/ui/datepicker';
-import Head from 'next/head';
 import BottomButton from '@/components/common/bottomButton';
-import { useRegisterStore } from '@/stores/userRegisterStore';
+import { useRegisterStore } from '@/stores/useRegisterStore';
 import { useRouter } from 'next/navigation';
+import Script from 'next/script';
+import LeftArrow from '@/assets/icons/left_arrow.svg';
 
 export default function Step1Page() {
   const { data, setField } = useRegisterStore();
@@ -24,8 +24,20 @@ export default function Step1Page() {
   return (
     <div className="px-6 pt-5 pb-15">
       <div></div>
+      <Script
+        src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"
+        strategy="beforeInteractive"
+      />
 
-      <Header title={''} />
+      <Header title={''} showBackButton={false}>
+        <div className="relative flex w-screen px-4">
+          <LeftArrow
+            onClick={() => {
+              router.push('/auth/login');
+            }}
+          />
+        </div>
+      </Header>
 
       {/* 단계 표시 */}
       <div className="mt-0 mb-4 flex gap-2">
@@ -107,6 +119,10 @@ export default function Step1Page() {
             placeholder="서울시 강남구 테헤란로 123"
             value={data.address}
             onChange={(e) => setField('address', e.target.value)}
+            readOnly
+            onClick={() => {
+              router.push('/auth/signup/step1/location');
+            }}
           />
         </div>
       </div>
