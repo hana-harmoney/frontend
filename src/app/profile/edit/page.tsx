@@ -2,7 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useMemo, useState } from 'react';
-import { badgeData, initialProfile } from '@/lib/utils';
+import { badgeData } from '@/lib/utils';
 import { fetchProfile, updateProfile } from '@/lib/api/profile';
 import Header from '@/components/common/header';
 import { imgUrlItem } from '@/types/profile';
@@ -14,6 +14,7 @@ import CircleRemove from '@/assets/icons/circle_remove.svg';
 import Badge from '@/components/common/badge';
 import { Textarea } from '@/components/ui/textarea';
 import toast from 'react-hot-toast';
+import Camera from '@/assets/icons/camera.svg';
 
 type IntroItem =
   | { id: number; url: string }
@@ -165,25 +166,21 @@ export default function ProfileEditPage() {
       />
 
       <div className="flex flex-col gap-7">
-        <div className="flex w-full flex-col gap-3 text-2xl font-light">
-          닉네임
-          <CustomInput
-            placeholder="닉네임을 입력해주세요."
-            value={nickname}
-            onChange={(e) => setNickname(e.target.value)}
-          />
-        </div>
-        <div className="flex w-full flex-col gap-3 text-2xl font-light">
-          프로필 사진
-          <label className="border-teduri relative flex h-32 w-32 cursor-pointer items-center justify-center overflow-hidden rounded-2xl border">
+        <div className="flex w-full flex-col items-center gap-3">
+          <label className="border-main relative flex h-32 w-32 cursor-pointer items-center justify-center overflow-hidden overflow-visible rounded-full border-2">
             {profileImagePreview ? (
-              <Image
-                src={profileImagePreview}
-                alt="profile-preview"
-                fill
-                className="object-contain object-center"
-                unoptimized
-              />
+              <>
+                <Image
+                  src={profileImagePreview}
+                  alt="profile-preview"
+                  fill
+                  className="rounded-full object-contain object-center"
+                  unoptimized
+                />
+                <div className="border-gray absolute right-0 bottom-0 rounded-full border bg-white p-1">
+                  <Camera className="h-6 w-6 object-contain object-center" />
+                </div>
+              </>
             ) : (
               <Plus />
             )}
@@ -195,6 +192,20 @@ export default function ProfileEditPage() {
               onChange={handleProfileImageChange}
             />
           </label>
+          <Button
+            className="w-full py-6 text-xl font-semibold"
+            onClick={() => router.push('/profile/edit/password')}
+          >
+            비밀번호 수정
+          </Button>
+        </div>
+        <div className="flex w-full flex-col gap-3 text-2xl font-light">
+          닉네임
+          <CustomInput
+            placeholder="닉네임을 입력해주세요."
+            value={nickname}
+            onChange={(e) => setNickname(e.target.value)}
+          />
         </div>
 
         <div className="flex w-full flex-col gap-3 text-2xl font-light">
