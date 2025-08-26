@@ -32,10 +32,10 @@ export default function ChatInput({ inputRef, onSend }: Props) {
   return (
     <form
       onSubmit={handleSubmit}
-      className="frame-container flex w-full gap-1 p-2.5"
+      className="frame-container flex w-full gap-1 bg-white p-2.5"
     >
       <InputWithIcon
-        className="text-text h-12 flex-grow rounded-lg text-xl"
+        className="text-text h-12 flex-grow rounded-lg bg-white text-xl"
         ref={inputRef}
         value={text}
         placeholder="메세지를 입력해주세요..."

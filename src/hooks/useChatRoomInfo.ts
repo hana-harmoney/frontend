@@ -1,7 +1,7 @@
 'use client';
 
 import { fetchChatRoom } from '@/lib/api/chat';
-import { ChatRoomDetail } from '@/types/chatRoom';
+import { ChatRoomDetail } from '@/types/chat';
 import { useEffect, useMemo, useState } from 'react';
 
 export function useChatRoomInfo(roomId: number) {

@@ -27,3 +27,23 @@ export type ChatRoomDetail = {
 };
 
 export type ChatRoomsResponse = ApiResponse<{ chatRoomList: ChatRoomDTO[] }>;
+
+export type ChatMessageDTO = {
+  messageId: number;
+  senderId: number;
+  receiverId: number;
+  message: string;
+  amount: number | null;
+  regdate?: string | null; // ISO 문자열 가정: "2025-08-24T01:23:45Z"
+};
+
+export type ChatMessage = {
+  message: string;
+  sender: 'me' | 'other';
+  direction: 'incoming' | 'outgoing';
+  position: 'single';
+  createdAt: Date;
+  senderId?: number;
+  senderNickname?: string;
+  senderProfileImg?: string;
+};
