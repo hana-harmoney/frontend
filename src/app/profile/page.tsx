@@ -8,10 +8,11 @@ import React, { useEffect, useState } from 'react';
 import { fetchProfileResponse } from '@/types/profile';
 import ImageSlider from '@/components/profile/ImageSlider';
 import { Button } from '@/components/ui/button';
+import { useRouter } from 'next/navigation';
 
 const ProfilePage = () => {
   const [profile, setProfile] = useState<fetchProfileResponse>(initialProfile);
-
+  const router = useRouter();
   useEffect(() => {
     (async () => {
       try {
@@ -28,7 +29,10 @@ const ProfilePage = () => {
       <div className="flex w-full items-center gap-3">
         <div className="border-main relative h-20 w-20 overflow-hidden rounded-full border">
           <Image
-            src="https://harmoneybucket.s3.ap-northeast-2.amazonaws.com/upload/profile/2025/08/22/c47d3582-ef29-4b95-b06e-0fadc5a515d0.jpeg"
+            src={
+              profile.profile_img ??
+              'https://harmoneybucket.s3.ap-northeast-2.amazonaws.com/upload/profile/2025/08/22/c47d3582-ef29-4b95-b06e-0fadc5a515d0.jpeg'
+            }
             alt="profile"
             fill
             className="object-cover object-center"
@@ -82,10 +86,15 @@ const ProfilePage = () => {
           </div>
         </div>
         <div className="flex w-full flex-col items-end gap-2">
-          <Button className="w-full py-6 text-xl font-semibold">
+          <Button
+            className="w-full py-6 text-xl font-semibold"
+            onClick={() => {
+              router.push('/profile/edit');
+            }}
+          >
             프로필 수정하기
           </Button>
-          <Button className="bg-text-2 w-full py-6 text-xl font-semibold">
+          <Button className="bg-text-2 hover:bg-text-2 w-full py-6 text-xl font-semibold">
             로그아웃
           </Button>
           <span className="font-light text-[#DC221E] underline">탈퇴하기</span>

@@ -71,7 +71,6 @@ export default function Step3Page() {
       .replace(/(\d{3})(\d{3,4})(\d{4})/, '$1-$2-$3');
 
     try {
-      // signupUser 호출
       const result = await signupUser({
         loginId: data.loginId,
         password: data.password,

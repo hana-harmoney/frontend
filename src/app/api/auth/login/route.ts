@@ -14,7 +14,6 @@ export async function POST(req: NextRequest) {
 
   const data = await res.json().catch(() => ({}));
   if (!res.ok) return NextResponse.json(data, { status: res.status });
-  // 백엔드 응답 키에 맞게 수정
   const {
     accessToken,
     refreshToken,
