@@ -121,7 +121,5 @@ export async function updateProfile(payload: EditProfilePayload) {
     body: fd,
   });
 
-  if (res.code !== '200') throw new Error(res?.message ?? '프로필 수정 실패');
-
   return res;
 }
