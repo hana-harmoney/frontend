@@ -1,11 +1,11 @@
 'use client';
 
 import { fetchProfile } from '@/lib/api/profile';
-import { MyProfile } from '@/types/profile';
+import { fetchProfileResponse } from '@/types/profile';
 import { useEffect, useMemo, useState } from 'react';
 
 export function useMyProfile() {
-  const [data, setData] = useState<MyProfile | null>(null);
+  const [data, setData] = useState<fetchProfileResponse | null>(null);
 
   useEffect(() => {
     fetchProfile()

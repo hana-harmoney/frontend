@@ -21,6 +21,7 @@ export default function ChatRoomPage() {
   const roomId = Number(params.roomId);
   const updateRoom = useChatRoomStore((state) => state.updateRoom);
   const [messages, setMessages] = useState<ChatMessage[]>([]);
+  const [isWriter, setIsWriter] = useState(false);
 
   const { data: roomInfo } = useChatRoomInfo(roomId);
   const { data: myProfile } = useMyProfile();
@@ -29,14 +30,16 @@ export default function ChatRoomPage() {
   const scrollRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const handleSendMessage = () => {};
+  const handleSendMessage = () => { };
 
   useEffect(() => {
     if (!roomId || !roomInfo || !myProfile || !chatHistory) return;
 
+    setIsWriter(myProfile.user_id === roomInfo.writerId);
+
     const parsedMessages: ChatMessage[] =
       chatHistory?.map((message) => {
-        const isMine = message.senderId === myProfile.userId;
+        const isMine = message.senderId === myProfile.user_id;
         return {
           message: message.message,
           sender: isMine ? 'me' : 'other',
@@ -73,7 +76,7 @@ export default function ChatRoomPage() {
           title={roomInfo.title}
           address={roomInfo.address}
           wage={roomInfo.wage}
-          isWriter={false}
+          isWriter={isWriter}
         />
       )}
 

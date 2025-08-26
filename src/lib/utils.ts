@@ -74,6 +74,7 @@ export const badgeData: category[] = [
 // profile
 
 export const initialProfile: fetchProfileResponse = {
+  user_id: 0,
   nickname: '',
   profile_img: '',
   category_ids: [],
