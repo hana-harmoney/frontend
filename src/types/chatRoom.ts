@@ -16,4 +16,14 @@ export type ChatRoom = {
   lastMessageDate?: Date;
 };
 
+export type ChatRoomDetail = {
+  boardId: number;
+  writerId: number;
+  nickname: string;
+  profileUrl: string;
+  title: string;
+  wage: number;
+  address: string;
+};
+
 export type ChatRoomsResponse = ApiResponse<{ chatRoomList: ChatRoomDTO[] }>;
