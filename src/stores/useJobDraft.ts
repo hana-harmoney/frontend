@@ -29,7 +29,7 @@ export const useJobDraft = create<DraftStore>()(
     }),
     {
       name: 'job-draft',
-      storage: createJSONStorage(() => sessionStorage), // 세션 유지
+      storage: createJSONStorage(() => sessionStorage),
     },
   ),
 );

@@ -4,7 +4,7 @@ import Header from '@/components/common/header';
 import BottomButton from '@/components/common/bottomButton';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { useRegisterStore } from '@/stores/userRegisterStore';
+import { useRegisterStore } from '@/stores/useRegisterStore';
 import { AgreementKey } from '@/types/auth';
 
 const TERMS_DETAIL: Record<AgreementKey, string> = {
@@ -201,7 +201,7 @@ export default function Step3Page() {
       </div>
 
       <BottomButton disabled={!isAllRequiredChecked} onClick={handleSubmit}>
-        가입하기
+        다음으로
       </BottomButton>
 
       {modalKey && (

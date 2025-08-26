@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { useRegisterStore } from '@/stores/userRegisterStore';
+import { useRegisterStore } from '@/stores/useRegisterStore';
 import LeftArrow from '@/assets/icons/left_arrow.svg';
 import DaumPostcode from 'react-daum-postcode';
 import Header from '@/components/common/header';

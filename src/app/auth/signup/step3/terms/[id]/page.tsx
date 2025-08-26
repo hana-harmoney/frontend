@@ -3,7 +3,7 @@ import { useParams, useRouter } from 'next/navigation';
 import { termsData } from '@/lib/utils';
 import Header from '@/components/common/header';
 import BottomButton from '@/components/common/bottomButton';
-import { useRegisterStore } from '@/stores/userRegisterStore';
+import { useRegisterStore } from '@/stores/useRegisterStore';
 import { AgreementKey } from '@/types/auth';
 
 const TermsPage = () => {

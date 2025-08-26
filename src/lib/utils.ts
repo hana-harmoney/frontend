@@ -58,3 +58,12 @@ export const termsData = [
     ],
   },
 ];
+
+export const badgeData = [
+  { id: 1, text: '요리' },
+  { id: 2, text: '육아' },
+  { id: 3, text: '농업' },
+  { id: 4, text: '청소' },
+  { id: 5, text: '기술' },
+  { id: 6, text: '기타' },
+];

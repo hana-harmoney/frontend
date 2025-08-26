@@ -31,10 +31,15 @@ export default function LoginForm() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ loginId: id, password }),
       });
+      const data = await r.json();
 
       if (!r.ok) throw new Error(await r.text());
 
-      router.replace('/home');
+      if (data.profile_registered) {
+        router.push('/home');
+      } else {
+        router.push('/profile/new');
+      }
     } catch (e) {
       setErr('아이디 또는 비밀번호를 확인해 주세요.');
       console.error(e);

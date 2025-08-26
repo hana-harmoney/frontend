@@ -15,7 +15,12 @@ export async function POST(req: NextRequest) {
   const data = await res.json().catch(() => ({}));
   if (!res.ok) return NextResponse.json(data, { status: res.status });
   // 백엔드 응답 키에 맞게 수정
-  const { accessToken, refreshToken, accessTokenExpiresIn } = data.result;
+  const {
+    accessToken,
+    refreshToken,
+    accessTokenExpiresIn,
+    profile_registered,
+  } = data.result;
 
   const cookie = await cookies();
   cookie.set('access_token', accessToken, {
@@ -34,5 +39,5 @@ export async function POST(req: NextRequest) {
       maxAge: 60 * 60 * 24 * 14,
     });
   }
-  return NextResponse.json({ ok: true });
+  return NextResponse.json({ ok: true, profile_registered });
 }

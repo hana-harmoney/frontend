@@ -4,7 +4,7 @@ import Header from '@/components/common/header';
 import { CustomInput } from '@/components/common/customInput';
 import { DatePicker } from '@/components/ui/datepicker';
 import BottomButton from '@/components/common/bottomButton';
-import { useRegisterStore } from '@/stores/userRegisterStore';
+import { useRegisterStore } from '@/stores/useRegisterStore';
 import { useRouter } from 'next/navigation';
 import Script from 'next/script';
 import LeftArrow from '@/assets/icons/left_arrow.svg';
