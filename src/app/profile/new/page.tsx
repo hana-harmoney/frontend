@@ -11,7 +11,7 @@ import CircleRemove from '@/assets/icons/circle_remove.svg';
 import { badgeData } from '@/lib/utils';
 import Badge from '@/components/common/badge';
 import { Textarea } from '@/components/ui/textarea';
-import { createProfile } from '@/lib/api/auth';
+import { createProfile } from '@/lib/api/profile';
 import toast from 'react-hot-toast';
 
 export default function Step3Page() {
@@ -70,10 +70,6 @@ export default function Step3Page() {
       );
     }
   };
-
-  useEffect(() => {
-    console.log('introImageUrls : ', introImageUrls);
-  }, [introImageUrls]);
 
   const canSubmit =
     nickname.trim().length > 0 &&
