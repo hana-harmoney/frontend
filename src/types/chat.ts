@@ -34,7 +34,7 @@ export type ChatMessageDTO = {
   receiverId: number;
   message: string;
   amount: number | null;
-  regdate?: string | null; // ISO 문자열 가정: "2025-08-24T01:23:45Z"
+  regdate: string; // ISO 문자열 가정: "2025-08-24T01:23:45Z"
 };
 
 export type ChatMessage = {

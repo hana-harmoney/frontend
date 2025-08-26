@@ -50,4 +50,16 @@ export type UpdateProfilePayload = {
   descImageUrls?: string[];
 
   descImagesDeleteIds?: number[];
+}
+
+export type MyProfile = {
+  userId: number;
+  nickname: string;
+  profile_img: string | null;
+  category_ids: number[];
+  description: string;
+  img_url_detail: string[];
+  trust: number;
+  match_count: number;
+  report_count: number;
 };

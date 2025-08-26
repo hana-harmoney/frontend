@@ -1,4 +1,9 @@
-import type { ChatRoom, ChatRoomDetail, ChatRoomDTO } from '@/types/chatRoom';
+import type {
+  ChatMessageDTO,
+  ChatRoom,
+  ChatRoomDetail,
+  ChatRoomDTO,
+} from '@/types/chat';
 import { apiClient } from './client';
 
 function mapRoom(dto: ChatRoomDTO): ChatRoom {
@@ -24,4 +29,12 @@ export async function fetchChatRoom(roomId: number): Promise<ChatRoomDetail> {
   const data = await apiClient(`/chat/${roomId}`);
 
   return data.result;
+}
+
+export async function fetchChatMessages(
+  roomId: number,
+): Promise<ChatMessageDTO[]> {
+  const data = await apiClient(`/chat/${roomId}/message`);
+
+  return data.result.chatMessageList;
 }
