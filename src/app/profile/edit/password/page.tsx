@@ -23,6 +23,10 @@ const EditPasswordPage = () => {
 
   const handleSubmit = async () => {
     try {
+      if (!formValid) {
+        toast.error('비밀번호 및 확인란을 확인해주세요.');
+        return;
+      }
       setIsLoading(true);
       await updateProfile({
         password: password,
@@ -61,6 +65,11 @@ const EditPasswordPage = () => {
               비밀번호는 8자 이상이어야 합니다.
             </p>
           )}
+          {password.length === 0 && (
+            <p className="text-gray text-sm">
+              비밀번호는 8자 이상이어야 합니다.
+            </p>
+          )}
         </div>
         <div className="flex w-full flex-col gap-3 py-2 text-2xl font-light">
           새 비밀번호 확인
@@ -73,6 +82,11 @@ const EditPasswordPage = () => {
           {passwordConfirm && password !== passwordConfirm && (
             <p className="text-sm text-red-500">
               비밀번호가 일치하지 않습니다.
+            </p>
+          )}
+          {passwordConfirm.length === 0 && (
+            <p className="text-gray text-sm">
+              비밀번호를 한번 더 입력해주세요.
             </p>
           )}
         </div>
