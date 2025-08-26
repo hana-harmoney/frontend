@@ -62,5 +62,6 @@ export async function createProfile({
 
 export const fetchProfile = async () => {
   const res = await apiClient('/profile');
+  console.log('res : ', res);
   return res.result;
 };

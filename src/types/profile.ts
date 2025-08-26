@@ -11,4 +11,5 @@ export type fetchProfileResponse = {
   img_url_detail: imgUrlItem[];
   trust: number;
   match_count: number;
+  user_address: string;
 };

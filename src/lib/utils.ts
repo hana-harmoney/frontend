@@ -81,4 +81,5 @@ export const initialProfile: fetchProfileResponse = {
   img_url_detail: [],
   trust: 0,
   match_count: 0,
+  user_address: '',
 };

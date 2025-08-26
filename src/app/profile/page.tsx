@@ -64,7 +64,7 @@ const ProfilePage = () => {
         </div>
         <div className="flex flex-col gap-3 text-xl">
           <span className="text-2xl">주소</span>
-          경기도 용인시 수지구 성복1로 163번길 20
+          {profile.user_address}
         </div>
       </div>
       <div className="flex w-full flex-col gap-6">

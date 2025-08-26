@@ -4,7 +4,7 @@ import BottomButton from '@/components/common/bottomButton';
 import { useRouter } from 'next/navigation';
 import { useProfileRegister } from '@/stores/useProfileRegister';
 import { CustomInput } from '@/components/common/customInput';
-import React, { useEffect } from 'react';
+import React from 'react';
 import Image from 'next/image';
 import Plus from '@/assets/icons/plus.svg';
 import CircleRemove from '@/assets/icons/circle_remove.svg';
