@@ -1,5 +1,6 @@
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
+import { fetchProfileResponse } from '@/types/profile';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -59,7 +60,9 @@ export const termsData = [
   },
 ];
 
-export const badgeData = [
+export type category = { id: number; text: string };
+
+export const badgeData: category[] = [
   { id: 1, text: '요리' },
   { id: 2, text: '육아' },
   { id: 3, text: '농업' },
@@ -67,3 +70,16 @@ export const badgeData = [
   { id: 5, text: '기술' },
   { id: 6, text: '기타' },
 ];
+
+// profile
+
+export const initialProfile: fetchProfileResponse = {
+  nickname: '',
+  profile_img: '',
+  category_ids: [],
+  description: '',
+  img_url_detail: [],
+  trust: 0,
+  match_count: 0,
+  user_address: '',
+};

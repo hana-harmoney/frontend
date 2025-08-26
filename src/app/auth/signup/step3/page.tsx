@@ -6,6 +6,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useRegisterStore } from '@/stores/useRegisterStore';
 import { AgreementKey } from '@/types/auth';
+import { signupUser } from '@/lib/api/auth';
 
 const TERMS_DETAIL: Record<AgreementKey, string> = {
   service:
@@ -70,27 +71,17 @@ export default function Step3Page() {
       .replace(/(\d{3})(\d{3,4})(\d{4})/, '$1-$2-$3');
 
     try {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/auth/signup`,
-        {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            loginId: data.loginId,
-            password: data.password,
-            name: data.name,
-            birth: formatBirth,
-            gender: genderValue,
-            address: data.address,
-            phone: formatPhone,
-          }),
-        },
-      );
+      const result = await signupUser({
+        loginId: data.loginId,
+        password: data.password,
+        name: data.name,
+        birth: formatBirth,
+        gender: genderValue,
+        address: data.address,
+        phone: formatPhone,
+      });
 
-      const result = await response.json();
-      console.log('서버 응답:', result);
-
-      if (response.ok && result?.code === '200') {
+      if (result?.code === '200') {
         router.push('/auth/login');
       } else {
         alert(`회원가입 실패: ${result?.message ?? '알 수 없는 오류'}`);
@@ -204,24 +195,24 @@ export default function Step3Page() {
         다음으로
       </BottomButton>
 
-      {modalKey && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 px-8">
-          <div className="relative max-h-[80vh] w-full max-w-md overflow-y-auto rounded-md bg-white p-6 shadow-lg">
-            <h2 className="font-m mb-4 text-lg">
-              {TERMS_DETAIL[modalKey]?.split('\n')[0]}
-            </h2>
-            <p className="text-sm whitespace-pre-wrap text-gray-700">
-              {TERMS_DETAIL[modalKey]}
-            </p>
-            <button
-              className="absolute top-3 right-3 text-sm text-gray-400 hover:text-gray-600"
-              onClick={() => setModalKey(null)}
-            >
-              닫기 ✕
-            </button>
-          </div>
-        </div>
-      )}
+      {/*{modalKey && (*/}
+      {/*  <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 px-8">*/}
+      {/*    <div className="relative max-h-[80vh] w-full max-w-md overflow-y-auto rounded-md bg-white p-6 shadow-lg">*/}
+      {/*      <h2 className="font-m mb-4 text-lg">*/}
+      {/*        {TERMS_DETAIL[modalKey]?.split('\n')[0]}*/}
+      {/*      </h2>*/}
+      {/*      <p className="text-sm whitespace-pre-wrap text-gray-700">*/}
+      {/*        {TERMS_DETAIL[modalKey]}*/}
+      {/*      </p>*/}
+      {/*      <button*/}
+      {/*        className="absolute top-3 right-3 text-sm text-gray-400 hover:text-gray-600"*/}
+      {/*        onClick={() => setModalKey(null)}*/}
+      {/*      >*/}
+      {/*        닫기 ✕*/}
+      {/*      </button>*/}
+      {/*    </div>*/}
+      {/*  </div>*/}
+      {/*)}*/}
     </div>
   );
 }

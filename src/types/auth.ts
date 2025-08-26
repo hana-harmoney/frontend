@@ -5,16 +5,6 @@ export type AgreementKey =
   | 'account'
   | 'marketing';
 
-export type CreateProfilePayload = {
-  nickname: string;
-  description?: string;
-  categoryIds: (string | number)[];
-  profileImage?: File | null;
-
-  descImageUrls?: string[];
-
-  descImageFiles?: File[];
-};
 export interface SignupPayload {
   loginId: string;
   password: string;

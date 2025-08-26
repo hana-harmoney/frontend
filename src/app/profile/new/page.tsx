@@ -4,17 +4,17 @@ import BottomButton from '@/components/common/bottomButton';
 import { useRouter } from 'next/navigation';
 import { useProfileRegister } from '@/stores/useProfileRegister';
 import { CustomInput } from '@/components/common/customInput';
-import React, { useEffect } from 'react';
+import React from 'react';
 import Image from 'next/image';
 import Plus from '@/assets/icons/plus.svg';
 import CircleRemove from '@/assets/icons/circle_remove.svg';
 import { badgeData } from '@/lib/utils';
 import Badge from '@/components/common/badge';
 import { Textarea } from '@/components/ui/textarea';
-import { createProfile } from '@/lib/api/auth';
+import { createProfile } from '@/lib/api/profile';
 import toast from 'react-hot-toast';
 
-export default function Step3Page() {
+export default function ProfileNewPage() {
   const router = useRouter();
 
   const {
@@ -61,6 +61,7 @@ export default function Step3Page() {
         descImageUrls: introImageUrls,
       });
       toast.success('프로필이 성공적으로 등록되었습니다.');
+      reset();
       router.push('/home');
     } catch (error) {
       alert(
@@ -71,10 +72,6 @@ export default function Step3Page() {
     }
   };
 
-  useEffect(() => {
-    console.log('introImageUrls : ', introImageUrls);
-  }, [introImageUrls]);
-
   const canSubmit =
     nickname.trim().length > 0 &&
     categories.length > 0 &&
@@ -83,12 +80,6 @@ export default function Step3Page() {
 
   return (
     <div className="px-6 pt-5 pb-24">
-      {/*<Header*/}
-      {/*  title={'프로필 등록하기'}*/}
-      {/*  showBackButton={true}*/}
-      {/*  centerTitle={false}*/}
-      {/*/>*/}
-
       <div className="flex flex-col gap-7">
         <div className="text-gray mb-2 w-full py-3 text-center text-3xl font-medium">
           프로필 등록하기

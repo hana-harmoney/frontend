@@ -35,7 +35,7 @@ const LocationSearchPage = () => {
 
   return (
     <div className="flex w-full flex-col bg-white">
-      <Header title={'주소 검색'} showBackButton={false}>
+      <Header title={'주소 검색'} showBackButton={true}>
         <div className="relative flex w-screen px-4">
           <LeftArrow
             onClick={() => {
