@@ -4,6 +4,7 @@ export type imgUrlItem = {
 };
 
 export type fetchProfileResponse = {
+  user_id: number;
   nickname: string;
   profile_img: string;
   category_ids: number[];
@@ -50,4 +51,4 @@ export type UpdateProfilePayload = {
   descImageUrls?: string[];
 
   descImagesDeleteIds?: number[];
-};
+}

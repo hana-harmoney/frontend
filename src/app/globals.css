@@ -1,6 +1,8 @@
 @import 'tailwindcss';
 @import 'tw-animate-css';
 
+@tailwind utilities;
+
 @custom-variant dark (&:is(.dark *));
 
 @source "./src/**/*.{js,ts,jsx,tsx,mdx}";
@@ -238,4 +240,32 @@ body {
   .frame-container {
     @apply mx-auto w-full max-w-[1024px];
   }
+
+  .scrollbar-hide {
+    &::-webkit-scrollbar {
+      display: none;
+    }
+
+    scrollbar-width: none;
+  }
+}
+
+.chat-theme .cs-message__content {
+  font-size: 24px;
+  line-height: 1.4;
+  border-radius: 10px;
+  font-weight: 400;
+  padding: 20px;
+}
+
+/* 내가 보낸(outgoing) 말풍선 */
+.chat-theme .cs-message--outgoing .cs-message__content {
+  background-color: oklch(0.6575 0.1106 184.82) !important;
+  color: #ffffff !important;
+}
+
+/* 상대가 보낸(incoming) 말풍선 */
+.chat-theme .cs-message--incoming .cs-message__content {
+  background-color: #f1f5f9 !important;
+  color: #000000 !important;
 }
