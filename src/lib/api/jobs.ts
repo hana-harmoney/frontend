@@ -38,3 +38,13 @@ export const deleteJob = async (id: number): Promise<JobDetailResponse> => {
   if (res.code !== '200') throw new Error('일자리 삭제 실패');
   return res;
 };
+
+export const fetchMyJobs = async (): Promise<JobListResponse> => {
+  const res = await apiClient('/board/my', {
+    method: 'GET',
+    credentials: 'include', // 세션 인증 필요할 경우
+  });
+
+  if (res.code !== '200') throw new Error('내가 쓴 글 조회 실패');
+  return res;
+};
