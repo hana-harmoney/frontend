@@ -21,7 +21,7 @@ type ReviewItem = {
   score: number;
 };
 
-const reviewCandidate: ReviewItem[] = [
+const reviewItems: ReviewItem[] = [
   { id: 1, label: '별로에요', Icon: BadBoy, score: -0.5 },
   { id: 2, label: '좋아요', Icon: ThumbsUpBoy, score: 0.5 },
   { id: 3, label: '최고에요', Icon: HeartBoy, score: 1 },
@@ -43,7 +43,7 @@ export default function ReviewButton({ roomId }: Props) {
   const handleWriteReview = async () => {
     if (!selected) return;
     try {
-      await writeReview(roomId, reviewCandidate[selected].score);
+      await writeReview(roomId, reviewItems[selected].score);
 
       toast.success('후기 쓰기가 완료되었습니다.');
       closeReviewDialog();
@@ -74,7 +74,7 @@ export default function ReviewButton({ roomId }: Props) {
         closeButtonText="닫기"
       >
         <div className="flex gap-4">
-          {reviewCandidate.map((candi) => {
+          {reviewItems.map((candi) => {
             const { Icon } = candi;
             const isActive = selected === candi.id;
             return (

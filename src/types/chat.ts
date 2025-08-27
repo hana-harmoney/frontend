@@ -24,6 +24,7 @@ export type ChatRoomDetail = {
   title: string;
   wage: number;
   address: string;
+  received: boolean;
 };
 
 export type ChatRoomsResponse = ApiResponse<{ chatRoomList: ChatRoomDTO[] }>;

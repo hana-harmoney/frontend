@@ -127,6 +127,7 @@ export default function ChatRoomPage() {
           address={roomInfo.address}
           wage={roomInfo.wage}
           isWriter={isWriter}
+          doneTransaction={roomInfo.received}
         />
       )}
 

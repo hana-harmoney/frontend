@@ -9,6 +9,7 @@ type Props = {
   address: string;
   wage: number;
   isWriter: boolean;
+  doneTransaction: boolean;
 };
 
 export default function ChatBoardCard({
@@ -17,6 +18,7 @@ export default function ChatBoardCard({
   address,
   wage,
   isWriter,
+  doneTransaction,
 }: Props) {
   return (
     <div className="border-teduri flex flex-col rounded-xl border-[1px] px-3 py-6">
@@ -41,11 +43,17 @@ export default function ChatBoardCard({
       </div>
       <div className="flex w-full gap-2.5">
         <Link className="flex-1" href={`/jobs/${boardId}`}>
-          <Button variant="outline" className="h-10 w-full flex-1 text-xl">
+          <Button className="h-10 w-full text-xl" variant="outline">
             상세 보기
           </Button>
         </Link>
-        {isWriter && <Button className="h-10 flex-1 text-xl">송금하기</Button>}
+        {isWriter && (
+          <Link className="flex-1" href={'/'}>
+            <Button className="h-10 w-full text-xl" disabled={doneTransaction}>
+              {doneTransaction ? '송금완료' : '송금하기'}
+            </Button>
+          </Link>
+        )}
       </div>
     </div>
   );
