@@ -17,6 +17,7 @@ const CreatePocketPage = () => {
     { text: '+60만', value: 600000 },
     { text: '+70만', value: 700000 },
   ];
+
   const increaseTarget = (value: number) => {
     const current = targetStr === '' ? 0 : Number(targetStr);
     const next = current + value;

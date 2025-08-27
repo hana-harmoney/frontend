@@ -1,10 +1,14 @@
 'use client';
 import Header from '@/components/common/header';
 import { NumericKeypad } from '@/components/home/NumericKeypad';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { formatNumber } from '@/lib/utils';
+import { useAccountStore } from '@/stores/accountStore';
 
 const SendStep2Page = () => {
+  const [receiver, setReceiver] = useState<string>('');
+  const { accountNumber } = useAccountStore();
+
   const [targetStr, setTargetStr] = useState('');
   const increaseTarget = (value: number) => {
     const current = targetStr === '' ? 0 : Number(targetStr);
@@ -19,16 +23,25 @@ const SendStep2Page = () => {
     { text: '+20만', value: 200000 },
     { text: '+30만', value: 300000 },
   ];
+
+  useEffect(() => {
+    setReceiver('송유림');
+  }, []);
+
+  const clickComplete = () => {
+    console.log('clickComplete');
+  };
+
   return (
     <div className="flex w-full flex-col gap-6 px-6">
       <Header title="송금하기" centerTitle={false} showBackButton={true} />
       <div className="flex flex-col gap-12">
         <div className="flex flex-col text-2xl">
           <div className="flex gap-2">
-            <span className="font-semibold">송유림</span>
+            <span className="font-semibold">{receiver}</span>
             님에게
           </div>
-          <span className="text-gray font-light">592-910508-29670</span>
+          <span className="text-gray font-light">{accountNumber}</span>
         </div>
         <span className="w-full text-center text-3xl font-semibold">
           {targetStr.length == 0 ? (
@@ -62,6 +75,8 @@ const SendStep2Page = () => {
             showWonSuffix={true}
             className="mt-2"
             isAccount={true}
+            clickComplete={clickComplete}
+            completeComment="완료"
           />
         </div>
       </div>

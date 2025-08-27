@@ -1,13 +1,21 @@
 'use client';
 import Header from '@/components/common/header';
 import { CustomInput } from '@/components/common/customInput';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import TabBar from '@/components/home/TabBar';
 import AccountHistory from '@/components/home/AccountHistory';
+import { useRouter } from 'next/navigation';
+import { useAccountStore } from '@/stores/accountStore';
 
 const SendStep1Page = () => {
+  const router = useRouter();
+  const { setAccountNumber: setGlobalAccountNumber, reset } = useAccountStore();
   const [accountNumber, setAccountNumber] = useState('');
+
+  useEffect(() => {
+    reset();
+  }, []);
 
   const [selectedId, setSelectedId] = useState(0);
   const tabs = [
@@ -15,16 +23,16 @@ const SendStep1Page = () => {
     { id: 1, name: '자주' },
   ];
   const gugu = [
-    { name: '송유림', accountNumber: '592-910508-29670' },
-    { name: '송유림', accountNumber: '592-910508-29670' },
-    { name: '송유림', accountNumber: '592-910508-29670' },
+    { name: '송유림', accountNumber: '592-910508-29671' },
+    { name: '송유림', accountNumber: '592-910508-29672' },
+    { name: '송유림', accountNumber: '592-910508-29673' },
   ];
   const gugu2 = [
-    { name: '송유림', accountNumber: '592-910508-29670' },
-    { name: '송유림', accountNumber: '592-910508-29670' },
-    { name: '송유림', accountNumber: '592-910508-29670' },
-    { name: '송유림', accountNumber: '592-910508-29670' },
-    { name: '송유림', accountNumber: '592-910508-29670' },
+    { name: '송유림', accountNumber: '592-910508-29674' },
+    { name: '송유림', accountNumber: '592-910508-29675' },
+    { name: '송유림', accountNumber: '592-910508-29676' },
+    { name: '송유림', accountNumber: '592-910508-29677' },
+    { name: '송유림', accountNumber: '592-910508-29678' },
   ];
 
   return (
@@ -34,10 +42,18 @@ const SendStep1Page = () => {
       <CustomInput
         placeholder="계좌번호 입력"
         value={accountNumber}
-        type="number"
         onChange={(e) => setAccountNumber(e.target.value)}
       />
-      <Button className="py-7 text-xl font-semibold">송금하기</Button>
+      <Button
+        className="py-7 text-xl font-semibold"
+        disabled={accountNumber.length === 0}
+        onClick={() => {
+          setGlobalAccountNumber(accountNumber);
+          router.push('/home/send/step2');
+        }}
+      >
+        송금하기
+      </Button>
       <div className="flex flex-col gap-6">
         <TabBar tabs={tabs} selectedId={selectedId} clickTab={setSelectedId} />
         <div className="flex flex-col gap-4">
@@ -48,6 +64,7 @@ const SendStep1Page = () => {
                   key={idx}
                   name={item.name}
                   accountNum={item.accountNumber}
+                  onClick={() => setAccountNumber(item.accountNumber)}
                 />
               );
             })}
@@ -58,6 +75,7 @@ const SendStep1Page = () => {
                   key={idx}
                   name={item.name}
                   accountNum={item.accountNumber}
+                  onClick={() => setAccountNumber(item.accountNumber)}
                 />
               );
             })}

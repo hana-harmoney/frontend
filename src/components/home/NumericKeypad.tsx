@@ -10,6 +10,8 @@ type NumericKeypadProps = {
   showWonSuffix?: boolean;
   className?: string;
   isAccount?: boolean;
+  clickComplete?: () => void;
+  completeComment?: string;
 };
 
 const digits = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0'];
@@ -22,6 +24,8 @@ export const NumericKeypad: React.FC<NumericKeypadProps> = ({
   showWonSuffix = true,
   className = '',
   isAccount,
+  clickComplete,
+  completeComment,
 }) => {
   const [internal, setInternal] = useState<string>(value ?? '');
 
@@ -48,6 +52,10 @@ export const NumericKeypad: React.FC<NumericKeypadProps> = ({
   };
 
   const handleClear = () => {
+    if (clickComplete) {
+      clickComplete();
+      return;
+    }
     setVal('');
   };
 
@@ -93,7 +101,7 @@ export const NumericKeypad: React.FC<NumericKeypadProps> = ({
           0
         </button>
         <button onClick={handleClear} className="py-4">
-          전체삭제
+          {completeComment ? completeComment : '전체삭제'}
         </button>
       </div>
     </div>
