@@ -6,6 +6,7 @@ import { ChatMessage } from '@/types/chat';
 
 type Props = {
   scrollRef: Ref<HTMLDivElement>;
+  roomId: number;
   messages: ChatMessage[];
   isLoading: boolean;
   isError: boolean;
@@ -13,6 +14,7 @@ type Props = {
 
 export default function ChatMessageList({
   scrollRef,
+  roomId,
   messages,
   isLoading,
   isError,
@@ -51,6 +53,7 @@ export default function ChatMessageList({
           <div key={idx}>
             {showDate && <DateSeparator date={m.createdAt} />}
             <ChatMessageBubble
+              roomId={roomId}
               message={m}
               showDate={showDate}
               isFirstOfGroup={isFirstOfGroup}

@@ -33,7 +33,7 @@ export type ChatMessageDTO = {
   senderId: number;
   receiverId: number;
   message: string;
-  amount: number | null;
+  amount?: number;
   regdate: string; // ISO 문자열 가정: "2025-08-24T01:23:45Z"
 };
 
@@ -43,6 +43,7 @@ export type ChatMessage = {
   direction: 'incoming' | 'outgoing';
   position: 'single';
   createdAt: Date;
+  amount?: number;
   senderId?: number;
   senderNickname?: string;
   senderProfileImg?: string;

@@ -46,6 +46,7 @@ export default function ChatRoomPage() {
           sender: isMine ? 'me' : 'other',
           direction: isMine ? 'outgoing' : 'incoming',
           position: 'single',
+          amount: msg.amount,
           createdAt: new Date(Date.parse(msg.regdate)),
           senderId: msg.senderId,
           senderNickname: isMine ? undefined : roomInfo?.nickname,
@@ -80,6 +81,7 @@ export default function ChatRoomPage() {
           sender: isMine ? 'me' : 'other',
           direction: isMine ? 'outgoing' : 'incoming',
           position: 'single',
+          amount: message.amount,
           createdAt: new Date(Date.parse(message.regdate)),
           senderId: message.senderId,
           senderNickname: isMine ? undefined : roomInfo.nickname,
@@ -132,6 +134,7 @@ export default function ChatRoomPage() {
       {
         <ChatMessageList
           scrollRef={scrollRef}
+          roomId={roomId}
           messages={messages}
           isLoading={loading}
           isError={false}

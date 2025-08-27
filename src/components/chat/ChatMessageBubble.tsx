@@ -4,8 +4,11 @@ import Link from 'next/link';
 import { cn } from '@/lib/utils';
 import { formatTime } from '@/lib/date/dateformatter';
 import { ChatMessage } from '@/types/chat';
+import { Button } from '../ui/button';
+import ReviewButton from './ReviewButton';
 
 type Props = {
+  roomId: number;
   message: ChatMessage;
   showDate: boolean;
   isFirstOfGroup: boolean;
@@ -13,6 +16,7 @@ type Props = {
 };
 
 export default function ChatMessageBubble({
+  roomId,
   message,
   isFirstOfGroup,
   isLastOfGroup,
@@ -43,7 +47,23 @@ export default function ChatMessageBubble({
         ))}
       {/* 메세지 */}
       <div className="flex flex-col">
-        <Message model={message} />
+        <Message model={message}>
+          <Message.CustomContent>
+            <div className="flex flex-col gap-2.5">
+              <p className="rounded-[10px] text-2xl font-normal">
+                {message.message}
+              </p>
+              {message.amount &&
+                (message.direction === 'incoming' ? (
+                  <Button className="text-xl font-medium">
+                    주머니로 옮기기
+                  </Button>
+                ) : (
+                  <ReviewButton roomId={roomId} />
+                ))}
+            </div>
+          </Message.CustomContent>
+        </Message>
         {/* 전송 시간 (그룹의 마지막 메세지일 경우만) */}
         {isLastOfGroup && (
           <div
