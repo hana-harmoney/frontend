@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { FlowType, TwoStepModalProps } from '@/types/modal';
 import { Button } from '@/components/ui/button';
 import { formatNumber } from '@/lib/utils';
+import CheckCircle from '@/assets/icons/check_circle.svg';
+import HanaBank from '@/assets/icons/hana-bank.svg';
 
 export default function TwoStepModal({
   open,
@@ -52,7 +54,6 @@ export default function TwoStepModal({
     // onClose();
   };
 
-  // 단순 오버레이/컨테이너 – 원하는 스타일로 교체 가능
   return (
     <div className="fixed inset-0 z-51 flex items-center justify-center">
       <div
@@ -65,7 +66,6 @@ export default function TwoStepModal({
         aria-modal="true"
         className="relative z-10 w-full max-w-md rounded-2xl bg-white p-6 shadow-xl"
       >
-        {/* STEP 1: name/account */}
         {step === 1 && (
           <>
             {type === 'send' ? (
@@ -91,7 +91,23 @@ export default function TwoStepModal({
                 </div>
               </div>
             ) : (
-              <div data-testid="fill-take-step1" className="min-h-[80px]" />
+              <div
+                data-testid="fill-take-step1"
+                className="flex min-h-[80px] flex-col items-center gap-10 pb-9"
+              >
+                <span className="text-2xl font-semibold">
+                  {name} {type === 'fill' ? '에' : '에서'}
+                </span>
+                <div className="text-gray flex flex-col items-center gap-1 text-2xl">
+                  <div className="flex items-end gap-1">
+                    <span className="text-3xl font-semibold text-black">
+                      {formatNumber(amount)}
+                    </span>
+                    <span className="font-light">원</span>
+                  </div>
+                  {type === 'fill' ? '채우시겠습니까?' : '꺼내시겠습니까?'}
+                </div>
+              </div>
             )}
 
             <div className="mt-2 flex gap-2 font-semibold text-white">
@@ -112,7 +128,6 @@ export default function TwoStepModal({
           </>
         )}
 
-        {/* STEP 2: amount */}
         {step === 2 && (
           <>
             {type === 'send' ? (
@@ -131,10 +146,30 @@ export default function TwoStepModal({
                   <span className="text-gray">원</span>
                   <span>송금 완료!</span>
                 </div>
-                <div>아이콘</div>
+                <CheckCircle className="h-12 w-12" />
               </div>
             ) : (
-              <div data-testid="fill-take-step2" className="min-h-[80px]" />
+              <div
+                data-testid="fill-take-step2"
+                className="flex min-h-[80px] flex-col items-center gap-2 text-2xl"
+              >
+                <div className="flex items-end gap-1">
+                  <span className="text-3xl font-semibold">{name}</span>
+                  <span className="font-light">
+                    {type === 'fill' ? '에' : '에서'}
+                  </span>
+                </div>
+                <div className="flex items-end gap-1 font-light text-black">
+                  <span className="text-3xl font-semibold">
+                    {formatNumber(amount)}
+                  </span>
+                  <span className="text-gray">원</span>
+                  <span>
+                    {type === 'fill' ? '채우기 완료!' : '꺼내기 완료!'}
+                  </span>
+                </div>
+                <CheckCircle className="h-12 w-12" />
+              </div>
             )}
             <Button
               className="bg-main mt-4 w-full flex-1 rounded-md py-6 text-xl"
@@ -143,21 +178,6 @@ export default function TwoStepModal({
             >
               완료
             </Button>
-            {/*<div className="mt-2 flex gap-2 font-semibold text-white">*/}
-            {/*  <Button*/}
-            {/*    className="bg-text-2 hover:bg-text-2 flex-1 rounded-md py-6 text-xl"*/}
-            {/*    onClick={handleBack}*/}
-            {/*  >*/}
-            {/*    취소*/}
-            {/*  </Button>*/}
-            {/*  <Button*/}
-            {/*    className="bg-main flex-1 rounded-md py-6 text-xl"*/}
-            {/*    onClick={handleComplete}*/}
-            {/*    disabled={!name.trim()}*/}
-            {/*  >*/}
-            {/*    네*/}
-            {/*  </Button>*/}
-            {/*</div>*/}
           </>
         )}
       </div>
