@@ -38,3 +38,11 @@ export async function fetchChatMessages(
 
   return data.result.chatMessageList;
 }
+
+export async function reportUser(roomId: number): Promise<void> {
+  await apiClient(`/chat/${roomId}/report`, {
+    method: 'POST',
+  });
+
+  return;
+}

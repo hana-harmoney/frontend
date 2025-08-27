@@ -84,3 +84,11 @@ export const initialProfile: fetchProfileResponse = {
   match_count: 0,
   user_address: '',
 };
+
+export const reportReasons = [
+  '사기나 허위 요청이에요.',
+  '과도한 금액을 요구했어요.',
+  '욕설이나 모욕적인 말을 했어요.',
+  '위험하거나 불건전한 제안을 했어요.',
+  '스팸이나 광고를 보냈어요.',
+];

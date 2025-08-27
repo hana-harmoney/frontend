@@ -114,7 +114,7 @@ export default function ChatRoomPage() {
       >
         <div className="flex gap-3 pr-6">
           <PhoneCallButton number={'010-1234-5678'} />
-          <ReportButton />
+          <ReportButton roomId={roomId} />
         </div>
       </Header>
 
