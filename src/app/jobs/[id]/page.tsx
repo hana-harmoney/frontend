@@ -198,7 +198,7 @@ const JobDetailPage = () => {
         </Map>
         {boardData.status === false ? (
           <div className="flex w-full gap-3 text-2xl">
-            <Button className="min-w-0 flex-1 !py-5">
+            <Button className="min-w-0 flex-1 !py-6 text-2xl">
               <a href={`tel:${boardData.phone}`}>전화하기</a>
             </Button>
             <Button variant="destructive" className="min-w-0 flex-1 !py-5">
@@ -209,7 +209,7 @@ const JobDetailPage = () => {
           <div className="flex w-full gap-3 text-2xl">
             <Button
               disabled
-              className="min-w-0 flex-1 bg-gray-500 !py-5 text-white"
+              className="min-w-0 flex-1 bg-gray-500 !py-6 text-xl text-white"
             >
               종료된 공고입니다
             </Button>
