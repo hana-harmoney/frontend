@@ -74,6 +74,7 @@ export const badgeData: category[] = [
 // profile
 
 export const initialProfile: fetchProfileResponse = {
+  user_id: 0,
   nickname: '',
   profile_img:
     'https://harmoneybucket.s3.ap-northeast-2.amazonaws.com/upload/profile/2025/08/22/c47d3582-ef29-4b95-b06e-0fadc5a515d0.jpeg',
@@ -84,3 +85,11 @@ export const initialProfile: fetchProfileResponse = {
   match_count: 0,
   user_address: '',
 };
+
+export const reportReasons = [
+  '사기나 허위 요청이에요.',
+  '과도한 금액을 요구했어요.',
+  '욕설이나 모욕적인 말을 했어요.',
+  '위험하거나 불건전한 제안을 했어요.',
+  '스팸이나 광고를 보냈어요.',
+];

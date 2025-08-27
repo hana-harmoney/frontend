@@ -196,14 +196,25 @@ const JobDetailPage = () => {
             }}
           />
         </Map>
-        <div className="flex w-full gap-3 text-2xl">
-          <Button className="min-w-0 flex-1 !py-5">
-            <a href={`tel:${boardData.phone}`}>전화하기</a>
-          </Button>
-          <Button variant="destructive" className="min-w-0 flex-1 !py-5">
-            채팅하기
-          </Button>
-        </div>
+        {boardData.status === false ? (
+          <div className="flex w-full gap-3 text-2xl">
+            <Button className="min-w-0 flex-1 !py-6 text-2xl">
+              <a href={`tel:${boardData.phone}`}>전화하기</a>
+            </Button>
+            <Button variant="destructive" className="min-w-0 flex-1 !py-5">
+              채팅하기
+            </Button>
+          </div>
+        ) : (
+          <div className="flex w-full gap-3 text-2xl">
+            <Button
+              disabled
+              className="min-w-0 flex-1 bg-gray-500 !py-6 text-xl text-white"
+            >
+              종료된 공고입니다
+            </Button>
+          </div>
+        )}
       </div>
       {showConfirm && (
         <div className="fixed inset-0 z-51 flex items-center justify-center bg-black/50">

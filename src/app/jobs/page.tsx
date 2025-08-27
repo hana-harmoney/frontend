@@ -2,6 +2,9 @@
 import Badge from '@/components/common/badge';
 import Card from '@/components/jobs/card';
 import NoData from '@/assets/images/no-data.svg';
+import EditIcon from '@/assets/icons/edit.svg';
+import TrashIcon from '@/assets/icons/trash.svg';
+import PlusIcon from '@/assets/icons/plus.svg';
 import { useEffect, useState } from 'react';
 import { JobsProps } from '@/types/jobs';
 import { fetchJobList } from '@/lib/api/jobs';
@@ -14,6 +17,7 @@ const JobsPage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
+  const [showButtons, setShowButtons] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -93,6 +97,44 @@ const JobsPage = () => {
             </div>
           ))
         )}
+      </div>
+      {showButtons && (
+        <div
+          className="fixed inset-0 z-10"
+          onClick={() => setShowButtons(false)}
+        />
+      )}
+      <div className="fixed right-6 bottom-26 z-30 flex flex-col items-end">
+        {showButtons && (
+          <div className="mb-2 flex flex-col gap-0 rounded-lg bg-white p-0 shadow-lg">
+            <button
+              onClick={() => {
+                setShowButtons(false);
+                router.push('/jobs/new');
+              }}
+              className="hover:bg-hanagreen-light flex items-center gap-3 rounded-md px-4 py-3 text-base text-gray-700"
+            >
+              <EditIcon width={24} height={24} />
+              구직 글 등록
+            </button>
+            <button
+              onClick={() => {
+                setShowButtons(false);
+                router.push('/jobs/my');
+              }}
+              className="hover:bg-hanagreen-light flex items-center gap-3 rounded-md px-4 py-3 text-base text-gray-700"
+            >
+              <TrashIcon width={24} height={24} />
+              내가 쓴 글 보기
+            </button>
+          </div>
+        )}
+        <button
+          className="bg-hanagreen-normal hover:bg-hanagreen-normal-hover flex h-14 w-14 items-center justify-center rounded-full text-white shadow-lg"
+          onClick={() => setShowButtons((prev) => !prev)}
+        >
+          <PlusIcon width={28} height={28} />
+        </button>
       </div>
     </div>
   );

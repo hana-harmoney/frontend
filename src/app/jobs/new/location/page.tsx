@@ -5,6 +5,14 @@ import { useJobDraft } from '@/stores/useJobDraft';
 import useKakaoLoader from '@/components/use-kakao-loader';
 import { Map, MapMarker } from 'react-kakao-maps-sdk';
 import { Button } from '@/components/ui/button';
+import DaumPostcodeEmbed from 'react-daum-postcode';
+import {
+  Dialog,
+  DialogContent,
+  DialogTrigger,
+  DialogTitle,
+} from '@/components/ui/dialog';
+import { VisuallyHidden } from '@radix-ui/react-visually-hidden';
 
 const JobsLocationPage = () => {
   useKakaoLoader();
@@ -15,6 +23,23 @@ const JobsLocationPage = () => {
     lng: number;
   } | null>(null);
   const [selectedAddress, setSelectedAddress] = useState<string>('');
+  const [showPostcode, setShowPostcode] = useState(false);
+  const handleAddressSelect = (data: { address: string }) => {
+    const { address } = data;
+    setSelectedAddress(address);
+
+    const geocoder = new kakao.maps.services.Geocoder();
+    geocoder.addressSearch(address, (result, status) => {
+      if (status === kakao.maps.services.Status.OK) {
+        const { x, y } = result[0];
+        const lng = parseFloat(x);
+        const lat = parseFloat(y);
+        setSelectedPosition({ lat, lng });
+      }
+    });
+
+    setShowPostcode(false);
+  };
 
   const handleMapClick = (
     _: unknown,
@@ -45,7 +70,7 @@ const JobsLocationPage = () => {
       latitude: selectedPosition.lat,
       longitude: selectedPosition.lng,
     });
-    router.back();
+    router.push('/jobs/new');
   };
 
   useEffect(() => {
@@ -62,17 +87,40 @@ const JobsLocationPage = () => {
 
   return (
     <div className="flex w-full flex-col gap-3 px-6 py-3 font-light">
-      <span className="text-2xl">원하시는 장소를 선택해주세요.</span>
+      <div className="mb-2">
+        <h2 className="text-hanagreen-normal text-xl font-semibold">
+          원하는 장소를 선택해주세요
+        </h2>
+        <p className="mt-1 text-base text-gray-600">
+          {selectedAddress ? (
+            <>
+              <span className="font-medium text-black">선택된 주소:</span>{' '}
+              {selectedAddress}
+            </>
+          ) : (
+            '지도를 클릭하거나 주소 검색 버튼을 눌러 선택하세요.'
+          )}
+        </p>
+      </div>
 
-      <span>
-        {selectedAddress
-          ? `선택된 주소: ${selectedAddress}`
-          : '지도를 움직여서 선택해보세요.'}
-      </span>
+      <Dialog open={showPostcode} onOpenChange={setShowPostcode}>
+        <DialogTrigger asChild>
+          <Button variant="outline" className="px-6 py-5 text-lg">
+            주소 검색
+          </Button>
+        </DialogTrigger>
+        <DialogContent className="max-w-[90vw] p-0">
+          <DialogTitle asChild>
+            <VisuallyHidden>주소 검색</VisuallyHidden>
+          </DialogTitle>
+          <DaumPostcodeEmbed onComplete={handleAddressSelect} autoClose />
+        </DialogContent>
+      </Dialog>
+
       <Map
         id="map"
         center={selectedPosition ?? defaultCenter}
-        style={{ width: '100%', height: '500px' }}
+        style={{ width: '100%', height: '450px' }}
         level={3}
         onClick={handleMapClick}
       >

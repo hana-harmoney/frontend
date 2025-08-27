@@ -1,4 +1,4 @@
-import { ChatRoom } from '@/types/chatRoom';
+import { ChatRoom } from '@/types/chat';
 import { create } from 'zustand';
 
 interface ChatRoomState {

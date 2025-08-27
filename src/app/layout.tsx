@@ -24,7 +24,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${pretendard.className} overflow-x-hidden pb-20`}
+        className={`${pretendard.className} overflow-x-hidden`}
         // style={{
         //   paddingTop: 'env(safe-area-inset-top)',
         //   paddingBottom: 'env(safe-area-inset-bottom)',
