@@ -39,7 +39,7 @@ export default function ChatMessageBubble({
             </Link>
           </div>
         ) : (
-          <div className="mr-2 h-[37px] w-[37px]" />
+          <div className="mr-5 h-[37px] w-[37px]" />
         ))}
       {/* 메세지 */}
       <div className="flex flex-col">
