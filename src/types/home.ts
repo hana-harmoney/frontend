@@ -20,3 +20,14 @@ export type HistoryProps = {
   date: string;
   histories: HistoryCardProps[];
 };
+
+export type Tab = {
+  id: number;
+  name: string;
+};
+
+export type TabBarProps = {
+  selectedId: number;
+  tabs: Tab[];
+  clickTab: (id: number) => void;
+};

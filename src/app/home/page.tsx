@@ -32,7 +32,14 @@ const HomePage = () => {
           {formatNumber(13456778)}
           <span className="font-light">원</span>
         </div>
-        <Button className="py-7 text-xl font-semibold">송금하기</Button>
+        <Button
+          className="py-7 text-xl font-semibold"
+          onClick={() => {
+            router.push('/home/send/step1');
+          }}
+        >
+          송금하기
+        </Button>
       </div>
       <BalanceCard
         id={1}
