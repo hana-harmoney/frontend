@@ -3,10 +3,12 @@ import Header from '@/components/common/header';
 import { NumericKeypad } from '@/components/home/NumericKeypad';
 import { useEffect, useState, useRef } from 'react';
 import { formatNumber } from '@/lib/utils';
+import TwoStepModal from '@/components/home/TwoStepModal';
 
 const TakePage = () => {
   const [amount, setAmount] = useState<number>(0);
   const [pocket, setPocket] = useState<string>('');
+  const [open, setOpen] = useState(false);
 
   const [targetStr, setTargetStr] = useState('');
   const increaseTarget = (value: number) => {
@@ -28,10 +30,14 @@ const TakePage = () => {
     setAmount(50000);
   }, []);
 
-  const clickComplete = () => {
-    console.log('clickComplete');
+  const openModal = () => {
+    setOpen(true);
   };
 
+  const clickComplete = () => {
+    openModal();
+    console.log('clickComplete');
+  };
   return (
     <div className="flex w-full flex-col gap-6 px-6">
       <Header title="채우기" centerTitle={false} showBackButton={true} />
@@ -54,7 +60,7 @@ const TakePage = () => {
         </div>
         <span className="w-full text-center text-3xl font-semibold">
           {targetStr.length == 0 ? (
-            <>얼마를 채울까요?</>
+            <>얼마를 꺼낼까요?</>
           ) : (
             <>{formatNumber(Number(targetStr))} 원</>
           )}
@@ -89,6 +95,17 @@ const TakePage = () => {
           />
         </div>
       </div>
+      <TwoStepModal
+        open={open}
+        type={'take'}
+        name={pocket}
+        amount={Number(targetStr)}
+        onClose={() => setOpen(false)}
+        onSubmit={({ type, name, amount, account }) => {
+          console.log('[SUBMIT]', { type, name, amount, account });
+          setOpen(false);
+        }}
+      />
     </div>
   );
 };

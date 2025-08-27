@@ -3,10 +3,12 @@ import Header from '@/components/common/header';
 import { NumericKeypad } from '@/components/home/NumericKeypad';
 import { useEffect, useState, useRef } from 'react';
 import { formatNumber } from '@/lib/utils';
+import TwoStepModal from '@/components/home/TwoStepModal';
 
 const FillPage = () => {
   const [amount, setAmount] = useState<number>(0);
   const [pocket, setPocket] = useState<string>('');
+  const [open, setOpen] = useState(false);
 
   const [targetStr, setTargetStr] = useState('');
   const increaseTarget = (value: number) => {
@@ -28,7 +30,12 @@ const FillPage = () => {
     setAmount(13489203);
   }, []);
 
+  const openModal = () => {
+    setOpen(true);
+  };
+
   const clickComplete = () => {
+    openModal();
     console.log('clickComplete');
   };
 
@@ -54,7 +61,7 @@ const FillPage = () => {
         </div>
         <span className="w-full text-center text-3xl font-semibold">
           {targetStr.length == 0 ? (
-            <>얼마를 꺼낼까요?</>
+            <>얼마를 채울까요?</>
           ) : (
             <>{formatNumber(Number(targetStr))} 원</>
           )}
@@ -89,6 +96,17 @@ const FillPage = () => {
           />
         </div>
       </div>
+      <TwoStepModal
+        open={open}
+        type={'fill'}
+        name={pocket}
+        amount={Number(targetStr)}
+        onClose={() => setOpen(false)}
+        onSubmit={({ type, name, amount, account }) => {
+          console.log('[SUBMIT]', { type, name, amount, account });
+          setOpen(false);
+        }}
+      />
     </div>
   );
 };

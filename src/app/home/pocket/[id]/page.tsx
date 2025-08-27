@@ -1,9 +1,15 @@
+'use client';
 import { formatNumber } from '@/lib/utils';
 import Header from '@/components/common/header';
 import { Button } from '@/components/ui/button';
 import { HistoryProps } from '@/types/home';
 import History from '@/components/home/History';
+import { useRouter } from 'next/navigation';
+import { useParams } from 'next/navigation';
 const PocketDetailPage = () => {
+  const router = useRouter();
+  const { id } = useParams<{ id: string }>();
+  console.log('Pocket ID:', id);
   const target = 100000;
   const amount = 500000;
 
@@ -48,8 +54,21 @@ const PocketDetailPage = () => {
         </div>
       </div>
       <div className="flex gap-2">
-        <Button className="flex-1 py-6 text-xl">꺼내기</Button>
-        <Button variant="destructive" className="flex-1 py-6 text-xl">
+        <Button
+          className="flex-1 py-6 text-xl"
+          onClick={() => {
+            router.push(`/home/pocket/${id}/take`);
+          }}
+        >
+          꺼내기
+        </Button>
+        <Button
+          variant="destructive"
+          className="flex-1 py-6 text-xl"
+          onClick={() => {
+            router.push(`/home/pocket/${id}/fill`);
+          }}
+        >
           채우기
         </Button>
       </div>

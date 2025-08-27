@@ -16,7 +16,6 @@ export default function TwoStepModal({
   const [name, setName] = useState(initialName);
   const [amount, setAmount] = useState<number>(initialAmount);
 
-  // 모달이 열릴 때마다 단계/입력 초기화
   useEffect(() => {
     if (open) {
       setStep(1);
@@ -24,7 +23,6 @@ export default function TwoStepModal({
       setAmount(initialAmount);
     }
   }, [open, initialName, initialAmount]);
-  console.log('account :', account);
 
   if (!open) return null;
 
@@ -47,7 +45,6 @@ export default function TwoStepModal({
   })();
 
   const handleNext = () => setStep(2);
-  const handleBack = () => setStep(1);
 
   const handleComplete = () => {
     // onSubmit({ type, name: name.trim(), amount, account: account.trim() });
