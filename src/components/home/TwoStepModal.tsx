@@ -121,7 +121,7 @@ export default function TwoStepModal({
             {type === 'send' ? (
               <div
                 data-testid="send-step2"
-                className="flex min-h-[80px] flex-col items-center gap-2 border border-red-700 text-2xl"
+                className="flex min-h-[80px] flex-col items-center gap-2 text-2xl"
               >
                 <div className="flex items-end gap-1">
                   <span className="text-3xl font-semibold">{name}</span>
@@ -139,22 +139,28 @@ export default function TwoStepModal({
             ) : (
               <div data-testid="fill-take-step2" className="min-h-[80px]" />
             )}
-
-            <div className="mt-2 flex gap-2 font-semibold text-white">
-              <Button
-                className="bg-text-2 hover:bg-text-2 flex-1 rounded-md py-6 text-xl"
-                onClick={handleBack}
-              >
-                취소
-              </Button>
-              <Button
-                className="bg-main flex-1 rounded-md py-6 text-xl"
-                onClick={handleComplete}
-                disabled={!name.trim()}
-              >
-                네
-              </Button>
-            </div>
+            <Button
+              className="bg-main mt-4 w-full flex-1 rounded-md py-6 text-xl"
+              onClick={handleComplete}
+              disabled={!name.trim()}
+            >
+              완료
+            </Button>
+            {/*<div className="mt-2 flex gap-2 font-semibold text-white">*/}
+            {/*  <Button*/}
+            {/*    className="bg-text-2 hover:bg-text-2 flex-1 rounded-md py-6 text-xl"*/}
+            {/*    onClick={handleBack}*/}
+            {/*  >*/}
+            {/*    취소*/}
+            {/*  </Button>*/}
+            {/*  <Button*/}
+            {/*    className="bg-main flex-1 rounded-md py-6 text-xl"*/}
+            {/*    onClick={handleComplete}*/}
+            {/*    disabled={!name.trim()}*/}
+            {/*  >*/}
+            {/*    네*/}
+            {/*  </Button>*/}
+            {/*</div>*/}
           </>
         )}
       </div>
