@@ -9,6 +9,7 @@ type NumericKeypadProps = {
   shuffle?: boolean;
   showWonSuffix?: boolean;
   className?: string;
+  isAccount?: boolean;
 };
 
 const digits = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0'];
@@ -20,6 +21,7 @@ export const NumericKeypad: React.FC<NumericKeypadProps> = ({
   shuffle = false,
   showWonSuffix = true,
   className = '',
+  isAccount,
 }) => {
   const [internal, setInternal] = useState<string>(value ?? '');
 
@@ -70,9 +72,11 @@ export const NumericKeypad: React.FC<NumericKeypadProps> = ({
 
   return (
     <div className={`w-full ${className} `}>
-      <div className="text-gray mb-3 rounded-md border bg-white px-4 py-2 text-right text-xl">
-        {display}
-      </div>
+      {!isAccount && (
+        <div className="text-gray mb-3 rounded-md border bg-white px-4 py-2 text-right text-xl">
+          {display}
+        </div>
+      )}
 
       <div className="grid grid-cols-3 gap-2 text-2xl font-semibold">
         {keys.slice(0, 9).map((k) => (
