@@ -70,7 +70,7 @@ const JobsLocationPage = () => {
       latitude: selectedPosition.lat,
       longitude: selectedPosition.lng,
     });
-    router.back();
+    router.push('/jobs/new');
   };
 
   useEffect(() => {
