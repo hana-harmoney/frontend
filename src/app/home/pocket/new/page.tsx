@@ -1,32 +1,26 @@
 'use client';
 import { CustomInput } from '@/components/common/customInput';
-import { useEffect, useState } from 'react';
-import { formatNumber } from '@/lib/utils';
+import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import Header from '@/components/common/header';
-import { InputWithIcon } from '@/components/common/inputWithIcon';
 import { NumericKeypad } from '@/components/home/NumericKeypad';
+import { useRouter } from 'next/navigation';
 
 const CreatePocketPage = () => {
+  const router = useRouter();
   const [pocketName, setPocketName] = useState('');
   const [targetStr, setTargetStr] = useState('');
   const gun = [
-    { text: '30만', value: 300000 },
-    { text: '40만', value: 400000 },
-    { text: '50만', value: 500000 },
-    { text: '60만', value: 600000 },
-    { text: '70만', value: 700000 },
+    { text: '+30만', value: 300000 },
+    { text: '+40만', value: 400000 },
+    { text: '+50만', value: 500000 },
+    { text: '+60만', value: 600000 },
+    { text: '+70만', value: 700000 },
   ];
-  const displayTarget = `${targetStr === '' ? '0' : formatNumber(Number(targetStr))}`;
   const increaseTarget = (value: number) => {
     const current = targetStr === '' ? 0 : Number(targetStr);
     const next = current + value;
     setTargetStr(String(next));
-  };
-  const handleChangeTarget = (value: string) => {
-    const onlyDigits = value.replace(/\D+/g, '');
-    const normalized = onlyDigits.replace(/^0+(?=\d)/, '');
-    setTargetStr(normalized);
   };
 
   return (

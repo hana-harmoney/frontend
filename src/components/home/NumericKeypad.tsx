@@ -74,7 +74,7 @@ export const NumericKeypad: React.FC<NumericKeypadProps> = ({
         {display}
       </div>
 
-      <div className="grid grid-cols-3 gap-2 text-xl font-semibold">
+      <div className="grid grid-cols-3 gap-2 text-2xl font-semibold">
         {keys.slice(0, 9).map((k) => (
           <button key={k} onClick={() => handleDigit(k)} className="py-4">
             {k}

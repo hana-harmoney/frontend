@@ -1,6 +1,7 @@
 'use client';
 import { BalanceCardProps } from '@/types/home';
 import Balance from '@/components/home/Balance';
+import { useRouter } from 'next/navigation';
 
 const BalanceCard = ({
   id,
@@ -8,6 +9,8 @@ const BalanceCard = ({
   bgColor,
   pocketName,
 }: BalanceCardProps) => {
+  const router = useRouter();
+
   return (
     <div className="flex flex-col gap-2">
       <div className="flex justify-between text-2xl font-semibold">
@@ -15,7 +18,7 @@ const BalanceCard = ({
         <span
           className="text-gray text-xl font-light"
           onClick={() => {
-            console.log('id : ', id); // 나중에 라우팅에 사용
+            router.push(`/home/pocket/${id}`);
           }}
         >
           상세보기 &gt;
@@ -26,7 +29,7 @@ const BalanceCard = ({
         isAccount={false}
         bgColor={bgColor}
         onClick={() => {
-          console.log('id : ', id); // 나중에 라우팅에 사용
+          router.push(`/home/pocket/${id}`);
         }}
       />
     </div>

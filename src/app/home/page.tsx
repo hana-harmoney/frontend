@@ -1,9 +1,13 @@
+'use client';
 import Balance from '@/components/home/Balance';
 import { formatNumber } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import BalanceCard from '@/components/home/BalanceCard';
+import { useRouter } from 'next/navigation';
 
-export default async function HomePage({}) {
+const HomePage = () => {
+  const router = useRouter();
+
   return (
     <div className="flex w-full flex-col gap-6 px-6">
       <div className="flex flex-col gap-8">
@@ -51,7 +55,16 @@ export default async function HomePage({}) {
         isAccount={false}
         bgColor={'bg-[#E9F2FF]'}
       />
-      <Button className="py-7 text-xl font-semibold">주머니 만들기</Button>
+      <Button
+        className="py-7 text-xl font-semibold"
+        onClick={() => {
+          router.push('/home/pocket/new');
+        }}
+      >
+        주머니 만들기
+      </Button>
     </div>
   );
-}
+};
+
+export default HomePage;
