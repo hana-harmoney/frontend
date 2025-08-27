@@ -43,6 +43,14 @@ export async function reportUser(roomId: number): Promise<void> {
   await apiClient(`/chat/${roomId}/report`, {
     method: 'POST',
   });
+}
 
-  return;
+export async function writeReview(
+  roomId: number,
+  score: number,
+): Promise<void> {
+  await apiClient(`/chat/${roomId}/report`, {
+    method: 'POST',
+    body: JSON.stringify({ score: score }),
+  });
 }

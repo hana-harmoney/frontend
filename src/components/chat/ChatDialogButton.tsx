@@ -10,6 +10,7 @@ type Props = {
   showCancleButton?: boolean;
   actionButtonText?: string;
   closeButtonText?: string;
+  actionDisabled?: boolean;
   onAction: () => void;
   onClose: () => void;
 };
@@ -21,6 +22,7 @@ export default function ChatDialogButton({
   showCancleButton = true,
   actionButtonText,
   closeButtonText,
+  actionDisabled = false,
   onAction,
   onClose,
   children,
@@ -56,6 +58,7 @@ export default function ChatDialogButton({
               <Button
                 className="h-10 flex-1 text-xl font-semibold"
                 onClick={onAction}
+                disabled={actionDisabled}
               >
                 {actionButtonText ?? '확인'}
               </Button>

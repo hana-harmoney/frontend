@@ -7,6 +7,8 @@ import BadBoy from '@/assets/images/bad_starboy.svg';
 import ThumbsUpBoy from '@/assets/images/thumbsup_starboy.svg';
 import HeartBoy from '@/assets/images/heart_starboy.svg';
 import { cn } from '@/lib/utils';
+import { writeReview } from '@/lib/api/chat';
+import toast from 'react-hot-toast';
 
 type Props = {
   roomId: number;
@@ -38,12 +40,22 @@ export default function ReviewButton({ roomId }: Props) {
     setShowReviewDialog(false);
   };
 
-  const handleReportUser = async () => {};
+  const handleWriteReview = async () => {
+    if (!selected) return;
+    try {
+      await writeReview(roomId, reviewCandidate[selected].score);
+
+      toast.success('후기 쓰기가 완료되었습니다.');
+      closeReviewDialog();
+    } catch {
+      toast.error('후기 쓰기에 실패했습니다.');
+    }
+  };
 
   return (
     <div>
       <Button
-        className="text-xl font-medium"
+        className="w-full text-xl font-medium"
         variant={'secondary'}
         onClick={openReviewDialog}
       >
@@ -55,8 +67,9 @@ export default function ReviewButton({ roomId }: Props) {
         title={'후기 쓰기'}
         desc={'후기를 남겨주세요!'}
         open={showReviewDialog}
-        onAction={handleReportUser}
+        onAction={handleWriteReview}
         onClose={closeReviewDialog}
+        actionDisabled={!selected}
         actionButtonText="완료"
         closeButtonText="닫기"
       >
