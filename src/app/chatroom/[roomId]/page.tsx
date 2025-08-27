@@ -15,6 +15,7 @@ import { ChatMessage } from '@/types/chat';
 import { useChatMessages } from '@/hooks/useChatMessages';
 import ChatMessageList from '@/components/chat/ChatMessageList';
 import { useMyProfile } from '@/hooks/useMyProdfile';
+import { useStomp } from '@/hooks/useStomp';
 
 export default function ChatRoomPage() {
   const params = useParams();
@@ -26,12 +27,46 @@ export default function ChatRoomPage() {
   const { data: roomInfo } = useChatRoomInfo(roomId);
   const { data: myProfile } = useMyProfile();
   const { items: chatHistory, loading, error } = useChatMessages(roomId);
+  const { connected, subscribe, send } = useStomp();
 
   const scrollRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const handleSendMessage = () => { };
+  // 채팅방 구독
+  useEffect(() => {
+    if (!connected || !roomInfo || !myProfile) return;
 
+    const off = subscribe(`/sub/chat/room/${roomId}`, (msg) => {
+      const isMine = msg.senderId === myProfile.user_id;
+
+      setMessages((prev) => [
+        ...prev,
+        {
+          message: msg.message,
+          sender: isMine ? 'me' : 'other',
+          direction: isMine ? 'outgoing' : 'incoming',
+          position: 'single',
+          createdAt: new Date(Date.parse(msg.regdate)),
+          senderId: msg.senderId,
+          senderNickname: isMine ? undefined : roomInfo?.nickname,
+          senderProfileImg: isMine ? undefined : roomInfo?.profileUrl,
+        },
+      ]);
+
+      // 채팅방 마지막 메세지 업데이트
+      updateRoom({
+        roomId: roomId,
+        imageUrl: roomInfo?.profileUrl ?? '',
+        nickname: roomInfo?.nickname ?? '',
+        lastMessage: msg.message,
+        lastMessageDate: new Date(Date.now()),
+      });
+    });
+
+    return off;
+  }, [connected, roomId, subscribe, roomInfo, myProfile, updateRoom]);
+
+  // 메세지 파싱
   useEffect(() => {
     if (!roomId || !roomInfo || !myProfile || !chatHistory) return;
 
@@ -54,6 +89,19 @@ export default function ChatRoomPage() {
 
     setMessages(parsedMessages);
   }, [roomId, roomInfo, myProfile, chatHistory]);
+
+  // 메세지 전송
+  const handleSendMessage = (text: string) => {
+    console.log('채팅 메세지 보내기1', connected);
+    if (!connected) return;
+
+    console.log('채팅 메세지 보내기2');
+
+    send('/pub/chat/message', {
+      roomId,
+      message: text,
+    });
+  };
 
   return (
     <div className="scrollbar-hide flex h-[100dvh] flex-col px-6">

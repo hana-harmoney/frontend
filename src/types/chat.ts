@@ -47,3 +47,21 @@ export type ChatMessage = {
   senderNickname?: string;
   senderProfileImg?: string;
 };
+
+// Client -> Socket
+export type SendChatMessage = {
+  roomId: number;
+  message: string;
+  amount?: number;
+};
+
+// Socket -> Client
+export type ReceivedChatMessage = {
+  messageId: number;
+  roomId: number;
+  senderId: number;
+  receiverId: number;
+  message: string;
+  amount: number;
+  regdate: string;
+};
