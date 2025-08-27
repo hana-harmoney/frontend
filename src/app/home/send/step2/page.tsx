@@ -4,6 +4,8 @@ import { NumericKeypad } from '@/components/home/NumericKeypad';
 import { useEffect, useState, useRef } from 'react';
 import { formatNumber } from '@/lib/utils';
 import { useAccountStore } from '@/stores/accountStore';
+import { FlowType } from '@/types/modal';
+import TwoStepModal from '@/components/home/TwoStepModal';
 
 const SendStep2Page = () => {
   const [receiver, setReceiver] = useState<string>('');
@@ -23,6 +25,8 @@ const SendStep2Page = () => {
   }, [reset]);
 
   const [targetStr, setTargetStr] = useState('');
+  const [open, setOpen] = useState(false);
+
   const increaseTarget = (value: number) => {
     const current = targetStr === '' ? 0 : Number(targetStr);
     const next = current + value;
@@ -41,7 +45,12 @@ const SendStep2Page = () => {
     setReceiver('송유림');
   }, []);
 
+  const openModal = () => {
+    setOpen(true);
+  };
+
   const clickComplete = () => {
+    openModal();
     console.log('clickComplete');
   };
 
@@ -93,6 +102,18 @@ const SendStep2Page = () => {
           />
         </div>
       </div>
+      <TwoStepModal
+        open={open}
+        type={'send'}
+        name={receiver}
+        amount={Number(targetStr)}
+        account={accountNumber}
+        onClose={() => setOpen(false)}
+        onSubmit={({ type, name, amount, account }) => {
+          console.log('[SUBMIT]', { type, name, amount, account });
+          setOpen(false);
+        }}
+      />
     </div>
   );
 };
