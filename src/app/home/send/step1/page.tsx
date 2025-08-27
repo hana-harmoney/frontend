@@ -13,10 +13,6 @@ const SendStep1Page = () => {
   const { setAccountNumber: setGlobalAccountNumber, reset } = useAccountStore();
   const [accountNumber, setAccountNumber] = useState('');
 
-  useEffect(() => {
-    reset();
-  }, []);
-
   const [selectedId, setSelectedId] = useState(0);
   const tabs = [
     { id: 0, name: '최근' },

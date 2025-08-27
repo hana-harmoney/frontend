@@ -3,24 +3,10 @@ import Header from '@/components/common/header';
 import { NumericKeypad } from '@/components/home/NumericKeypad';
 import { useEffect, useState, useRef } from 'react';
 import { formatNumber } from '@/lib/utils';
-import { useAccountStore } from '@/stores/accountStore';
 
-const SendStep2Page = () => {
-  const [receiver, setReceiver] = useState<string>('');
-  const { accountNumber, reset } = useAccountStore();
-
-  const ignoreFirstCleanup = useRef(true);
-
-  // 페이지 벗어날 때 계좌번호 초기화하기 위해 이렇게 했습니다
-  useEffect(() => {
-    return () => {
-      if (ignoreFirstCleanup.current) {
-        ignoreFirstCleanup.current = false;
-        return;
-      }
-      reset();
-    };
-  }, [reset]);
+const TakePage = () => {
+  const [amount, setAmount] = useState<number>(0);
+  const [pocket, setPocket] = useState<string>('');
 
   const [targetStr, setTargetStr] = useState('');
   const increaseTarget = (value: number) => {
@@ -38,7 +24,8 @@ const SendStep2Page = () => {
   ];
 
   useEffect(() => {
-    setReceiver('송유림');
+    setPocket('손주 용돈 주머니');
+    setAmount(50000);
   }, []);
 
   const clickComplete = () => {
@@ -47,18 +34,27 @@ const SendStep2Page = () => {
 
   return (
     <div className="flex w-full flex-col gap-6 px-6">
-      <Header title="송금하기" centerTitle={false} showBackButton={true} />
+      <Header title="채우기" centerTitle={false} showBackButton={true} />
       <div className="flex flex-col gap-12">
-        <div className="flex flex-col text-2xl">
-          <div className="flex gap-2">
-            <span className="font-semibold">{receiver}</span>
-            님에게
+        <div className="flex flex-col gap-4 text-2xl">
+          <div className="flex flex-col">
+            <div className="flex gap-2">
+              <span className="font-semibold">{pocket}</span>
+              에서
+            </div>
+            <div className="text-gray flex gap-1 text-xl font-light">
+              잔액
+              <span className="font-semibold">{formatNumber(amount)}</span>원
+            </div>
           </div>
-          <span className="text-gray font-light">{accountNumber}</span>
+          <div className="flex items-center gap-1 text-2xl">
+            <span className="font-semibold">내 기본 주머니</span>
+            <span className="font-light">로</span>
+          </div>
         </div>
         <span className="w-full text-center text-3xl font-semibold">
           {targetStr.length == 0 ? (
-            <>얼마를 보낼까요?</>
+            <>얼마를 채울까요?</>
           ) : (
             <>{formatNumber(Number(targetStr))} 원</>
           )}
@@ -96,4 +92,4 @@ const SendStep2Page = () => {
     </div>
   );
 };
-export default SendStep2Page;
+export default TakePage;
