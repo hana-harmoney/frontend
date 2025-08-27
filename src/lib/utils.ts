@@ -76,7 +76,8 @@ export const badgeData: category[] = [
 export const initialProfile: fetchProfileResponse = {
   user_id: 0,
   nickname: '',
-  profile_img: '',
+  profile_img:
+    'https://harmoneybucket.s3.ap-northeast-2.amazonaws.com/upload/profile/2025/08/22/c47d3582-ef29-4b95-b06e-0fadc5a515d0.jpeg',
   category_ids: [],
   description: '',
   img_url_detail: [],

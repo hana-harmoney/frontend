@@ -15,6 +15,7 @@ import { createJob } from '@/lib/api/jobs';
 import { JobCreateRequest } from '@/types/jobs';
 import toast from 'react-hot-toast';
 import { badgeData } from '@/lib/utils';
+import Header from '@/components/common/header';
 
 const JobsNewPage = () => {
   const { data: registerData, setData } = useJobDraft();
@@ -94,6 +95,7 @@ const JobsNewPage = () => {
 
   return (
     <div className="flex w-full flex-col items-center gap-5 px-6 py-3">
+      <Header title={'게시글 등록'} showBackButton={true} centerTitle={false} />
       <div className="flex w-full flex-col gap-3 text-2xl font-light">
         게시글 사진
         <label className="border-teduri relative flex h-32 w-32 cursor-pointer items-center justify-center overflow-hidden rounded-2xl border">
