@@ -38,6 +38,7 @@ export type RegisterData = {
   phone?: string;
   imageUrl: string;
   wage: number;
+  image?: File | null;
 };
 
 export type JobListResponse = ApiResponse<{ boardList: JobBoard[] }>;

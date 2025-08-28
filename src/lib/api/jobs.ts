@@ -21,10 +21,21 @@ export const fetchJobDetail = async (
   return res;
 };
 
-export async function createJob(job: JobCreateRequest, image: File) {
+export async function createJob(job: JobCreateRequest, image: File | null) {
   const fd = new FormData();
-  fd.append('request', JSON.stringify(job));
-  fd.append('image', image);
+  (
+    [
+      ['title', job.title],
+      ['content', job.content],
+      ['wage', job.wage],
+      ['address', job.address],
+      ['latitude', job.latitude],
+      ['longitude', job.longitude],
+      ['categoryId', job.categoryId],
+    ] as const
+  ).forEach(([k, v]) => fd.append(k, String(v)));
+
+  if (image) fd.append('image', image);
 
   const res = await apiClient('/board', { method: 'POST', body: fd });
   if (res.code !== '200') throw new Error(res.message ?? '일자리 등록 실패');

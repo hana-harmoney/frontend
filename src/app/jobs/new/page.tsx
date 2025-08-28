@@ -69,14 +69,13 @@ const JobsNewPage = () => {
   const router = useRouter();
 
   const isEmpty = useMemo(() => {
-    const { title, content, categoryId, address, imageUrl } = registerData;
+    const { title, content, categoryId, address } = registerData;
     return !(
       title &&
       content &&
       categoryId !== null &&
       categoryId !== 0 &&
-      address &&
-      imageUrl
+      address
     );
   }, [registerData]);
 
@@ -84,10 +83,6 @@ const JobsNewPage = () => {
     if (registerData.categoryId === null || registerData.categoryId === 0)
       return;
     const fileToUpload = loadFileFromSessionStorage('jobImage');
-    if (!fileToUpload) {
-      toast.error('이미지를 선택해주세요.');
-      return;
-    }
 
     const job = {
       title: registerData.title,
