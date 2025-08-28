@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { updateProfile } from '@/lib/api/profile';
 import toast from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
+import { extractErrorMessage } from '@/lib/utils';
 
 const EditPasswordPage = () => {
   const router = useRouter();
@@ -31,16 +32,17 @@ const EditPasswordPage = () => {
       }
       setIsLoading(true);
       await updateProfile({
-        password: password,
+        current_password: oldPassword,
+        new_password: password,
       });
 
       toast.success('비밀번호가 수정되었습니다.');
       router.push('/auth/login');
     } catch (err) {
       setIsLoading(false);
-      toast.error(
-        err instanceof Error ? err.message : '수정 중 오류가 발생했습니다.',
-      );
+      const errorMessage = extractErrorMessage(err);
+
+      toast.error(errorMessage || '수정 중 오류가 발생했습니다.');
     }
   };
   return (
@@ -104,7 +106,7 @@ const EditPasswordPage = () => {
         <Button
           className="w-full py-6 text-xl font-semibold"
           onClick={handleSubmit}
-          disabled={isLoading}
+          disabled={isLoading || !formValid}
         >
           비밀번호 변경 완료
         </Button>

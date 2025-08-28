@@ -30,7 +30,8 @@ export type EditProfilePayload = {
   nickname?: string;
   description?: string;
   categoryIds?: (string | number)[];
-  password?: string;
+  current_password?: string;
+  new_password?: string;
   profileImage?: File | null;
   descImagesDeleteIds?: number[];
 
@@ -51,4 +52,4 @@ export type UpdateProfilePayload = {
   descImageUrls?: string[];
 
   descImagesDeleteIds?: number[];
-}
+};

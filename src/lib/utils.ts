@@ -2,6 +2,7 @@ import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 import { fetchProfileResponse } from '@/types/profile';
 import { HistoryProps } from '@/types/home';
+import toast from 'react-hot-toast';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -117,3 +118,19 @@ export const sampleHistories: HistoryProps[] = [
     histories: [{ time: '18:00', title: '베이스 봉투', money: 200000 }],
   },
 ];
+
+// error
+export const extractErrorMessage = (err: unknown) => {
+  if (err instanceof Error) {
+    const jsonMatch = err.message.match(/\{[\s\S]*\}$/);
+    if (jsonMatch) {
+      try {
+        const parsed = JSON.parse(jsonMatch[0]);
+        if (parsed?.message) {
+          return parsed.message;
+        }
+      } catch {}
+    }
+    return err.message;
+  }
+};

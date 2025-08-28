@@ -22,7 +22,7 @@ export async function signupUser(payload: SignupPayload) {
 export async function withdrawUser(password: string) {
   const data = await apiClient('/auth/withdraw', {
     method: 'POST',
-    body: JSON.stringify({ password: password }),
+    body: JSON.stringify({ current_password: password }),
   });
 
   if (data.code !== '200') {

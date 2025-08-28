@@ -74,7 +74,8 @@ export async function updateProfile(payload: EditProfilePayload) {
     nickname,
     description,
     categoryIds = [],
-    password,
+    new_password,
+    current_password,
 
     profileImage,
 
@@ -88,7 +89,9 @@ export async function updateProfile(payload: EditProfilePayload) {
 
   if (nickname?.trim()) fd.append('nickname', nickname.trim());
   if (description?.trim()) fd.append('description', description.trim());
-  if (password?.trim()) fd.append('password', password.trim());
+  if (new_password?.trim()) fd.append('new_password', new_password.trim());
+  if (current_password?.trim())
+    fd.append('current_password', current_password.trim());
 
   const normIds = categoryIds
     .map((v) => (typeof v === 'number' ? v : CATEGORY_ID_MAP[v]))
