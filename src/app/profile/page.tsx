@@ -1,7 +1,7 @@
 'use client';
 import Image from 'next/image';
 import TrustLevel from '@/components/profile/TrustLevel';
-import { badgeData, initialProfile } from '@/lib/utils';
+import { badgeData, extractErrorMessage, initialProfile } from '@/lib/utils';
 import Badge from '@/components/common/badge';
 import { fetchProfile } from '@/lib/api/profile';
 import { withdrawUser } from '@/lib/api/auth';
@@ -20,6 +20,8 @@ const ProfilePage = () => {
   const [open, setOpen] = useState(false);
   const [step, setStep] = useState(1);
   const [logoutOpen, setLogoutOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
   const handleClose = () => {
     setOpen(false);
     setStep(1);
@@ -37,14 +39,16 @@ const ProfilePage = () => {
   }, []);
 
   const handleWithdraw = async () => {
-    const res = await withdrawUser(withdrawPwd);
-    console.log(res);
-    if (res.code !== '200') {
-      toast.error('탈퇴하기를 실패했습니다.');
-      return;
+    try {
+      setIsLoading(true);
+      await withdrawUser(withdrawPwd);
+      toast.success('탈퇴하기를 성공했습니다.');
+      router.replace('/auth/login');
+    } catch (err) {
+      setIsLoading(false);
+      const errorMessage = extractErrorMessage(err);
+      toast.error(errorMessage || '탈퇴 중 오류가 발생했습니다.');
     }
-    toast.error('탈퇴하기를 성공했습니다.');
-    router.replace('/auth/login');
   };
 
   const handleLogout = async () => {
@@ -229,6 +233,7 @@ const ProfilePage = () => {
                     <Button
                       className="h-12 min-w-0 flex-1 bg-[#DC221E] text-xl text-white hover:bg-[#DC221E]"
                       onClick={handleWithdraw}
+                      disabled={isLoading}
                     >
                       탈퇴하기
                     </Button>
