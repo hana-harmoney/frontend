@@ -138,8 +138,8 @@ export const extractErrorMessage = (err: unknown) => {
 // education
 export const educationData = [
   {
-    href: 'https://www.hana1qm.com/web/2758/pdsView.do', // 링크
-    imageUrl: '/images/education/image1.png', // 이미지 url
+    href: 'https://www.hana1qm.com/web/2758/pdsView.do',
+    imageUrl: '/images/education/image1.png',
     topic: '하나더넥스트 LEADERS - Mini-MBA 과정',
     location: '서울 강남구 삼성동',
     meta: {
