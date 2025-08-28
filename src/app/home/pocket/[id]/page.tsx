@@ -2,7 +2,7 @@
 import { formatNumber } from '@/lib/utils';
 import Header from '@/components/common/header';
 import { Button } from '@/components/ui/button';
-import { HistoryProps } from '@/types/home';
+import { sampleHistories } from '@/lib/utils';
 import History from '@/components/home/History';
 import { useRouter } from 'next/navigation';
 import { useParams } from 'next/navigation';
@@ -12,28 +12,6 @@ const PocketDetailPage = () => {
   console.log('Pocket ID:', id);
   const target = 100000;
   const amount = 500000;
-
-  const sampleHistories: HistoryProps[] = [
-    {
-      date: '2025.08.20 (수)',
-      histories: [
-        { time: '21:00', title: '베이스 봉투', money: 150000 },
-        { time: '14:30', title: '송유림', money: -50000 },
-        { time: '09:10', title: '교통 봉투', money: 30000 },
-      ],
-    },
-    {
-      date: '2025.08.19 (화)',
-      histories: [
-        { time: '20:15', title: '베이스 봉투', money: 120000 },
-        { time: '11:45', title: '식비 봉투', money: 45000 },
-      ],
-    },
-    {
-      date: '2025.08.18 (월)',
-      histories: [{ time: '18:00', title: '베이스 봉투', money: 200000 }],
-    },
-  ];
 
   return (
     <div className="flex flex-col gap-6 px-6">

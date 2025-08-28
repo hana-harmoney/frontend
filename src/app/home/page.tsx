@@ -11,22 +11,25 @@ const HomePage = () => {
   return (
     <div className="flex w-full flex-col gap-6 px-6">
       <div className="flex flex-col gap-8">
+        <Balance balance={1184805} isAccount={true} bgColor={'bg-[#EBEBEB]'} />
+      </div>
+      <div className="bg-hana-green-light flex flex-col gap-8 rounded-2xl px-4 py-9 text-2xl font-semibold">
         <div className="flex flex-col gap-3">
           <div className="flex items-center justify-between">
             <span className="text-2xl font-semibold">하모니 계좌</span>
-            <span className="text-gray text-xl font-light">상세보기 &gt;</span>
+            <span
+              className="text-gray text-xl font-light"
+              onClick={() => {
+                router.push('/home/account');
+              }}
+            >
+              상세보기 &gt;
+            </span>
           </div>
           <div className="text-gray flex items-end gap-2 font-light">
             <span className="text-2xl">592-910508-29670</span>
             <span className="text-xl underline">복사</span>
           </div>
-        </div>
-        <Balance balance={1184805} isAccount={true} bgColor={'bg-[#EBEBEB]'} />
-      </div>
-      <div className="bg-hana-green-light flex flex-col gap-8 px-4 py-9 text-2xl font-semibold">
-        <div className="flex items-center justify-between">
-          <span className="font-semibold">기본 주머니</span>
-          <span className="text-gray text-xl font-light">상세보기 &gt;</span>
         </div>
         <div className="flex items-center gap-2">
           {formatNumber(13456778)}

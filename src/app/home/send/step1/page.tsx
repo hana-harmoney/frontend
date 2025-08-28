@@ -1,7 +1,7 @@
 'use client';
 import Header from '@/components/common/header';
 import { CustomInput } from '@/components/common/customInput';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import TabBar from '@/components/home/TabBar';
 import AccountHistory from '@/components/home/AccountHistory';

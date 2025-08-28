@@ -1,6 +1,7 @@
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 import { fetchProfileResponse } from '@/types/profile';
+import { HistoryProps } from '@/types/home';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -92,4 +93,27 @@ export const reportReasons = [
   '욕설이나 모욕적인 말을 했어요.',
   '위험하거나 불건전한 제안을 했어요.',
   '스팸이나 광고를 보냈어요.',
+];
+
+// home
+export const sampleHistories: HistoryProps[] = [
+  {
+    date: '2025.08.20 (수)',
+    histories: [
+      { time: '21:00', title: '베이스 봉투', money: 150000 },
+      { time: '14:30', title: '송유림', money: -50000 },
+      { time: '09:10', title: '교통 봉투', money: 30000 },
+    ],
+  },
+  {
+    date: '2025.08.19 (화)',
+    histories: [
+      { time: '20:15', title: '베이스 봉투', money: 120000 },
+      { time: '11:45', title: '식비 봉투', money: 45000 },
+    ],
+  },
+  {
+    date: '2025.08.18 (월)',
+    histories: [{ time: '18:00', title: '베이스 봉투', money: 200000 }],
+  },
 ];

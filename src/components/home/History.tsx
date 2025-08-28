@@ -3,7 +3,7 @@ import HistoryCard from '@/components/home/HistoryCard';
 const History = ({ date, histories }: HistoryProps) => {
   return (
     <div className="flex flex-col gap-5">
-      <div className="border-b-text-2 border-b pb-5 text-xl font-semibold">
+      <div className="border-b-text-2 border-b-2 pb-5 text-xl font-semibold">
         {date}
       </div>
 
