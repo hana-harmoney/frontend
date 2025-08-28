@@ -1,12 +1,13 @@
 'use client';
 import Balance from '@/components/home/Balance';
-import { formatNumber } from '@/lib/utils';
+import { copyAccountNumber, formatNumber } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import BalanceCard from '@/components/home/BalanceCard';
 import { useRouter } from 'next/navigation';
 
 const HomePage = () => {
   const router = useRouter();
+  const accountNumber = '592-910508-29671';
 
   return (
     <div className="flex w-full flex-col gap-6 px-6">
@@ -27,8 +28,15 @@ const HomePage = () => {
             </span>
           </div>
           <div className="text-gray flex items-end gap-2 font-light">
-            <span className="text-2xl">592-910508-29670</span>
-            <span className="text-xl underline">복사</span>
+            <span className="text-2xl">{accountNumber}</span>
+            <button
+              type="button"
+              onClick={() => copyAccountNumber(accountNumber)}
+              className="text-xl underline"
+              aria-label="계좌번호 복사"
+            >
+              복사
+            </button>
           </div>
         </div>
         <div className="flex items-center gap-2">

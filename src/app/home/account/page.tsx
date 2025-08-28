@@ -1,7 +1,7 @@
 'use client';
 
 import Header from '@/components/common/header';
-import { formatNumber } from '@/lib/utils';
+import { copyAccountNumber, formatNumber } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { useRouter } from 'next/navigation';
 import { sampleHistories } from '@/lib/utils';
@@ -9,6 +9,8 @@ import History from '@/components/home/History';
 
 const AccountPage = () => {
   const router = useRouter();
+  const accountNumber = '592-910508-29670';
+
   return (
     <div className="px-6">
       <Header title="내 계좌" centerTitle={false} showBackButton={true} />
@@ -23,8 +25,15 @@ const AccountPage = () => {
                 </span>
               </div>
               <div className="text-gray flex items-end gap-2 font-light">
-                <span className="text-2xl">592-910508-29670</span>
-                <span className="text-xl underline">복사</span>
+                <span className="text-2xl">{accountNumber}</span>
+                <button
+                  type="button"
+                  onClick={() => copyAccountNumber(accountNumber)}
+                  className="text-xl underline"
+                  aria-label="계좌번호 복사"
+                >
+                  복사
+                </button>
               </div>
             </div>
             <div className="flex items-center gap-2">

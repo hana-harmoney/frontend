@@ -119,6 +119,11 @@ export const sampleHistories: HistoryProps[] = [
   },
 ];
 
+export const copyAccountNumber = (accountNumber: string) => {
+  navigator.clipboard.writeText(accountNumber);
+  toast.success('계좌번호가 복사되었습니다.');
+};
+
 // error
 export const extractErrorMessage = (err: unknown) => {
   if (err instanceof Error) {
