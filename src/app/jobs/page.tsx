@@ -73,7 +73,7 @@ const JobsPage = () => {
           />
         ))}
       </div>
-      <div className="flex flex-col gap-3">
+      <div className="flex w-full flex-col gap-3">
         {loading ? (
           <div className="py-10 text-center text-gray-500">불러오는 중…</div>
         ) : error ? (
