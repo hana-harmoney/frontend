@@ -43,7 +43,7 @@ export default function ReviewButton({ roomId }: Props) {
   const handleWriteReview = async () => {
     if (!selected) return;
     try {
-      await writeReview(roomId, reviewItems[selected].score);
+      await writeReview(roomId, reviewItems[selected - 1].score);
 
       toast.success('후기 쓰기가 완료되었습니다.');
       closeReviewDialog();
