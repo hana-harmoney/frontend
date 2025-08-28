@@ -1,6 +1,6 @@
 'use client';
 import Image from 'next/image';
-import Plus from '@/assets/icons/plus.svg';
+import Plus from '@/assets/icons/plus_gray.svg';
 import { CustomInput } from '@/components/common/customInput';
 import { InputWithIcon } from '@/components/common/inputWithIcon';
 import { Textarea } from '@/components/ui/textarea';
@@ -17,6 +17,35 @@ import toast from 'react-hot-toast';
 import { badgeData } from '@/lib/utils';
 import Header from '@/components/common/header';
 
+const saveFileToSessionStorage = async (key: string, file: File) => {
+  const reader = new FileReader();
+  reader.onload = () => {
+    const base64 = reader.result as string;
+    const payload = {
+      name: file.name,
+      type: file.type,
+      lastModified: file.lastModified,
+      base64,
+    };
+    sessionStorage.setItem(key, JSON.stringify(payload));
+  };
+  reader.readAsDataURL(file);
+};
+
+const loadFileFromSessionStorage = (key: string): File | null => {
+  const raw = sessionStorage.getItem(key);
+  if (!raw) return null;
+  const { name, type, lastModified, base64 } = JSON.parse(raw);
+  const byteString = atob(base64.split(',')[1]);
+  const mimeType = base64.split(',')[0].split(':')[1].split(';')[0];
+  const ab = new ArrayBuffer(byteString.length);
+  const ia = new Uint8Array(ab);
+  for (let i = 0; i < byteString.length; i++) {
+    ia[i] = byteString.charCodeAt(i);
+  }
+  return new File([ia], name, { type: mimeType, lastModified });
+};
+
 const JobsNewPage = () => {
   const { data: registerData, setData } = useJobDraft();
   const [isLoading, setIsLoading] = useState(false);
@@ -26,6 +55,7 @@ const JobsNewPage = () => {
     const file = e.target.files?.[0];
     if (file) {
       setImageFile(file);
+      saveFileToSessionStorage('jobImage', file);
       const url = URL.createObjectURL(file);
       setData({ imageUrl: url });
     }
@@ -53,7 +83,8 @@ const JobsNewPage = () => {
   const handleSubmit = async () => {
     if (registerData.categoryId === null || registerData.categoryId === 0)
       return;
-    if (!imageFile) {
+    const fileToUpload = loadFileFromSessionStorage('jobImage');
+    if (!fileToUpload) {
       toast.error('이미지를 선택해주세요.');
       return;
     }
@@ -70,7 +101,7 @@ const JobsNewPage = () => {
 
     try {
       setIsLoading(true);
-      await createJob(job as JobCreateRequest, imageFile);
+      await createJob(job as JobCreateRequest, fileToUpload);
       toast.success('성공적으로 등록되었습니다.');
       setData({
         title: '',
@@ -84,6 +115,7 @@ const JobsNewPage = () => {
         phone: '',
       });
       setImageFile(null);
+      sessionStorage.removeItem('jobImage');
       router.push('/jobs');
     } catch (e) {
       console.error('createJob error:', e);
