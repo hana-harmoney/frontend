@@ -27,15 +27,12 @@
   --color-button-default-bg: #f2f4f6;
   --color-button-default-text: #d9d9d9;
 
-  /* Label colors */
-  --color-label1: #43bd9f;
-  --color-label2: #3e9eca;
-  --color-label3: #6979f1;
-  --color-label4: #e780cd;
-  --color-label5: #ff9562;
-  --color-label6: #f4c143;
-  --color-label7: #3f98fd;
-  --color-label8: #a17ef9;
+  /* Pocket colors */
+  --color-label1: #fff0ec;
+  --color-label2: #fff4dc;
+  --color-label3: #e0f7ea;
+  --color-label4: #e9f2ff;
+  --color-label5: #f6ecf8;
 
   /* Foundation - Hana Green */
   --color-hanagreen-light: #e6f3f3;
