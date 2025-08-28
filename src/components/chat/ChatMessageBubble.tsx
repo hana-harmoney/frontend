@@ -55,9 +55,11 @@ export default function ChatMessageBubble({
               </p>
               {message.amount &&
                 (message.direction === 'incoming' ? (
-                  <Button className="text-xl font-medium">
-                    주머니로 옮기기
-                  </Button>
+                  <Link href={`/chatroom/${roomId}/pocket`}>
+                    <Button className="w-full text-xl font-medium">
+                      주머니로 옮기기
+                    </Button>
+                  </Link>
                 ) : (
                   <ReviewButton roomId={roomId} />
                 ))}

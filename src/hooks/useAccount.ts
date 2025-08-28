@@ -1,3 +1,5 @@
+'use client';
+
 import { fetchPocketList } from '@/lib/api/home';
 import { AccountInfo } from '@/types/pocket';
 import { useEffect, useMemo, useState } from 'react';
