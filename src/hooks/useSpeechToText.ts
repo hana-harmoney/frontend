@@ -24,7 +24,6 @@ const useSpeechToText = () => {
     if (listening) {
       clearTimeout(timer);
       const newTimer = setTimeout(() => {
-        console.log('최초 5초 동안 입력 없음, 인식 중지');
         if (!interimTranscript) {
           // 사용자로부터 입력된 음성의 텍스트가 없을 경우
           SpeechRecognition.stopListening(); // 음성 인식 종료
@@ -38,7 +37,6 @@ const useSpeechToText = () => {
     if (listening) {
       clearTimeout(timer);
       const newTimer = setTimeout(() => {
-        console.log('3초 동안 입력 없음, 인식 중지');
         if (!interimTranscript) {
           // 사용자로부터 입력된 음성의 텍스트가 없을 경우
           SpeechRecognition.stopListening(); // 음성 인식 종료

@@ -33,6 +33,15 @@ export default function ChatRoomPage() {
   const scrollRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
+  const scrollToBottom = (behavior?: ScrollBehavior) => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollTo({
+        top: scrollRef.current.scrollHeight,
+        behavior: behavior ?? 'smooth',
+      });
+    }
+  };
+
   // 채팅방 구독
   useEffect(() => {
     if (!connected || !roomInfo || !myProfile) return;
@@ -95,15 +104,14 @@ export default function ChatRoomPage() {
 
   // 메세지 전송
   const handleSendMessage = (text: string) => {
-    console.log('채팅 메세지 보내기1', connected);
     if (!connected) return;
-
-    console.log('채팅 메세지 보내기2');
 
     send('/pub/chat/message', {
       roomId,
       message: text,
     });
+
+    setTimeout(() => scrollToBottom(), 200);
   };
 
   return (
