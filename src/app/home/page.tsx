@@ -36,15 +36,9 @@ const HomePage = () => {
   return (
     <div className="flex w-full flex-col gap-6 px-6">
       <div className="flex flex-col gap-8">
-        {/* <Balance
-          balance={account?.totalAssets}
-          isAccount={true}
-          bgColor="bg-[#EBEBEB]"
-          className="-mb-5"
-        /> */}
-        <div className="flex flex-col justify-center gap-2 px-2 pt-6 text-xl font-semibold">
+        <div className="flex flex-col justify-center gap-2 px-2 pt-6 text-2xl font-semibold">
           <div>총 자산</div>
-          <div className="text-main flex items-center gap-1 text-2xl">
+          <div className="text-main flex items-center gap-1 text-3xl">
             {formatNumber(account.accountBalance)}
             <span className="text-text">원</span>
           </div>
