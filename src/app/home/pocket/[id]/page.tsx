@@ -9,7 +9,6 @@ import { useParams } from 'next/navigation';
 const PocketDetailPage = () => {
   const router = useRouter();
   const { id } = useParams<{ id: string }>();
-  console.log('Pocket ID:', id);
   const target = 100000;
   const amount = 500000;
 
