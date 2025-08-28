@@ -6,6 +6,7 @@ import { formatTime } from '@/lib/date/dateformatter';
 import { ChatMessage } from '@/types/chat';
 import { Button } from '../ui/button';
 import ReviewButton from './ReviewButton';
+import { useChatAmountStore } from '@/stores/useChatRoomsStore';
 
 type Props = {
   roomId: number;
@@ -21,6 +22,7 @@ export default function ChatMessageBubble({
   isFirstOfGroup,
   isLastOfGroup,
 }: Props) {
+  const setAmount = useChatAmountStore((state) => state.setAmount);
   const isIncoming = message.direction === 'incoming';
   const showProfile = isIncoming && isFirstOfGroup && message.senderProfileImg;
 
@@ -55,7 +57,10 @@ export default function ChatMessageBubble({
               </p>
               {message.amount &&
                 (message.direction === 'incoming' ? (
-                  <Link href={`/chatroom/${roomId}/pocket`}>
+                  <Link
+                    href={`/chatroom/${roomId}/pocket`}
+                    onClick={() => setAmount(message.amount ?? 0)}
+                  >
                     <Button className="w-full text-xl font-medium">
                       주머니로 옮기기
                     </Button>

@@ -30,3 +30,13 @@ export const useChatRoomDetailStore = create<ChatRoomDetailState>((set) => ({
   roomInfo: null,
   setRoomInfo: (roomInfo: ChatRoomDetail) => set({ roomInfo }),
 }));
+
+interface ChatAmountState {
+  amount: number;
+  setAmount: (amount: number) => void;
+}
+
+export const useChatAmountStore = create<ChatAmountState>((set) => ({
+  amount: 0,
+  setAmount: (amount: number) => set({ amount }),
+}));
