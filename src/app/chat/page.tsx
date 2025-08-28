@@ -2,13 +2,13 @@
 
 import ChatRoomTile from '@/components/chat/ChatRoomTile';
 import { fetchChatRooms } from '@/lib/api/chat';
-import { useChatRoomStore } from '@/stores/useChatRoomsStore';
+import { useChatRoomListStore } from '@/stores/useChatRoomsStore';
 import { useEffect, useState } from 'react';
 
 export default function ChatPage() {
   const [isLoading, setIsLoading] = useState(true);
-  const setChatRooms = useChatRoomStore((state) => state.setChatRooms);
-  const chatRooms = useChatRoomStore((state) => state.chatRooms);
+  const setChatRooms = useChatRoomListStore((state) => state.setChatRooms);
+  const chatRooms = useChatRoomListStore((state) => state.chatRooms);
 
   useEffect(() => {
     (async () => {

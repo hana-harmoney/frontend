@@ -20,6 +20,7 @@ export type ChatRoomDetail = {
   boardId: number;
   writerId: number;
   nickname: string;
+  name: string;
   profileUrl: string;
   title: string;
   wage: number;

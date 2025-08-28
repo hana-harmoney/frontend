@@ -8,7 +8,7 @@ import Header from '@/components/common/header';
 import ChatInput from '@/components/chat/ChatInput';
 import PhoneCallButton from '@/components/chat/PhoneCallButton';
 import ReportButton from '@/components/chat/ReportButton';
-import { useChatRoomStore } from '@/stores/useChatRoomsStore';
+import { useChatRoomListStore } from '@/stores/useChatRoomsStore';
 import ChatBoardCard from '@/components/chat/ChatBoardCard';
 import { useChatRoomInfo } from '@/hooks/useChatRoomInfo';
 import { ChatMessage } from '@/types/chat';
@@ -20,7 +20,7 @@ import { useStomp } from '@/hooks/useStomp';
 export default function ChatRoomPage() {
   const params = useParams();
   const roomId = Number(params.roomId);
-  const updateRoom = useChatRoomStore((state) => state.updateRoom);
+  const updateRoom = useChatRoomListStore((state) => state.updateRoom);
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [isWriter, setIsWriter] = useState(false);
   const [showRecord, setShowRecord] = useState(false);
@@ -131,6 +131,7 @@ export default function ChatRoomPage() {
 
       {roomInfo && (
         <ChatBoardCard
+          roomId={roomId}
           boardId={roomInfo.boardId}
           title={roomInfo.title}
           address={roomInfo.address}
