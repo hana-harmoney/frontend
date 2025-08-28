@@ -1,18 +1,47 @@
 'use client';
-import Balance from '@/components/home/Balance';
 import { copyAccountNumber, formatNumber } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import BalanceCard from '@/components/home/BalanceCard';
 import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import { fetchPocketList } from '@/lib/api/home';
+import { AccountInfo } from '@/types/pocket';
 
 const HomePage = () => {
+  const labelBg = [
+    'bg-label0',
+    'bg-label1',
+    'bg-label2',
+    'bg-label3',
+    'bg-label4',
+    'bg-label5',
+  ];
+
   const router = useRouter();
-  const accountNumber = '592-910508-29671';
+  const [account, setAccount] = useState<AccountInfo>({
+    totalAssets: 0,
+    account: '',
+    accountBalance: 0,
+    pocketLists: [],
+  });
+
+  useEffect(() => {
+    (async () => {
+      const response = await fetchPocketList();
+      setAccount(response.result);
+    })();
+  }, []);
 
   return (
     <div className="flex w-full flex-col gap-6 px-6">
       <div className="flex flex-col gap-8">
-        <Balance balance={1184805} isAccount={true} bgColor={'bg-[#EBEBEB]'} />
+        <div className="flex flex-col justify-center gap-2 px-2 pt-6 text-2xl font-semibold">
+          <div>총 자산</div>
+          <div className="text-main flex items-center gap-1 text-3xl">
+            {formatNumber(account.accountBalance)}
+            <span className="text-text">원</span>
+          </div>
+        </div>
       </div>
       <div className="bg-hana-green-light flex flex-col gap-8 rounded-2xl px-4 py-9 text-2xl font-semibold">
         <div className="flex flex-col gap-3">
@@ -28,10 +57,10 @@ const HomePage = () => {
             </span>
           </div>
           <div className="text-gray flex items-end gap-2 font-light">
-            <span className="text-2xl">{accountNumber}</span>
+            <span className="text-2xl">{account.account}</span>
             <button
               type="button"
-              onClick={() => copyAccountNumber(accountNumber)}
+              onClick={() => copyAccountNumber(account.account)}
               className="text-xl underline"
               aria-label="계좌번호 복사"
             >
@@ -40,7 +69,7 @@ const HomePage = () => {
           </div>
         </div>
         <div className="flex items-center gap-2">
-          {formatNumber(13456778)}
+          {formatNumber(account.accountBalance)}
           <span className="font-light">원</span>
         </div>
         <Button
@@ -52,27 +81,16 @@ const HomePage = () => {
           송금하기
         </Button>
       </div>
-      <BalanceCard
-        id={1}
-        pocketName={'용돈'}
-        balance={13456778}
-        isAccount={false}
-        bgColor={'bg-[#FFF0EC]'}
-      />
-      <BalanceCard
-        id={2}
-        pocketName={'여행'}
-        balance={13456778}
-        isAccount={false}
-        bgColor={'bg-[#F6ECF8]'}
-      />
-      <BalanceCard
-        id={1}
-        pocketName={'취미'}
-        balance={13456778}
-        isAccount={false}
-        bgColor={'bg-[#E9F2FF]'}
-      />
+      {account.pocketLists?.map((pocket, idx) => (
+        <BalanceCard
+          key={pocket.pocketId}
+          id={pocket.pocketId}
+          pocketName={pocket.name}
+          balance={pocket.amount}
+          isAccount={false}
+          bgColor={labelBg[(idx + 1) % labelBg.length]}
+        />
+      ))}
       <Button
         className="py-7 text-xl font-semibold"
         onClick={() => {
