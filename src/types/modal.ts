@@ -15,4 +15,5 @@ export type TwoStepModalProps = {
     amount: number;
     account: string;
   }) => void;
+  onComplete?: () => void;
 };
