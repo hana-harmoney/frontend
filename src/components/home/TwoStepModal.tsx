@@ -51,7 +51,7 @@ export default function TwoStepModal({
   const handleComplete = () => {
     // onSubmit({ type, name: name.trim(), amount, account: account.trim() });
     console.log('handleComplete');
-    // onClose();
+    onClose();
   };
 
   return (

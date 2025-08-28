@@ -30,19 +30,24 @@ const Card = ({
 
   return (
     <div
-      className="border-teduri flex flex-col rounded-2xl border"
+      className="border-teduri flex flex-col overflow-hidden rounded-2xl border"
       onClick={onClick}
     >
-      <div className="border-b-teduri flex items-center justify-center border-b">
-        <Image
-          src={imageUrl}
-          alt="profile"
-          width={120}
-          height={120}
-          className="object-cover"
-          unoptimized
-        />
-      </div>
+      {/*<div className="border-b-teduri flex items-center justify-center border-b">*/}
+      {/*  <Image*/}
+      {/*    src={imageUrl || '/images/jobs-default.png'}*/}
+      {/*    alt="profile"*/}
+      {/*    width={500}*/}
+      {/*    height={120}*/}
+      {/*    className="object-cover"*/}
+      {/*    unoptimized*/}
+      {/*  />*/}
+      {/*</div>*/}
+      <img
+        src={imageUrl || '/images/jobs-default.png'}
+        className="border-b-teduri flex max-h-[240px] items-center justify-center border-b object-cover"
+      />
+
       <div className="flex flex-col gap-9 px-3 py-5">
         <div className="flex flex-col gap-2">
           <div className="flex flex-col gap-2 font-semibold">

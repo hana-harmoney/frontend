@@ -3,7 +3,7 @@ import Badge from '@/components/common/badge';
 import Card from '@/components/jobs/card';
 import NoData from '@/assets/images/no-data.svg';
 import EditIcon from '@/assets/icons/edit.svg';
-import TrashIcon from '@/assets/icons/trash.svg';
+import BoardIcon from '@/assets/icons/board.svg';
 import PlusIcon from '@/assets/icons/plus.svg';
 import { useEffect, useState } from 'react';
 import { JobsProps } from '@/types/jobs';
@@ -124,7 +124,7 @@ const JobsPage = () => {
               }}
               className="hover:bg-hanagreen-light flex items-center gap-3 rounded-md px-4 py-3 text-base text-gray-700"
             >
-              <TrashIcon width={24} height={24} />
+              <BoardIcon width={24} height={24} />
               내가 쓴 글 보기
             </button>
           </div>

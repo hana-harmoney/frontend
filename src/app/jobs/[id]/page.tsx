@@ -128,18 +128,19 @@ const JobDetailPage = () => {
         </div>
       </Header>
       <div className="flex w-full flex-col items-center gap-5">
-        <div className="flex w-full px-20">
-          <div className="relative h-60 w-full">
-            <Image
-              src={boardData.imageUrl}
-              alt="profile"
-              fill
-              className="object-cover object-center"
-              unoptimized
-              sizes="48px"
-            />
+        {boardData.imageUrl && (
+          <div className="flex w-full px-20">
+            <div className="relative h-60 w-full">
+              <Image
+                src={boardData.imageUrl}
+                alt="profile"
+                fill
+                className="object-cover object-center"
+                unoptimized
+              />
+            </div>
           </div>
-        </div>
+        )}
         <div className="flex w-full flex-col gap-5 px-6">
           <div className="flex items-center gap-3 text-xl font-semibold">
             <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-full">

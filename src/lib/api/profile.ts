@@ -65,7 +65,6 @@ export async function createProfile({
 
 export const fetchProfile = async () => {
   const res = await apiClient('/profile');
-  console.log('res : ', res);
   return res.result;
 };
 
@@ -106,7 +105,6 @@ export async function updateProfile(payload: EditProfilePayload) {
 
   descImageFiles.forEach((file) => fd.append('desc_images', file));
 
-  console.log('descImageUrls : ', descImageUrls);
   for (let i = 0; i < descImageUrls.length; i++) {
     const url = descImageUrls[i];
 
