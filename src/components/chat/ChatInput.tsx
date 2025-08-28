@@ -30,7 +30,7 @@ export default function ChatInput({
 }: Props) {
   const [text, setText] = useState('');
   const {
-    interimTranscript,
+    finalTranscript,
     listening,
     browserSupportsSpeechRecognition,
     toggleListening,
@@ -38,12 +38,12 @@ export default function ChatInput({
 
   // 음성 인식
   useEffect(() => {
-    if (interimTranscript.trim()) {
+    if (finalTranscript.trim()) {
       setText(
-        (prev) => `${prev.trim() ? `${prev} ` : ''}${interimTranscript.trim()}`,
+        (prev) => `${prev.trim() ? `${prev} ` : ''}${finalTranscript.trim()}`,
       );
     }
-  }, [interimTranscript]);
+  }, [finalTranscript]);
 
   const toggleShowRecord = () => {
     if (listening) {
