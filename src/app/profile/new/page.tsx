@@ -6,7 +6,7 @@ import { useProfileRegister } from '@/stores/useProfileRegister';
 import { CustomInput } from '@/components/common/customInput';
 import React from 'react';
 import Image from 'next/image';
-import Plus from '@/assets/icons/plus.svg';
+import PlusGray from '@/assets/icons/plus_gray.svg';
 import CircleRemove from '@/assets/icons/circle_remove.svg';
 import { badgeData } from '@/lib/utils';
 import Badge from '@/components/common/badge';
@@ -104,7 +104,7 @@ export default function ProfileNewPage() {
                 unoptimized
               />
             ) : (
-              <Plus />
+              <PlusGray />
             )}
             {profileImageUrl ? (
               <CircleRemove
@@ -181,7 +181,7 @@ export default function ProfileNewPage() {
 
             {introImageUrls.length < MAX_INTRO && (
               <label className="border-teduri relative flex h-32 w-32 cursor-pointer items-center justify-center overflow-hidden rounded-2xl border">
-                <Plus />
+                <PlusGray />
                 <input
                   type="file"
                   accept="image/*"

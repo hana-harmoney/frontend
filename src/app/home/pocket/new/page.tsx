@@ -25,51 +25,52 @@ const CreatePocketPage = () => {
   };
 
   return (
-    <div className="flex flex-col gap-7 px-6">
+    <div className="px-6">
       <Header
         title={'주머니 만들기'}
         showBackButton={true}
         centerTitle={false}
       />
-
-      <h1 className="text-3xl font-semibold">주머니</h1>
-      <div className="flex flex-col gap-5">
-        <div className="flex flex-col gap-3">
-          <span className="text-2xl font-light">주머니 이름</span>
-          <CustomInput
-            placeholder="유림이 용돈"
-            value={pocketName}
-            onChange={(e) => setPocketName(e.target.value)}
-          />
-        </div>
-        <div className="flex flex-col gap-3">
-          <span className="text-2xl font-light">주머니 이름</span>
-          <div className="flex gap-1">
-            {gun.map((item, idx) => (
-              <div
-                key={idx}
-                className="flex-1 rounded-md bg-[#EFF0F4] px-3 py-2 text-center"
-                onClick={() => {
-                  increaseTarget(item.value);
-                }}
-              >
-                {item.text}
-              </div>
-            ))}
+      <div className="flex flex-col gap-7">
+        <h1 className="text-3xl font-semibold">주머니</h1>
+        <div className="flex flex-col gap-5">
+          <div className="flex flex-col gap-3">
+            <span className="text-2xl font-light">주머니 이름</span>
+            <CustomInput
+              placeholder="유림이 용돈"
+              value={pocketName}
+              onChange={(e) => setPocketName(e.target.value)}
+            />
           </div>
+          <div className="flex flex-col gap-3">
+            <span className="text-2xl font-light">주머니 이름</span>
+            <div className="flex gap-1">
+              {gun.map((item, idx) => (
+                <div
+                  key={idx}
+                  className="flex-1 rounded-md bg-[#EFF0F4] px-3 py-2 text-center"
+                  onClick={() => {
+                    increaseTarget(item.value);
+                  }}
+                >
+                  {item.text}
+                </div>
+              ))}
+            </div>
+          </div>
+          <NumericKeypad
+            value={targetStr}
+            onChange={(v) => setTargetStr(v)}
+            onSubmit={(v) => {
+              setTargetStr(v);
+            }}
+            maxLength={9}
+            shuffle={false}
+            showWonSuffix={true}
+            className="mt-2"
+          />
+          <Button className="py-7 text-xl font-semibold">작성 완료</Button>
         </div>
-        <NumericKeypad
-          value={targetStr}
-          onChange={(v) => setTargetStr(v)}
-          onSubmit={(v) => {
-            setTargetStr(v);
-          }}
-          maxLength={9}
-          shuffle={false}
-          showWonSuffix={true}
-          className="mt-2"
-        />
-        <Button className="py-7 text-xl font-semibold">작성 완료</Button>
       </div>
     </div>
   );

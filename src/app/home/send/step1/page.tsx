@@ -1,7 +1,7 @@
 'use client';
 import Header from '@/components/common/header';
 import { CustomInput } from '@/components/common/customInput';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import TabBar from '@/components/home/TabBar';
 import AccountHistory from '@/components/home/AccountHistory';
@@ -32,49 +32,55 @@ const SendStep1Page = () => {
   ];
 
   return (
-    <div className="flex w-full flex-col gap-6 px-6">
+    <div className="px-6">
       <Header title="송금하기" centerTitle={false} showBackButton={true} />
-      <span className="text-3xl font-semibold">누구에게 보낼까요?</span>
-      <CustomInput
-        placeholder="계좌번호 입력"
-        value={accountNumber}
-        onChange={(e) => setAccountNumber(e.target.value)}
-      />
-      <Button
-        className="py-7 text-xl font-semibold"
-        disabled={accountNumber.length === 0}
-        onClick={() => {
-          setGlobalAccountNumber(accountNumber);
-          router.push('/home/send/step2');
-        }}
-      >
-        송금하기
-      </Button>
       <div className="flex flex-col gap-6">
-        <TabBar tabs={tabs} selectedId={selectedId} clickTab={setSelectedId} />
-        <div className="flex flex-col gap-4">
-          {selectedId == 0 &&
-            gugu.map((item, idx) => {
-              return (
-                <AccountHistory
-                  key={idx}
-                  name={item.name}
-                  accountNum={item.accountNumber}
-                  onClick={() => setAccountNumber(item.accountNumber)}
-                />
-              );
-            })}
-          {selectedId == 1 &&
-            gugu2.map((item, idx) => {
-              return (
-                <AccountHistory
-                  key={idx}
-                  name={item.name}
-                  accountNum={item.accountNumber}
-                  onClick={() => setAccountNumber(item.accountNumber)}
-                />
-              );
-            })}
+        <span className="text-3xl font-semibold">누구에게 보낼까요?</span>
+        <CustomInput
+          placeholder="계좌번호 입력"
+          value={accountNumber}
+          onChange={(e) => setAccountNumber(e.target.value)}
+        />
+        <Button
+          className="py-7 text-xl font-semibold"
+          disabled={accountNumber.length === 0}
+          onClick={() => {
+            setGlobalAccountNumber(accountNumber);
+            router.push('/home/send/step2');
+          }}
+        >
+          송금하기
+        </Button>
+        <div className="flex flex-col gap-6">
+          <TabBar
+            tabs={tabs}
+            selectedId={selectedId}
+            clickTab={setSelectedId}
+          />
+          <div className="flex flex-col gap-4">
+            {selectedId == 0 &&
+              gugu.map((item, idx) => {
+                return (
+                  <AccountHistory
+                    key={idx}
+                    name={item.name}
+                    accountNum={item.accountNumber}
+                    onClick={() => setAccountNumber(item.accountNumber)}
+                  />
+                );
+              })}
+            {selectedId == 1 &&
+              gugu2.map((item, idx) => {
+                return (
+                  <AccountHistory
+                    key={idx}
+                    name={item.name}
+                    accountNum={item.accountNumber}
+                    onClick={() => setAccountNumber(item.accountNumber)}
+                  />
+                );
+              })}
+          </div>
         </div>
       </div>
     </div>

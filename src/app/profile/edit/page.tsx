@@ -158,135 +158,136 @@ export default function ProfileEditPage() {
   };
 
   return (
-    <div className="px-6 pt-5 pb-24">
+    <>
       <Header
         title={'내 정보 수정하기'}
         showBackButton={true}
         centerTitle={false}
       />
+      <div className="px-6 pt-5">
+        <div className="flex flex-col gap-7">
+          <div className="flex w-full flex-col items-center gap-3">
+            <label className="border-main relative flex h-32 w-32 cursor-pointer items-center justify-center overflow-hidden overflow-visible rounded-full border-2">
+              {profileImagePreview ? (
+                <>
+                  <Image
+                    src={profileImagePreview}
+                    alt="profile-preview"
+                    fill
+                    className="rounded-full object-contain object-center"
+                    unoptimized
+                  />
+                  <div className="border-gray absolute right-0 bottom-0 rounded-full border bg-white p-1">
+                    <Camera className="h-6 w-6 object-contain object-center" />
+                  </div>
+                </>
+              ) : (
+                <Plus />
+              )}
 
-      <div className="flex flex-col gap-7">
-        <div className="flex w-full flex-col items-center gap-3">
-          <label className="border-main relative flex h-32 w-32 cursor-pointer items-center justify-center overflow-hidden overflow-visible rounded-full border-2">
-            {profileImagePreview ? (
-              <>
-                <Image
-                  src={profileImagePreview}
-                  alt="profile-preview"
-                  fill
-                  className="rounded-full object-contain object-center"
-                  unoptimized
-                />
-                <div className="border-gray absolute right-0 bottom-0 rounded-full border bg-white p-1">
-                  <Camera className="h-6 w-6 object-contain object-center" />
-                </div>
-              </>
-            ) : (
-              <Plus />
-            )}
-
-            <input
-              type="file"
-              accept="image/*"
-              className="hidden"
-              onChange={handleProfileImageChange}
+              <input
+                type="file"
+                accept="image/*"
+                className="hidden"
+                onChange={handleProfileImageChange}
+              />
+            </label>
+            <Button
+              className="w-full py-6 text-xl font-semibold"
+              onClick={() => router.push('/profile/edit/password')}
+            >
+              비밀번호 수정
+            </Button>
+          </div>
+          <div className="flex w-full flex-col gap-3 text-2xl font-light">
+            닉네임
+            <CustomInput
+              placeholder="닉네임을 입력해주세요."
+              value={nickname}
+              onChange={(e) => setNickname(e.target.value)}
             />
-          </label>
+          </div>
+
+          <div className="flex w-full flex-col gap-3 text-2xl font-light">
+            관심 카테고리 선택
+            <div className="grid grid-cols-3 gap-4 self-center">
+              {badgeData.map((item) => {
+                const key = item.id;
+                const active = categories.includes(key);
+                return (
+                  <Badge
+                    key={item.id}
+                    active={active}
+                    text={item.text}
+                    onClick={() => toggleCategory(key)}
+                  />
+                );
+              })}
+            </div>
+          </div>
+
+          <div className="flex w-full flex-col gap-3 text-2xl font-light">
+            소개글
+            <Textarea
+              placeholder="제육볶음 달인!"
+              className="placeholder:text-gray h-44 text-xl font-normal placeholder:text-xl"
+              value={description ?? ''}
+              onChange={(e) => setDescription(e.target.value)}
+              maxLength={500}
+            />
+            <span className="text-end text-xl">
+              {(description ?? '').length}/500
+            </span>
+          </div>
+
+          <div className="flex w-full flex-col gap-3 text-2xl font-light">
+            소개 사진 <span className="text-gray text-base">(최대 5장)</span>
+            <div className="flex flex-wrap gap-3">
+              {introItems.map((item, idx) => (
+                <div
+                  key={`${item.id}-${idx}`}
+                  className="border-teduri relative h-32 w-32 overflow-hidden rounded-2xl border"
+                >
+                  <Image
+                    src={item.url}
+                    alt={`intro-${idx}`}
+                    fill
+                    className="object-cover object-center"
+                    unoptimized
+                  />
+                  <CircleRemove
+                    className="absolute top-0 right-0"
+                    onClick={(e: React.MouseEvent<SVGSVGElement>) => {
+                      removeIntroAt(idx);
+                      e.preventDefault();
+                    }}
+                  />
+                </div>
+              ))}
+
+              {introItems.length < MAX_INTRO && (
+                <label className="border-teduri relative flex h-32 w-32 cursor-pointer items-center justify-center overflow-hidden rounded-2xl border">
+                  <Plus />
+                  <input
+                    type="file"
+                    accept="image/*"
+                    multiple
+                    className="hidden"
+                    onChange={handleIntroUpload}
+                  />
+                </label>
+              )}
+            </div>
+          </div>
           <Button
             className="w-full py-6 text-xl font-semibold"
-            onClick={() => router.push('/profile/edit/password')}
+            onClick={handleSubmit}
+            disabled={isLoading}
           >
-            비밀번호 수정
+            수정 완료
           </Button>
         </div>
-        <div className="flex w-full flex-col gap-3 text-2xl font-light">
-          닉네임
-          <CustomInput
-            placeholder="닉네임을 입력해주세요."
-            value={nickname}
-            onChange={(e) => setNickname(e.target.value)}
-          />
-        </div>
-
-        <div className="flex w-full flex-col gap-3 text-2xl font-light">
-          관심 카테고리 선택
-          <div className="grid grid-cols-3 gap-4 self-center">
-            {badgeData.map((item) => {
-              const key = item.id;
-              const active = categories.includes(key);
-              return (
-                <Badge
-                  key={item.id}
-                  active={active}
-                  text={item.text}
-                  onClick={() => toggleCategory(key)}
-                />
-              );
-            })}
-          </div>
-        </div>
-
-        <div className="flex w-full flex-col gap-3 text-2xl font-light">
-          소개글
-          <Textarea
-            placeholder="제육볶음 달인!"
-            className="placeholder:text-gray h-44 text-xl font-normal placeholder:text-xl"
-            value={description ?? ''}
-            onChange={(e) => setDescription(e.target.value)}
-            maxLength={500}
-          />
-          <span className="text-end text-xl">
-            {(description ?? '').length}/500
-          </span>
-        </div>
-
-        <div className="flex w-full flex-col gap-3 text-2xl font-light">
-          소개 사진 <span className="text-gray text-base">(최대 5장)</span>
-          <div className="flex flex-wrap gap-3">
-            {introItems.map((item, idx) => (
-              <div
-                key={`${item.id}-${idx}`}
-                className="border-teduri relative h-32 w-32 overflow-hidden rounded-2xl border"
-              >
-                <Image
-                  src={item.url}
-                  alt={`intro-${idx}`}
-                  fill
-                  className="object-cover object-center"
-                  unoptimized
-                />
-                <CircleRemove
-                  className="absolute top-0 right-0"
-                  onClick={(e: React.MouseEvent<SVGSVGElement>) => {
-                    removeIntroAt(idx);
-                    e.preventDefault();
-                  }}
-                />
-              </div>
-            ))}
-
-            {introItems.length < MAX_INTRO && (
-              <label className="border-teduri relative flex h-32 w-32 cursor-pointer items-center justify-center overflow-hidden rounded-2xl border">
-                <Plus />
-                <input
-                  type="file"
-                  accept="image/*"
-                  multiple
-                  className="hidden"
-                  onChange={handleIntroUpload}
-                />
-              </label>
-            )}
-          </div>
-        </div>
-        <Button
-          className="w-full py-6 text-xl font-semibold"
-          onClick={handleSubmit}
-          disabled={isLoading}
-        >
-          수정 완료
-        </Button>
       </div>
-    </div>
+    </>
   );
 }

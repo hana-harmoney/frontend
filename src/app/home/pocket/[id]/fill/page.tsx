@@ -40,8 +40,8 @@ const FillPage = () => {
   };
 
   return (
-    <div className="flex w-full flex-col gap-6 px-6">
-      <Header title="꺼내기" centerTitle={false} showBackButton={true} />
+    <div className="px-6">
+      <Header title="채우기" centerTitle={false} showBackButton={true} />
       <div className="flex flex-col gap-12">
         <div className="flex flex-col gap-4 text-2xl">
           <div className="flex flex-col">

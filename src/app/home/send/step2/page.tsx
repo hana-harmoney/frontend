@@ -55,65 +55,67 @@ const SendStep2Page = () => {
   };
 
   return (
-    <div className="flex w-full flex-col gap-6 px-6">
+    <div className="px-6">
       <Header title="송금하기" centerTitle={false} showBackButton={true} />
-      <div className="flex flex-col gap-12">
-        <div className="flex flex-col text-2xl">
-          <div className="flex gap-2">
-            <span className="font-semibold">{receiver}</span>
-            님에게
+      <div className="flex w-full flex-col gap-6">
+        <div className="flex flex-col gap-12">
+          <div className="flex flex-col text-2xl">
+            <div className="flex gap-2">
+              <span className="font-semibold">{receiver}</span>
+              님에게
+            </div>
+            <span className="text-gray font-light">{accountNumber}</span>
           </div>
-          <span className="text-gray font-light">{accountNumber}</span>
-        </div>
-        <span className="w-full text-center text-3xl font-semibold">
-          {targetStr.length == 0 ? (
-            <>얼마를 보낼까요?</>
-          ) : (
-            <>{formatNumber(Number(targetStr))} 원</>
-          )}
-        </span>
-        <div className="flex flex-col gap-11">
-          <div className="flex gap-1">
-            {gun.map((item, idx) => (
-              <div
-                key={idx}
-                className="flex-1 rounded-md bg-[#EFF0F4] px-3 py-2 text-center"
-                onClick={() => {
-                  increaseTarget(item.value);
-                }}
-              >
-                {item.text}
-              </div>
-            ))}
+          <span className="w-full text-center text-3xl font-semibold">
+            {targetStr.length == 0 ? (
+              <>얼마를 보낼까요?</>
+            ) : (
+              <>{formatNumber(Number(targetStr))} 원</>
+            )}
+          </span>
+          <div className="flex flex-col gap-11">
+            <div className="flex gap-1">
+              {gun.map((item, idx) => (
+                <div
+                  key={idx}
+                  className="flex-1 rounded-md bg-[#EFF0F4] px-3 py-2 text-center"
+                  onClick={() => {
+                    increaseTarget(item.value);
+                  }}
+                >
+                  {item.text}
+                </div>
+              ))}
+            </div>
+            <NumericKeypad
+              value={targetStr}
+              onChange={(v) => setTargetStr(v)}
+              onSubmit={(v) => {
+                setTargetStr(v);
+              }}
+              maxLength={9}
+              shuffle={false}
+              showWonSuffix={true}
+              className="mt-2"
+              isAccount={true}
+              clickComplete={clickComplete}
+              completeComment="완료"
+            />
           </div>
-          <NumericKeypad
-            value={targetStr}
-            onChange={(v) => setTargetStr(v)}
-            onSubmit={(v) => {
-              setTargetStr(v);
-            }}
-            maxLength={9}
-            shuffle={false}
-            showWonSuffix={true}
-            className="mt-2"
-            isAccount={true}
-            clickComplete={clickComplete}
-            completeComment="완료"
-          />
         </div>
+        <TwoStepModal
+          open={open}
+          type={'send'}
+          name={receiver}
+          amount={Number(targetStr)}
+          account={accountNumber}
+          onClose={() => setOpen(false)}
+          onSubmit={({ type, name, amount, account }) => {
+            console.log('[SUBMIT]', { type, name, amount, account });
+            setOpen(false);
+          }}
+        />
       </div>
-      <TwoStepModal
-        open={open}
-        type={'send'}
-        name={receiver}
-        amount={Number(targetStr)}
-        account={accountNumber}
-        onClose={() => setOpen(false)}
-        onSubmit={({ type, name, amount, account }) => {
-          console.log('[SUBMIT]', { type, name, amount, account });
-          setOpen(false);
-        }}
-      />
     </div>
   );
 };

@@ -6,16 +6,19 @@ import { Button } from '@/components/ui/button';
 import { updateProfile } from '@/lib/api/profile';
 import toast from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
+import { extractErrorMessage } from '@/lib/utils';
 
 const EditPasswordPage = () => {
   const router = useRouter();
 
+  const [oldPassword, setOldPassword] = useState('');
   const [password, setPassword] = useState('');
   const [passwordConfirm, setPasswordConfirm] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const isValidPassword = (pw: string) => /^.{8,}$/.test(pw);
 
   const formValid = !!(
+    isValidPassword(oldPassword) &&
     isValidPassword(password) &&
     passwordConfirm &&
     password === passwordConfirm
@@ -29,16 +32,17 @@ const EditPasswordPage = () => {
       }
       setIsLoading(true);
       await updateProfile({
-        password: password,
+        current_password: oldPassword,
+        new_password: password,
       });
 
       toast.success('비밀번호가 수정되었습니다.');
-      router.back();
+      router.push('/auth/login');
     } catch (err) {
       setIsLoading(false);
-      toast.error(
-        err instanceof Error ? err.message : '수정 중 오류가 발생했습니다.',
-      );
+      const errorMessage = extractErrorMessage(err);
+
+      toast.error(errorMessage || '수정 중 오류가 발생했습니다.');
     }
   };
   return (
@@ -52,6 +56,15 @@ const EditPasswordPage = () => {
         비밀번호 변경
       </div>
       <div className="flex flex-col gap-4">
+        <div className="flex w-full flex-col gap-3 py-2 text-2xl font-light">
+          기존 비밀번호
+          <CustomInput
+            type="password"
+            placeholder="기존 비밀번호를 입력해주세요"
+            value={oldPassword}
+            onChange={(e) => setOldPassword(e.target.value)}
+          />
+        </div>
         <div className="flex w-full flex-col gap-3 py-2 text-2xl font-light">
           새 비밀번호
           <CustomInput
@@ -93,7 +106,7 @@ const EditPasswordPage = () => {
         <Button
           className="w-full py-6 text-xl font-semibold"
           onClick={handleSubmit}
-          disabled={isLoading}
+          disabled={isLoading || !formValid}
         >
           비밀번호 변경 완료
         </Button>

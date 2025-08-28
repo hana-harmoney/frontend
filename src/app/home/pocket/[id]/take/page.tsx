@@ -39,73 +39,75 @@ const TakePage = () => {
     console.log('clickComplete');
   };
   return (
-    <div className="flex w-full flex-col gap-6 px-6">
-      <Header title="채우기" centerTitle={false} showBackButton={true} />
-      <div className="flex flex-col gap-12">
-        <div className="flex flex-col gap-4 text-2xl">
-          <div className="flex flex-col">
-            <div className="flex gap-2">
-              <span className="font-semibold">{pocket}</span>
-              에서
-            </div>
-            <div className="text-gray flex gap-1 text-xl font-light">
-              잔액
-              <span className="font-semibold">{formatNumber(amount)}</span>원
-            </div>
-          </div>
-          <div className="flex items-center gap-1 text-2xl">
-            <span className="font-semibold">내 기본 주머니</span>
-            <span className="font-light">로</span>
-          </div>
-        </div>
-        <span className="w-full text-center text-3xl font-semibold">
-          {targetStr.length == 0 ? (
-            <>얼마를 꺼낼까요?</>
-          ) : (
-            <>{formatNumber(Number(targetStr))} 원</>
-          )}
-        </span>
-        <div className="flex flex-col gap-11">
-          <div className="flex gap-1">
-            {gun.map((item, idx) => (
-              <div
-                key={idx}
-                className="flex-1 rounded-md bg-[#EFF0F4] px-3 py-2 text-center"
-                onClick={() => {
-                  increaseTarget(item.value);
-                }}
-              >
-                {item.text}
+    <div className="px-6">
+      <Header title="꺼내기" centerTitle={false} showBackButton={true} />
+      <div className="flex flex-col gap-6">
+        <div className="flex flex-col gap-12">
+          <div className="flex flex-col gap-4 text-2xl">
+            <div className="flex flex-col">
+              <div className="flex gap-2">
+                <span className="font-semibold">{pocket}</span>
+                에서
               </div>
-            ))}
+              <div className="text-gray flex gap-1 text-xl font-light">
+                잔액
+                <span className="font-semibold">{formatNumber(amount)}</span>원
+              </div>
+            </div>
+            <div className="flex items-center gap-1 text-2xl">
+              <span className="font-semibold">내 기본 주머니</span>
+              <span className="font-light">로</span>
+            </div>
           </div>
-          <NumericKeypad
-            value={targetStr}
-            onChange={(v) => setTargetStr(v)}
-            onSubmit={(v) => {
-              setTargetStr(v);
-            }}
-            maxLength={9}
-            shuffle={false}
-            showWonSuffix={true}
-            className="mt-2"
-            isAccount={true}
-            clickComplete={clickComplete}
-            completeComment="완료"
-          />
+          <span className="w-full text-center text-3xl font-semibold">
+            {targetStr.length == 0 ? (
+              <>얼마를 꺼낼까요?</>
+            ) : (
+              <>{formatNumber(Number(targetStr))} 원</>
+            )}
+          </span>
+          <div className="flex flex-col gap-11">
+            <div className="flex gap-1">
+              {gun.map((item, idx) => (
+                <div
+                  key={idx}
+                  className="flex-1 rounded-md bg-[#EFF0F4] px-3 py-2 text-center"
+                  onClick={() => {
+                    increaseTarget(item.value);
+                  }}
+                >
+                  {item.text}
+                </div>
+              ))}
+            </div>
+            <NumericKeypad
+              value={targetStr}
+              onChange={(v) => setTargetStr(v)}
+              onSubmit={(v) => {
+                setTargetStr(v);
+              }}
+              maxLength={9}
+              shuffle={false}
+              showWonSuffix={true}
+              className="mt-2"
+              isAccount={true}
+              clickComplete={clickComplete}
+              completeComment="완료"
+            />
+          </div>
         </div>
+        <TwoStepModal
+          open={open}
+          type={'take'}
+          name={pocket}
+          amount={Number(targetStr)}
+          onClose={() => setOpen(false)}
+          onSubmit={({ type, name, amount, account }) => {
+            console.log('[SUBMIT]', { type, name, amount, account });
+            setOpen(false);
+          }}
+        />
       </div>
-      <TwoStepModal
-        open={open}
-        type={'take'}
-        name={pocket}
-        amount={Number(targetStr)}
-        onClose={() => setOpen(false)}
-        onSubmit={({ type, name, amount, account }) => {
-          console.log('[SUBMIT]', { type, name, amount, account });
-          setOpen(false);
-        }}
-      />
     </div>
   );
 };

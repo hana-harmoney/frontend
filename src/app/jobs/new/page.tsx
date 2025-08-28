@@ -94,103 +94,105 @@ const JobsNewPage = () => {
   };
 
   return (
-    <div className="flex w-full flex-col items-center gap-5 px-6 py-3">
+    <>
       <Header title={'게시글 등록'} showBackButton={true} centerTitle={false} />
-      <div className="flex w-full flex-col gap-3 text-2xl font-light">
-        게시글 사진
-        <label className="border-teduri relative flex h-32 w-32 cursor-pointer items-center justify-center overflow-hidden rounded-2xl border">
-          {registerData.imageUrl ? (
-            <Image
-              src={registerData.imageUrl}
-              alt="uploaded"
-              fill
-              className="object-contain object-center"
-              unoptimized
-            />
-          ) : (
-            <Plus />
-          )}
-          {registerData.imageUrl ? (
-            <CircleRemove
-              className="absolute top-0 right-0"
-              onClick={(e: React.MouseEvent<SVGSVGElement>) => {
-                setData({ imageUrl: '' });
-                setImageFile(null);
-                e.preventDefault();
-              }}
-            />
-          ) : null}
+      <div className="flex w-full flex-col items-center gap-5 px-6 py-3">
+        <div className="flex w-full flex-col gap-3 text-2xl font-light">
+          게시글 사진
+          <label className="border-teduri relative flex h-32 w-32 cursor-pointer items-center justify-center overflow-hidden rounded-2xl border">
+            {registerData.imageUrl ? (
+              <Image
+                src={registerData.imageUrl}
+                alt="uploaded"
+                fill
+                className="object-contain object-center"
+                unoptimized
+              />
+            ) : (
+              <Plus />
+            )}
+            {registerData.imageUrl ? (
+              <CircleRemove
+                className="absolute top-0 right-0"
+                onClick={(e: React.MouseEvent<SVGSVGElement>) => {
+                  setData({ imageUrl: '' });
+                  setImageFile(null);
+                  e.preventDefault();
+                }}
+              />
+            ) : null}
 
-          <input
-            type="file"
-            accept="image/*"
-            className="hidden"
-            onChange={handleImageUpload}
-          />
-        </label>
-      </div>
-      <div className="flex w-full flex-col gap-3 text-2xl font-light">
-        게시글 제목
-        <CustomInput
-          placeholder="예: 집밥 요리 도우미 구합니다"
-          value={registerData.title}
-          onChange={(e) => updateField('title')(e.target.value)}
-        />
-      </div>
-      <div className="flex w-full flex-col gap-3 text-2xl font-light">
-        급여 (시급)
-        <CustomInput
-          placeholder="예: 15000"
-          value={registerData.wage}
-          onChange={(e) => {
-            const onlyNum = e.target.value.replace(/[^0-9]/g, '');
-            updateField('wage')(onlyNum ? Number(onlyNum) : 0);
-          }}
-        />
-      </div>
-      <div className="flex w-full flex-col gap-3 text-2xl font-light">
-        상세 설명
-        <Textarea
-          placeholder="어떤 일을 하게 될지, 어떤 분을 찾고 있는지 자세히 설명해주세요"
-          className="placeholder:text-gray h-44 text-xl font-normal placeholder:text-xl"
-          value={registerData.content}
-          onChange={(e) => updateField('content')(e.target.value)}
-          maxLength={500}
-        />
-        <span className="text-end text-xl">
-          {registerData.content.length}/500
-        </span>
-      </div>
-      <div className="flex w-full flex-col gap-3 text-2xl font-light">
-        카테고리 선택
-        <div className="grid grid-cols-3 gap-4 self-center">
-          {badgeData.map((item) => (
-            <Badge
-              key={item.id}
-              active={registerData.categoryId === item.id}
-              text={item.text}
-              onClick={() => updateField('categoryId')(item.id)}
+            <input
+              type="file"
+              accept="image/*"
+              className="hidden"
+              onChange={handleImageUpload}
             />
-          ))}
+          </label>
         </div>
+        <div className="flex w-full flex-col gap-3 text-2xl font-light">
+          게시글 제목
+          <CustomInput
+            placeholder="예: 집밥 요리 도우미 구합니다"
+            value={registerData.title}
+            onChange={(e) => updateField('title')(e.target.value)}
+          />
+        </div>
+        <div className="flex w-full flex-col gap-3 text-2xl font-light">
+          급여 (시급)
+          <CustomInput
+            placeholder="예: 15000"
+            value={registerData.wage}
+            onChange={(e) => {
+              const onlyNum = e.target.value.replace(/[^0-9]/g, '');
+              updateField('wage')(onlyNum ? Number(onlyNum) : 0);
+            }}
+          />
+        </div>
+        <div className="flex w-full flex-col gap-3 text-2xl font-light">
+          상세 설명
+          <Textarea
+            placeholder="어떤 일을 하게 될지, 어떤 분을 찾고 있는지 자세히 설명해주세요"
+            className="placeholder:text-gray h-44 text-xl font-normal placeholder:text-xl"
+            value={registerData.content}
+            onChange={(e) => updateField('content')(e.target.value)}
+            maxLength={500}
+          />
+          <span className="text-end text-xl">
+            {registerData.content.length}/500
+          </span>
+        </div>
+        <div className="flex w-full flex-col gap-3 text-2xl font-light">
+          카테고리 선택
+          <div className="grid grid-cols-3 gap-4 self-center">
+            {badgeData.map((item) => (
+              <Badge
+                key={item.id}
+                active={registerData.categoryId === item.id}
+                text={item.text}
+                onClick={() => updateField('categoryId')(item.id)}
+              />
+            ))}
+          </div>
+        </div>
+        <div className="flex w-full flex-col gap-3 text-2xl font-light">
+          장소 선택
+          <InputWithIcon
+            placeholder={`${registerData.address.length === 0 ? '장소 선택' : registerData.address}`}
+            icon={<Next className="h-5" />}
+            onClick={() => router.push('/jobs/new/location')}
+            readOnly
+          />
+        </div>
+        <Button
+          className="w-full !py-6 text-xl"
+          disabled={isEmpty || isLoading}
+          onClick={handleSubmit}
+        >
+          작성완료
+        </Button>
       </div>
-      <div className="flex w-full flex-col gap-3 text-2xl font-light">
-        장소 선택
-        <InputWithIcon
-          placeholder={`${registerData.address.length === 0 ? '장소 선택' : registerData.address}`}
-          icon={<Next className="h-5" />}
-          onClick={() => router.push('/jobs/new/location')}
-          readOnly
-        />
-      </div>
-      <Button
-        className="w-full !py-6 text-xl"
-        disabled={isEmpty || isLoading}
-        onClick={handleSubmit}
-      >
-        작성완료
-      </Button>
-    </div>
+    </>
   );
 };
 export default JobsNewPage;
