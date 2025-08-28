@@ -23,6 +23,7 @@ export default function ChatRoomPage() {
   const updateRoom = useChatRoomStore((state) => state.updateRoom);
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [isWriter, setIsWriter] = useState(false);
+  const [showRecord, setShowRecord] = useState(false);
 
   const { data: roomInfo } = useChatRoomInfo(roomId);
   const { data: myProfile } = useMyProfile();
@@ -139,6 +140,7 @@ export default function ChatRoomPage() {
           messages={messages}
           isLoading={loading}
           isError={false}
+          showRecord={showRecord}
         />
       }
 
@@ -147,7 +149,12 @@ export default function ChatRoomPage() {
         className="frame-container fixed right-0 bottom-0 left-0 flex flex-col gap-3 bg-transparent"
         style={{ zIndex: 5 }}
       >
-        <ChatInput inputRef={inputRef} onSend={handleSendMessage} />
+        <ChatInput
+          inputRef={inputRef}
+          onSend={handleSendMessage}
+          showRecord={showRecord}
+          setShowRecord={setShowRecord}
+        />
       </div>
     </div>
   );
