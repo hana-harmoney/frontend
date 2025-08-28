@@ -97,7 +97,7 @@ const JobDetailPage = () => {
   if (!boardData) return null;
 
   return (
-    <div className="flex w-full flex-col items-center gap-5">
+    <>
       <Header title={boardData.title} centerTitle={false} showBackButton={true}>
         <div className="relative flex w-screen justify-end px-2">
           <Kebab
@@ -127,24 +127,11 @@ const JobDetailPage = () => {
           )}
         </div>
       </Header>
-
-      <div className="flex w-full px-20">
-        <div className="relative h-60 w-full">
-          <Image
-            src={boardData.imageUrl}
-            alt="profile"
-            fill
-            className="object-cover object-center"
-            unoptimized
-            sizes="48px"
-          />
-        </div>
-      </div>
-      <div className="flex w-full flex-col gap-5 px-6">
-        <div className="flex items-center gap-3 text-xl font-semibold">
-          <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-full">
+      <div className="flex w-full flex-col items-center gap-5">
+        <div className="flex w-full px-20">
+          <div className="relative h-60 w-full">
             <Image
-              src={boardData.profileUrl}
+              src={boardData.imageUrl}
               alt="profile"
               fill
               className="object-cover object-center"
@@ -152,98 +139,117 @@ const JobDetailPage = () => {
               sizes="48px"
             />
           </div>
-          <div className="flex flex-col">
-            <div className="flex items-end gap-1">
-              <span className="text-2xl">{boardData.nickname}</span>
-              <span className="text-hana-green">Lv.{boardData.trust}</span>
+        </div>
+        <div className="flex w-full flex-col gap-5 px-6">
+          <div className="flex items-center gap-3 text-xl font-semibold">
+            <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-full">
+              <Image
+                src={boardData.profileUrl}
+                alt="profile"
+                fill
+                className="object-cover object-center"
+                unoptimized
+                sizes="48px"
+              />
             </div>
-            {boardData.address}
+            <div className="flex flex-col">
+              <div className="flex items-end gap-1">
+                <span className="text-2xl">{boardData.nickname}</span>
+                <span className="text-hana-green">Lv.{boardData.trust}</span>
+              </div>
+              {boardData.address}
+            </div>
           </div>
-        </div>
-        <div className="flex w-full flex-col gap-8">
-          <div className="flex items-center gap-3">
-            <span className="text-3xl font-semibold">{boardData.title}</span>
-            <Badge active={true} text={boardData.category || '카테고리'} />
+          <div className="flex w-full flex-col gap-8">
+            <div className="flex items-center gap-3">
+              <span className="text-3xl font-semibold">{boardData.title}</span>
+              <Badge active={true} text={boardData.category || '카테고리'} />
+            </div>
+            <span className="text-xl font-semibold">{boardData.content}</span>
           </div>
-          <span className="text-xl font-semibold">{boardData.content}</span>
-        </div>
-        <div className="flex flex-col gap-1">
-          <div className="flex items-center gap-2">
-            <Pin /> {boardData.address}
+          <div className="flex flex-col gap-1">
+            <div className="flex items-center gap-2">
+              <Pin /> {boardData.address}
+            </div>
+            <div className="flex items-center gap-2">
+              <Dollar /> 시급{' '}
+              <span className="text-main font-bold">
+                {formatNumber(boardData.wage)}
+              </span>
+              원
+            </div>
           </div>
-          <div className="flex items-center gap-2">
-            <Dollar /> 시급{' '}
-            <span className="text-main font-bold">
-              {formatNumber(boardData.wage)}
-            </span>
-            원
-          </div>
-        </div>
-        <div className="flex flex-col text-2xl">장소</div>
-        <Map
-          id="map"
-          center={{
-            lat: boardData.latitude || 37.5448361732145,
-            lng: boardData.longitude || 127.056563379345,
-          }}
-          style={{ width: '100%', height: '350px' }}
-          level={3}
-        >
-          <MapMarker
-            position={{
+          <div className="flex flex-col text-2xl">장소</div>
+          <Map
+            id="map"
+            center={{
               lat: boardData.latitude || 37.5448361732145,
               lng: boardData.longitude || 127.056563379345,
             }}
-          />
-        </Map>
-        {boardData.status === false ? (
-          <div className="flex w-full gap-3 text-2xl">
-            <Button className="min-w-0 flex-1 !py-6 text-2xl">
-              <a href={`tel:${boardData.phone}`}>전화하기</a>
-            </Button>
-            <Button variant="destructive" className="min-w-0 flex-1 !py-5">
-              채팅하기
-            </Button>
-          </div>
-        ) : (
-          <div className="flex w-full gap-3 text-2xl">
-            <Button
-              disabled
-              className="min-w-0 flex-1 bg-gray-500 !py-6 text-xl text-white"
-            >
-              종료된 공고입니다
-            </Button>
-          </div>
-        )}
-      </div>
-      {showConfirm && (
-        <div className="fixed inset-0 z-51 flex items-center justify-center bg-black/50">
-          <div className="w-11/12 max-w-sm rounded-xl bg-white p-6 shadow-xl">
-            <h3 className="mb-2 text-lg font-semibold">정말 삭제하시겠어요?</h3>
-            <p className="mb-5 text-sm text-gray-600">
-              삭제 후에는 되돌릴 수 없습니다.
-            </p>
-            <div className="flex gap-3">
-              <Button
-                className="bg-text-2 flex-1"
-                onClick={() => setShowConfirm(false)}
-                disabled={deleting}
-              >
-                취소
+            style={{ width: '100%', height: '350px' }}
+            level={3}
+          >
+            <MapMarker
+              position={{
+                lat: boardData.latitude || 37.5448361732145,
+                lng: boardData.longitude || 127.056563379345,
+              }}
+            />
+          </Map>
+          {!boardData.status ? (
+            <div className="flex w-full gap-3 text-2xl">
+              <Button className="min-w-0 flex-1 !py-6 text-2xl">
+                <a href={`tel:${boardData.phone}`}>전화하기</a>
               </Button>
               <Button
                 variant="destructive"
-                className="flex-1"
-                onClick={handleDelete}
-                disabled={deleting}
+                className="min-w-0 flex-1 !py-6 text-2xl"
               >
-                {deleting ? '삭제 중…' : '삭제하기'}
+                채팅하기
               </Button>
             </div>
-          </div>
+          ) : (
+            <div className="flex w-full gap-3 text-2xl">
+              <Button
+                disabled
+                className="min-w-0 flex-1 bg-gray-500 !py-6 text-xl text-white"
+              >
+                종료된 공고입니다
+              </Button>
+            </div>
+          )}
         </div>
-      )}
-    </div>
+        {showConfirm && (
+          <div className="fixed inset-0 z-51 flex items-center justify-center bg-black/50">
+            <div className="w-11/12 max-w-sm rounded-xl bg-white p-6 shadow-xl">
+              <h3 className="mb-2 text-lg font-semibold">
+                정말 삭제하시겠어요?
+              </h3>
+              <p className="mb-5 text-sm text-gray-600">
+                삭제 후에는 되돌릴 수 없습니다.
+              </p>
+              <div className="flex gap-3">
+                <Button
+                  className="bg-text-2 flex-1"
+                  onClick={() => setShowConfirm(false)}
+                  disabled={deleting}
+                >
+                  취소
+                </Button>
+                <Button
+                  variant="destructive"
+                  className="flex-1"
+                  onClick={handleDelete}
+                  disabled={deleting}
+                >
+                  {deleting ? '삭제 중…' : '삭제하기'}
+                </Button>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+    </>
   );
 };
 export default JobDetailPage;

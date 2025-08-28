@@ -131,7 +131,7 @@ export default function Step3Page() {
   );
 
   return (
-    <div className="px-6 pt-5 pb-24">
+    <div className="px-6 pt-5 pb-28">
       <Header title={''} />
 
       {/* 단계 표시 */}

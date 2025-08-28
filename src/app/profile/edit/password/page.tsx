@@ -10,12 +10,14 @@ import { useRouter } from 'next/navigation';
 const EditPasswordPage = () => {
   const router = useRouter();
 
+  const [oldPassword, setOldPassword] = useState('');
   const [password, setPassword] = useState('');
   const [passwordConfirm, setPasswordConfirm] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const isValidPassword = (pw: string) => /^.{8,}$/.test(pw);
 
   const formValid = !!(
+    isValidPassword(oldPassword) &&
     isValidPassword(password) &&
     passwordConfirm &&
     password === passwordConfirm
@@ -33,7 +35,7 @@ const EditPasswordPage = () => {
       });
 
       toast.success('비밀번호가 수정되었습니다.');
-      router.back();
+      router.push('/auth/login');
     } catch (err) {
       setIsLoading(false);
       toast.error(
@@ -52,6 +54,15 @@ const EditPasswordPage = () => {
         비밀번호 변경
       </div>
       <div className="flex flex-col gap-4">
+        <div className="flex w-full flex-col gap-3 py-2 text-2xl font-light">
+          기존 비밀번호
+          <CustomInput
+            type="password"
+            placeholder="기존 비밀번호를 입력해주세요"
+            value={oldPassword}
+            onChange={(e) => setOldPassword(e.target.value)}
+          />
+        </div>
         <div className="flex w-full flex-col gap-3 py-2 text-2xl font-light">
           새 비밀번호
           <CustomInput

@@ -11,9 +11,11 @@ import ImageSlider from '@/components/profile/ImageSlider';
 import { Button } from '@/components/ui/button';
 import { useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
+import { CustomInput } from '@/components/common/customInput';
 
 const ProfilePage = () => {
   const [profile, setProfile] = useState<fetchProfileResponse>(initialProfile);
+  const [withdrawPwd, setWithdrawPwd] = useState('');
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const [step, setStep] = useState(1);
@@ -35,7 +37,7 @@ const ProfilePage = () => {
   }, []);
 
   const handleWithdraw = async () => {
-    const res = await withdrawUser();
+    const res = await withdrawUser(withdrawPwd);
     console.log(res);
     if (res.code !== '200') {
       toast.error('탈퇴하기를 실패했습니다.');
@@ -159,18 +161,24 @@ const ProfilePage = () => {
         )}
         {open && (
           <div className="fixed inset-0 z-51 flex items-center justify-center bg-black/50">
-            <div className="flex w-[400px] flex-col gap-6 rounded-2xl bg-white p-6">
+            <div className="text-gray flex w-[96%] flex-col gap-6 rounded-2xl bg-white p-6">
               {step === 1 && (
-                <>
-                  <h2 className="text-xl font-bold">탈퇴하시겠습니까?</h2>
-                  <p className="text-gray-600">
-                    탈퇴 시 계정 및 이용 정보가 모두 삭제되며, 복구가
-                    불가능합니다.
-                  </p>
-                  <p className="text-gray-600">
-                    계속하시려면 [다음]을 눌러주세요
-                  </p>
-                  <div className="mt-6 flex w-full items-stretch gap-3">
+                <div className="flex flex-col items-center gap-6 text-center text-xl">
+                  <div className="flex flex-col gap-10">
+                    <div className="flex flex-col items-center gap-2">
+                      <h2 className="text-2xl font-semibold text-black">
+                        탈퇴하시겠습니까?
+                      </h2>
+                      <p className="">
+                        탈퇴 시 계정 및 이용 정보가 모두 삭제되며, 복구가
+                        불가능합니다.
+                      </p>
+                    </div>
+                    <p className="text-gray-600">
+                      계속하시려면 [다음]을 눌러주세요
+                    </p>
+                  </div>
+                  <div className="flex w-full items-stretch gap-3">
                     <Button
                       variant="secondary"
                       onClick={handleClose}
@@ -185,20 +193,31 @@ const ProfilePage = () => {
                       다음
                     </Button>
                   </div>
-                </>
+                </div>
               )}
 
               {step === 2 && (
-                <>
-                  <h2 className="text-xl font-bold">탈퇴하시겠습니까?</h2>
-                  <p className="text-gray-600">
-                    계속 하시려면 비밀번호를 입력해주세요
-                  </p>
-                  <input
-                    type="password"
-                    placeholder="비밀번호를 입력해주세요."
-                    className="mt-3 w-full rounded-md border p-2"
-                  />
+                <div className="flex flex-col items-center gap-6 text-center text-xl">
+                  <div className="flex flex-col gap-10">
+                    <div className="flex flex-col items-center gap-2">
+                      <h2 className="text-2xl font-semibold text-black">
+                        탈퇴하시겠습니까?
+                      </h2>
+                      <p className="">
+                        탈퇴 시 계정 및 이용 정보가 모두 삭제되며, 복구가
+                        불가능합니다.
+                      </p>
+                    </div>
+                    <CustomInput
+                      type="password"
+                      placeholder="비밀번호를 입력해주세요."
+                      value={withdrawPwd}
+                      onChange={(e) => {
+                        setWithdrawPwd(e.target.value);
+                      }}
+                    />
+                  </div>
+
                   <div className="mt-6 flex w-full items-stretch gap-3">
                     <Button
                       variant="secondary"
@@ -214,7 +233,7 @@ const ProfilePage = () => {
                       탈퇴하기
                     </Button>
                   </div>
-                </>
+                </div>
               )}
             </div>
           </div>

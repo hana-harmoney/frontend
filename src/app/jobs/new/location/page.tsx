@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useJobDraft } from '@/stores/useJobDraft';
 import useKakaoLoader from '@/components/use-kakao-loader';
@@ -13,6 +13,7 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 import { VisuallyHidden } from '@radix-ui/react-visually-hidden';
+import Header from '@/components/common/header';
 
 const JobsLocationPage = () => {
   useKakaoLoader();
@@ -86,50 +87,58 @@ const JobsLocationPage = () => {
   }, [registerData]);
 
   return (
-    <div className="flex w-full flex-col gap-3 px-6 py-3 font-light">
-      <div className="mb-2">
-        <h2 className="text-hanagreen-normal text-xl font-semibold">
-          원하는 장소를 선택해주세요
-        </h2>
-        <p className="mt-1 text-base text-gray-600">
-          {selectedAddress ? (
-            <>
-              <span className="font-medium text-black">선택된 주소:</span>{' '}
-              {selectedAddress}
-            </>
-          ) : (
-            '지도를 클릭하거나 주소 검색 버튼을 눌러 선택하세요.'
-          )}
-        </p>
+    <>
+      <Header
+        title={'장소 선택하기'}
+        showBackButton={true}
+        centerTitle={false}
+      />
+
+      <div className="flex w-full flex-col gap-3 px-6 py-3 font-light">
+        <div className="mb-2">
+          <h2 className="text-hanagreen-normal text-xl font-semibold">
+            원하는 장소를 선택해주세요
+          </h2>
+          <p className="mt-1 text-base text-gray-600">
+            {selectedAddress ? (
+              <>
+                <span className="font-medium text-black">선택된 주소:</span>{' '}
+                {selectedAddress}
+              </>
+            ) : (
+              '지도를 클릭하거나 주소 검색 버튼을 눌러 선택하세요.'
+            )}
+          </p>
+        </div>
+
+        <Dialog open={showPostcode} onOpenChange={setShowPostcode}>
+          <DialogTrigger asChild>
+            <Button variant="outline" className="px-6 py-5 text-lg">
+              주소 검색
+            </Button>
+          </DialogTrigger>
+          <DialogContent className="max-w-[90vw] p-0">
+            <DialogTitle asChild>
+              <VisuallyHidden>주소 검색</VisuallyHidden>
+            </DialogTitle>
+            <DaumPostcodeEmbed onComplete={handleAddressSelect} autoClose />
+          </DialogContent>
+        </Dialog>
+
+        <Map
+          id="map"
+          center={selectedPosition ?? defaultCenter}
+          style={{ width: '100%', height: '450px' }}
+          level={3}
+          onClick={handleMapClick}
+        >
+          <MapMarker position={selectedPosition ?? defaultCenter} />
+        </Map>
+        <Button className="w-full !py-6 text-xl" onClick={handleComplete}>
+          선택 완료
+        </Button>
       </div>
-
-      <Dialog open={showPostcode} onOpenChange={setShowPostcode}>
-        <DialogTrigger asChild>
-          <Button variant="outline" className="px-6 py-5 text-lg">
-            주소 검색
-          </Button>
-        </DialogTrigger>
-        <DialogContent className="max-w-[90vw] p-0">
-          <DialogTitle asChild>
-            <VisuallyHidden>주소 검색</VisuallyHidden>
-          </DialogTitle>
-          <DaumPostcodeEmbed onComplete={handleAddressSelect} autoClose />
-        </DialogContent>
-      </Dialog>
-
-      <Map
-        id="map"
-        center={selectedPosition ?? defaultCenter}
-        style={{ width: '100%', height: '450px' }}
-        level={3}
-        onClick={handleMapClick}
-      >
-        <MapMarker position={selectedPosition ?? defaultCenter} />
-      </Map>
-      <Button className="w-full !py-6 text-xl" onClick={handleComplete}>
-        선택 완료
-      </Button>
-    </div>
+    </>
   );
 };
 

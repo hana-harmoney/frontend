@@ -10,9 +10,8 @@ import History from '@/components/home/History';
 const AccountPage = () => {
   const router = useRouter();
   return (
-    <div className="flex w-full flex-col px-6">
+    <div className="px-6">
       <Header title="내 계좌" centerTitle={false} showBackButton={true} />
-
       <div className="flex w-full flex-col gap-11">
         <div className="flex flex-col gap-6">
           <div className="bg-hana-green-light flex flex-col gap-8 rounded-2xl px-4 py-9 text-2xl font-semibold">
