@@ -12,16 +12,23 @@ type Props = {
   scrollHide?: boolean;
   className?: string;
   titleClassName?: string;
+  backClick?: () => void;
 };
 
-const BackButton = () => {
+const BackButton = ({ backClick }: { backClick?: () => void }) => {
   const router = useRouter();
 
   return (
     <button
       className="z-10 cursor-pointer px-4 py-4"
       type="button"
-      onClick={() => router.back()}
+      onClick={() => {
+        if (backClick) {
+          backClick();
+        } else {
+          router.back();
+        }
+      }}
     >
       <LeftArrow className={clsx('size-4 stroke-black stroke-[0.1rem]')} />
     </button>
@@ -36,6 +43,7 @@ export default function Header({
   className,
   titleClassName,
   children,
+  backClick,
 }: PropsWithChildren<Props>) {
   const [show, setShow] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
@@ -75,7 +83,7 @@ export default function Header({
         )}
       >
         <div className="frame-container relative flex h-12 items-center">
-          {showBackButton && <BackButton />}
+          {showBackButton && <BackButton backClick={backClick} />}
 
           <h1
             className={clsx(
