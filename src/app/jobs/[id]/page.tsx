@@ -37,6 +37,8 @@ const JobDetailPage = () => {
 
   const [mine, setMine] = useState(false);
   const [userId, setUserId] = useState<string>();
+  const [chatRoomCnt, setChatRoomCnt] = useState(0);
+  const [boardId, setBoardId] = useState<string>();
 
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
@@ -62,6 +64,8 @@ const JobDetailPage = () => {
       try {
         if (jobId) {
           const data = await fetchJobDetail(jobId);
+          setBoardId(data.result.boardId);
+          setChatRoomCnt(data.result.chatRoomCnt);
           setMine(data.result.mine || false);
           setBoardData(data.result);
           setUserId(data.result.userId);
@@ -220,8 +224,8 @@ const JobDetailPage = () => {
               }}
             />
           </Map>
-          {!mine &&
-            (!boardData.status ? (
+          {!mine ? (
+            !boardData.status ? (
               <div className="flex w-full gap-3 text-2xl">
                 <Button className="min-w-0 flex-1 !py-6 text-2xl">
                   <a href={`tel:${boardData.phone}`}>전화하기</a>
@@ -243,7 +247,16 @@ const JobDetailPage = () => {
                   종료된 공고입니다
                 </Button>
               </div>
-            ))}
+            )
+          ) : (
+            <Button
+              variant="destructive"
+              className="!py-7 text-2xl"
+              onClick={() => router.push(`/chat/my/${boardId}`)}
+            >
+              대화중인 채팅 {chatRoomCnt}
+            </Button>
+          )}
         </div>
         {showConfirm && (
           <div className="fixed inset-0 z-51 flex items-center justify-center bg-black/50">

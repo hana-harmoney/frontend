@@ -25,6 +25,15 @@ export async function fetchChatRooms(): Promise<ChatRoom[]> {
   return chatRooms;
 }
 
+export async function fetchChatRoomsByBoardId(
+  boardId: number,
+): Promise<ChatRoom[]> {
+  const data = await apiClient(`/board/${boardId}/chatRoom`);
+
+  const chatRooms: ChatRoom[] = data.result.chatRoomList.map(mapRoom);
+  return chatRooms;
+}
+
 export async function fetchChatRoom(roomId: number): Promise<ChatRoomDetail> {
   const data = await apiClient(`/chat/${roomId}`);
 
