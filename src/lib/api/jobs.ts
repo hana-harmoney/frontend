@@ -42,6 +42,33 @@ export async function createJob(job: JobCreateRequest, image: File | null) {
   return res;
 }
 
+export async function editJob(
+  job: JobCreateRequest,
+  image: File | null,
+  jobId: number,
+  deleteImage: boolean,
+) {
+  const fd = new FormData();
+  (
+    [
+      ['title', job.title],
+      ['content', job.content],
+      ['wage', job.wage],
+      ['address', job.address],
+      ['latitude', job.latitude],
+      ['longitude', job.longitude],
+      ['categoryId', job.categoryId],
+    ] as const
+  ).forEach(([k, v]) => fd.append(k, String(v)));
+
+  if (image) fd.append('image', image);
+  if (deleteImage) fd.append('deleteImage', String(deleteImage));
+
+  const res = await apiClient(`/board/${jobId}`, { method: 'PATCH', body: fd });
+  if (res.code !== '200') throw new Error(res.message ?? '일자리 등록 실패');
+  return res;
+}
+
 export const deleteJob = async (id: number): Promise<JobDetailResponse> => {
   const res = await apiClient(`/board/${id}`, {
     method: 'DELETE',

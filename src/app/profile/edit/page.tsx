@@ -9,7 +9,7 @@ import { imgUrlItem } from '@/types/profile';
 import { Button } from '@/components/ui/button';
 import { CustomInput } from '@/components/common/customInput';
 import Image from 'next/image';
-import Plus from '@/assets/icons/plus.svg';
+import PlusGray from '@/assets/icons/plus_gray.svg';
 import CircleRemove from '@/assets/icons/circle_remove.svg';
 import Badge from '@/components/common/badge';
 import { Textarea } from '@/components/ui/textarea';
@@ -182,7 +182,7 @@ export default function ProfileEditPage() {
                   </div>
                 </>
               ) : (
-                <Plus />
+                <PlusGray />
               )}
 
               <input
@@ -267,7 +267,7 @@ export default function ProfileEditPage() {
 
               {introItems.length < MAX_INTRO && (
                 <label className="border-teduri relative flex h-32 w-32 cursor-pointer items-center justify-center overflow-hidden rounded-2xl border">
-                  <Plus />
+                  <PlusGray />
                   <input
                     type="file"
                     accept="image/*"

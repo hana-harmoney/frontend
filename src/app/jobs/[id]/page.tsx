@@ -19,6 +19,8 @@ import Trash from '@/assets/icons/trash.svg';
 import { deleteJob } from '@/lib/api/jobs';
 import toast from 'react-hot-toast';
 import { createChatRoom } from '@/lib/api/chat';
+import { useJobEditStore } from '@/stores/useJobEditStore';
+import { badgeData } from '@/lib/utils';
 
 const JobDetailPage = () => {
   useKakaoLoader();
@@ -39,6 +41,8 @@ const JobDetailPage = () => {
   const [userId, setUserId] = useState<string>();
   const [chatRoomCnt, setChatRoomCnt] = useState(0);
   const [boardId, setBoardId] = useState<string>();
+
+  const { setData } = useJobEditStore();
 
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
@@ -64,11 +68,26 @@ const JobDetailPage = () => {
       try {
         if (jobId) {
           const data = await fetchJobDetail(jobId);
-          setBoardId(data.result.boardId);
-          setChatRoomCnt(data.result.chatRoomCnt);
-          setMine(data.result.mine || false);
-          setBoardData(data.result);
-          setUserId(data.result.userId);
+          const r = data.result;
+          setBoardId(r.boardId);
+          setChatRoomCnt(r.chatRoomCnt);
+          setMine(r.mine || false);
+          setBoardData(r);
+          setUserId(r.userId);
+
+          const categoryIdFromText =
+            badgeData.find((b) => b.text === r.category)?.id ?? 0;
+          setData({
+            title: r.title ?? '',
+            content: r.content ?? '',
+            wage: typeof r.wage === 'number' ? r.wage : 0,
+            address: r.address ?? '',
+            categoryId: categoryIdFromText,
+            latitude: r.latitude,
+            longitude: r.longitude,
+            phone: r.phone ?? '',
+            imageUrl: r.imageUrl ?? '',
+          });
         }
       } catch (e) {
         setError('데이터를 불러오는 중 문제가 발생했습니다.');
@@ -125,21 +144,32 @@ const JobDetailPage = () => {
 
   return (
     <>
-      <Header title={boardData.title} centerTitle={false} showBackButton={true}>
+      <Header
+        title={boardData.title}
+        centerTitle={false}
+        showBackButton={true}
+        backClick={() => router.push('/jobs')}
+      >
         {mine && (
-          <div className="relative flex w-screen justify-end px-2">
+          <div className="relative flex w-screen justify-end px-4">
             <Kebab
               id="kebab-trigger"
               onClick={() => {
                 setShowMenu(true);
               }}
+              className="h-7 w-7"
             />
             {showMenu && (
               <div
                 id="kebab-menu"
                 className="absolute top-4 right-2 flex flex-col gap-3 rounded-xl border bg-white p-4"
               >
-                <div className="flex items-center gap-2 text-xl">
+                <div
+                  className="flex items-center gap-2 text-xl"
+                  onClick={() => {
+                    router.push(`/jobs/${jobId}/edit`);
+                  }}
+                >
                   <Edit className="h-7 w-7" />
                   수정하기
                 </div>
