@@ -31,7 +31,7 @@ export default function ChatPocketPage() {
       return;
     }
     try {
-      await fillPocket(roomId, amount);
+      await fillPocket(selected, amount);
 
       toast.success('주머니로 옮기기가 완료되었습니다.');
       setOpenReview(true);
