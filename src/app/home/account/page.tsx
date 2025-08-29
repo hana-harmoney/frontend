@@ -35,7 +35,6 @@ const AccountPage = () => {
     () => groupHistoryByDay(account.history),
     [account.history],
   );
-  const accountNumber = '592-910508-29670';
 
   return (
     <div className="px-6">
@@ -51,10 +50,10 @@ const AccountPage = () => {
                 </span> */}
               </div>
               <div className="text-gray flex items-end gap-2 font-light">
-                <span className="text-2xl">{accountNumber}</span>
+                <span className="text-2xl">{account.accountNum}</span>
                 <button
                   type="button"
-                  onClick={() => copyAccountNumber(accountNumber)}
+                  onClick={() => copyAccountNumber(account.accountNum)}
                   className="text-xl underline"
                   aria-label="계좌번호 복사"
                 >
