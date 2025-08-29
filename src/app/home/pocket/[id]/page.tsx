@@ -2,7 +2,6 @@
 import { formatNumber } from '@/lib/utils';
 import Header from '@/components/common/header';
 import { Button } from '@/components/ui/button';
-import { sampleHistories } from '@/lib/utils';
 import History from '@/components/home/History';
 import { useRouter } from 'next/navigation';
 import { useParams } from 'next/navigation';
@@ -54,9 +53,9 @@ const PocketDetailPage = () => {
         <div className="flex w-full flex-col gap-6 font-semibold">
           <h1 className="text-3xl">거래 내역</h1>
           <div className="flex flex-col gap-6">
-            {sampleHistories.map((item, idx) => (
+            {/* {sampleHistories.map((item, idx) => (
               <History key={idx} date={item.date} histories={item.histories} />
-            ))}
+            ))} */}
           </div>
         </div>
       </div>
