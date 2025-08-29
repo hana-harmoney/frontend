@@ -40,7 +40,7 @@ const MyJobsPage = () => {
   }));
 
   return (
-    <div className="flex flex-col gap-3">
+    <div className="flex flex-col gap-3 px-6">
       <Header title={'내가 쓴 글'} showBackButton={true} centerTitle={false} />
 
       {loading ? (

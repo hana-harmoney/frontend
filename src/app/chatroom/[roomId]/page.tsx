@@ -8,7 +8,7 @@ import Header from '@/components/common/header';
 import ChatInput from '@/components/chat/ChatInput';
 import PhoneCallButton from '@/components/chat/PhoneCallButton';
 import ReportButton from '@/components/chat/ReportButton';
-import { useChatRoomStore } from '@/stores/useChatRoomsStore';
+import { useChatRoomListStore } from '@/stores/useChatRoomsStore';
 import ChatBoardCard from '@/components/chat/ChatBoardCard';
 import { useChatRoomInfo } from '@/hooks/useChatRoomInfo';
 import { ChatMessage } from '@/types/chat';
@@ -20,9 +20,10 @@ import { useStomp } from '@/hooks/useStomp';
 export default function ChatRoomPage() {
   const params = useParams();
   const roomId = Number(params.roomId);
-  const updateRoom = useChatRoomStore((state) => state.updateRoom);
+  const updateRoom = useChatRoomListStore((state) => state.updateRoom);
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [isWriter, setIsWriter] = useState(false);
+  const [showRecord, setShowRecord] = useState(false);
 
   const { data: roomInfo } = useChatRoomInfo(roomId);
   const { data: myProfile } = useMyProfile();
@@ -31,6 +32,15 @@ export default function ChatRoomPage() {
 
   const scrollRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+
+  const scrollToBottom = (behavior?: ScrollBehavior) => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollTo({
+        top: scrollRef.current.scrollHeight,
+        behavior: behavior ?? 'smooth',
+      });
+    }
+  };
 
   // 채팅방 구독
   useEffect(() => {
@@ -94,15 +104,14 @@ export default function ChatRoomPage() {
 
   // 메세지 전송
   const handleSendMessage = (text: string) => {
-    console.log('채팅 메세지 보내기1', connected);
     if (!connected) return;
-
-    console.log('채팅 메세지 보내기2');
 
     send('/pub/chat/message', {
       roomId,
       message: text,
     });
+
+    setTimeout(() => scrollToBottom(), 200);
   };
 
   return (
@@ -122,6 +131,7 @@ export default function ChatRoomPage() {
 
       {roomInfo && (
         <ChatBoardCard
+          roomId={roomId}
           boardId={roomInfo.boardId}
           title={roomInfo.title}
           address={roomInfo.address}
@@ -139,6 +149,7 @@ export default function ChatRoomPage() {
           messages={messages}
           isLoading={loading}
           isError={false}
+          showRecord={showRecord}
         />
       }
 
@@ -147,7 +158,12 @@ export default function ChatRoomPage() {
         className="frame-container fixed right-0 bottom-0 left-0 flex flex-col gap-3 bg-transparent"
         style={{ zIndex: 5 }}
       >
-        <ChatInput inputRef={inputRef} onSend={handleSendMessage} />
+        <ChatInput
+          inputRef={inputRef}
+          onSend={handleSendMessage}
+          showRecord={showRecord}
+          setShowRecord={setShowRecord}
+        />
       </div>
     </div>
   );

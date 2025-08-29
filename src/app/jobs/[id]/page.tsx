@@ -34,6 +34,9 @@ const JobDetailPage = () => {
   const [error, setError] = useState<string | null>(null);
   const [showMenu, setShowMenu] = useState(false);
 
+  const [mine, setMine] = useState(false);
+  const [userId, setUserId] = useState<string>();
+
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
       const menu = document.getElementById('kebab-menu');
@@ -58,7 +61,9 @@ const JobDetailPage = () => {
       try {
         if (jobId) {
           const data = await fetchJobDetail(jobId);
+          setMine(data.result.mine || false);
           setBoardData(data.result);
+          setUserId(data.result.userId);
         }
       } catch (e) {
         setError('데이터를 불러오는 중 문제가 발생했습니다.');
@@ -99,50 +104,57 @@ const JobDetailPage = () => {
   return (
     <>
       <Header title={boardData.title} centerTitle={false} showBackButton={true}>
-        <div className="relative flex w-screen justify-end px-2">
-          <Kebab
-            id="kebab-trigger"
-            onClick={() => {
-              setShowMenu(true);
-            }}
-          />
-          {showMenu && (
-            <div
-              id="kebab-menu"
-              className="absolute top-4 right-2 flex flex-col gap-3 rounded-xl border bg-white p-4"
-            >
-              <div className="flex items-center gap-2 text-xl">
-                <Edit className="h-7 w-7" />
-                수정하기
-              </div>
-              <button
-                type="button"
-                className="flex items-center gap-2 text-left text-xl"
-                onClick={() => setShowConfirm(true)}
+        {mine && (
+          <div className="relative flex w-screen justify-end px-2">
+            <Kebab
+              id="kebab-trigger"
+              onClick={() => {
+                setShowMenu(true);
+              }}
+            />
+            {showMenu && (
+              <div
+                id="kebab-menu"
+                className="absolute top-4 right-2 flex flex-col gap-3 rounded-xl border bg-white p-4"
               >
-                <Trash className="h-7 w-7" />
-                삭제하기
-              </button>
-            </div>
-          )}
-        </div>
+                <div className="flex items-center gap-2 text-xl">
+                  <Edit className="h-7 w-7" />
+                  수정하기
+                </div>
+                <button
+                  type="button"
+                  className="flex items-center gap-2 text-left text-xl"
+                  onClick={() => setShowConfirm(true)}
+                >
+                  <Trash className="h-7 w-7" />
+                  삭제하기
+                </button>
+              </div>
+            )}
+          </div>
+        )}
       </Header>
       <div className="flex w-full flex-col items-center gap-5">
-        <div className="flex w-full px-20">
-          <div className="relative h-60 w-full">
-            <Image
-              src={boardData.imageUrl}
-              alt="profile"
-              fill
-              className="object-cover object-center"
-              unoptimized
-              sizes="48px"
-            />
-          </div>
-        </div>
+        {boardData.imageUrl && (
+          // <div className="relative flex h-80 w-full px-20">
+          //   <img
+          //     src={boardData.imageUrl}
+          //     alt="profile"
+          //     className="object-cover object-center"
+          //   />
+          // </div>
+          <img
+            src={boardData.imageUrl}
+            alt="profile"
+            className="w-full object-cover object-center"
+          />
+        )}
         <div className="flex w-full flex-col gap-5 px-6">
           <div className="flex items-center gap-3 text-xl font-semibold">
-            <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-full">
+            <div
+              className="relative h-12 w-12 shrink-0 overflow-hidden rounded-full"
+              onClick={() => router.push(`/profile/${userId}`)}
+            >
               <Image
                 src={boardData.profileUrl}
                 alt="profile"
@@ -196,28 +208,29 @@ const JobDetailPage = () => {
               }}
             />
           </Map>
-          {!boardData.status ? (
-            <div className="flex w-full gap-3 text-2xl">
-              <Button className="min-w-0 flex-1 !py-6 text-2xl">
-                <a href={`tel:${boardData.phone}`}>전화하기</a>
-              </Button>
-              <Button
-                variant="destructive"
-                className="min-w-0 flex-1 !py-6 text-2xl"
-              >
-                채팅하기
-              </Button>
-            </div>
-          ) : (
-            <div className="flex w-full gap-3 text-2xl">
-              <Button
-                disabled
-                className="min-w-0 flex-1 bg-gray-500 !py-6 text-xl text-white"
-              >
-                종료된 공고입니다
-              </Button>
-            </div>
-          )}
+          {!mine &&
+            (!boardData.status ? (
+              <div className="flex w-full gap-3 text-2xl">
+                <Button className="min-w-0 flex-1 !py-6 text-2xl">
+                  <a href={`tel:${boardData.phone}`}>전화하기</a>
+                </Button>
+                <Button
+                  variant="destructive"
+                  className="min-w-0 flex-1 !py-6 text-2xl"
+                >
+                  채팅하기
+                </Button>
+              </div>
+            ) : (
+              <div className="flex w-full gap-3 text-2xl">
+                <Button
+                  disabled
+                  className="min-w-0 flex-1 bg-gray-500 !py-6 text-xl text-white"
+                >
+                  종료된 공고입니다
+                </Button>
+              </div>
+            ))}
         </div>
         {showConfirm && (
           <div className="fixed inset-0 z-51 flex items-center justify-center bg-black/50">

@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { formatNumber } from '@/lib/utils';
 import CheckCircle from '@/assets/icons/check_circle.svg';
 import HanaBank from '@/assets/icons/hana-bank.svg';
+import toast from 'react-hot-toast';
 
 export default function TwoStepModal({
   open,
@@ -13,6 +14,7 @@ export default function TwoStepModal({
   account,
   onClose,
   onSubmit,
+  onComplete,
 }: TwoStepModalProps) {
   const [step, setStep] = useState<1 | 2>(1);
   const [name, setName] = useState(initialName);
@@ -46,12 +48,24 @@ export default function TwoStepModal({
     return '회수 금액';
   })();
 
-  const handleNext = () => setStep(2);
+  const handleSubmit = () => {
+    try {
+      onSubmit({
+        type,
+        name: name.trim(),
+        amount,
+        account: account?.trim() ?? '',
+      });
+
+      setStep(2);
+    } catch {
+      toast.error('송금에 실패했습니다.');
+    }
+  };
 
   const handleComplete = () => {
-    // onSubmit({ type, name: name.trim(), amount, account: account.trim() });
-    console.log('handleComplete');
-    // onClose();
+    onClose();
+    onComplete?.();
   };
 
   return (
@@ -119,7 +133,7 @@ export default function TwoStepModal({
               </Button>
               <Button
                 className="bg-main flex-1 rounded-md py-6 text-xl"
-                onClick={handleNext}
+                onClick={handleSubmit}
                 disabled={!name.trim()}
               >
                 네

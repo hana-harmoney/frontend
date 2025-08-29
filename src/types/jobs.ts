@@ -16,6 +16,8 @@ export type JobDetailProps = Partial<JobsProps> & {
   nickname: string;
   profileUrl: string;
   trust: number;
+  mine?: boolean;
+  userId?: string;
 };
 
 export type JobBoard = JobsProps & {
@@ -26,7 +28,10 @@ export type JobBoard = JobsProps & {
   createdAt: string;
   updatedAt: string;
   phone?: string;
-} & Pick<JobDetailProps, 'nickname' | 'trust' | 'profileUrl'>;
+} & Pick<
+    JobDetailProps,
+    'nickname' | 'trust' | 'profileUrl' | 'mine' | 'userId'
+  >;
 
 export type RegisterData = {
   title: string;
@@ -38,6 +43,7 @@ export type RegisterData = {
   phone?: string;
   imageUrl: string;
   wage: number;
+  image?: File | null;
 };
 
 export type JobListResponse = ApiResponse<{ boardList: JobBoard[] }>;

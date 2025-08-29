@@ -39,7 +39,7 @@ export default function EducationCard({
 
   return (
     <div
-      className="border-b-gray block overflow-hidden border-b text-xl transition hover:shadow-md"
+      className="border-b-gray block overflow-hidden border-b pb-2 text-xl transition hover:shadow-md"
       onClick={(e) => {
         if (!e.defaultPrevented) {
           handleRouting();
@@ -63,7 +63,9 @@ export default function EducationCard({
           handleOpen(e);
         }}
       >
-        <h3 className="text-main text-2xl font-bold">{topic}</h3>
+        <h3 className="text-hanagreen-normal text-2xl font-semibold">
+          {topic}
+        </h3>
         {meta && (
           <button
             type="button"

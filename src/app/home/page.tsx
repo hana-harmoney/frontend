@@ -1,11 +1,11 @@
 'use client';
+import { copyAccountNumber, formatNumber } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import BalanceCard from '@/components/home/BalanceCard';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { fetchPocketList } from '@/lib/api/home';
 import { AccountInfo } from '@/types/pocket';
-import { formatNumber } from '@/lib/utils';
 
 const HomePage = () => {
   const labelBg = [
@@ -59,7 +59,14 @@ const HomePage = () => {
           </div>
           <div className="text-gray flex items-end gap-2 font-light">
             <span className="text-2xl">{account.account}</span>
-            <span className="text-xl underline">복사</span>
+            <button
+              type="button"
+              onClick={() => copyAccountNumber(account.account)}
+              className="text-xl underline"
+              aria-label="계좌번호 복사"
+            >
+              복사
+            </button>
           </div>
         </div>
         <div className="flex items-center gap-2">

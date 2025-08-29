@@ -2,8 +2,10 @@ import Pin from '@/assets/icons/pin.svg';
 import Dollor from '@/assets/icons/dollar.svg';
 import { Button } from '../ui/button';
 import Link from 'next/link';
+import { cn } from '@/lib/utils';
 
 type Props = {
+  roomId: number;
   boardId: number;
   title: string;
   address: string;
@@ -13,6 +15,7 @@ type Props = {
 };
 
 export default function ChatBoardCard({
+  roomId,
   boardId,
   title,
   address,
@@ -48,7 +51,13 @@ export default function ChatBoardCard({
           </Button>
         </Link>
         {isWriter && (
-          <Link className="flex-1" href={'/'}>
+          <Link
+            className={cn(
+              'flex-1',
+              doneTransaction ? 'pointer-events-none' : '',
+            )}
+            href={`/chatroom/${roomId}/transfer`}
+          >
             <Button className="h-10 w-full text-xl" disabled={doneTransaction}>
               {doneTransaction ? '송금완료' : '송금하기'}
             </Button>
