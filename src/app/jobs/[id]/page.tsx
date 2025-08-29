@@ -35,6 +35,7 @@ const JobDetailPage = () => {
   const [showMenu, setShowMenu] = useState(false);
 
   const [mine, setMine] = useState(false);
+  const [userId, setUserId] = useState<string>();
 
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
@@ -60,9 +61,9 @@ const JobDetailPage = () => {
       try {
         if (jobId) {
           const data = await fetchJobDetail(jobId);
-          console.log(data.result);
           setMine(data.result.mine || false);
           setBoardData(data.result);
+          setUserId(data.result.userId);
         }
       } catch (e) {
         setError('데이터를 불러오는 중 문제가 발생했습니다.');
@@ -150,7 +151,10 @@ const JobDetailPage = () => {
         )}
         <div className="flex w-full flex-col gap-5 px-6">
           <div className="flex items-center gap-3 text-xl font-semibold">
-            <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-full">
+            <div
+              className="relative h-12 w-12 shrink-0 overflow-hidden rounded-full"
+              onClick={() => router.push(`/profile/${userId}`)}
+            >
               <Image
                 src={boardData.profileUrl}
                 alt="profile"

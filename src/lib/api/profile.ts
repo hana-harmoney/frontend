@@ -68,6 +68,11 @@ export const fetchProfile = async () => {
   return res.result;
 };
 
+export const fetchProfileById = async (id: number) => {
+  const res = await apiClient(`/profile/${id}`);
+  return res.result;
+};
+
 export async function updateProfile(payload: EditProfilePayload) {
   const {
     nickname,
