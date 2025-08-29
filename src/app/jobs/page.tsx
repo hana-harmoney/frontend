@@ -10,6 +10,7 @@ import { JobsProps } from '@/types/jobs';
 import { fetchJobList } from '@/lib/api/jobs';
 import type { JobBoard } from '@/types/jobs';
 import { useRouter } from 'next/navigation';
+import Header from '@/components/common/header';
 
 const JobsPage = () => {
   const [selectedCategory, setSelectedCategory] = useState(0);
@@ -62,79 +63,82 @@ const JobsPage = () => {
   // const demos: CardProps[] = [];
 
   return (
-    <div className="flex flex-col items-center gap-9 px-6 py-3">
-      <div className="grid grid-cols-4 gap-3">
-        {badgeData.map((item) => (
-          <Badge
-            key={item.id}
-            active={selectedCategory === item.id}
-            text={item.text}
-            onClick={() => setSelectedCategory(item.id)}
-          />
-        ))}
-      </div>
-      <div className="flex w-full flex-col gap-3">
-        {loading ? (
-          <div className="py-10 text-center text-gray-500">불러오는 중…</div>
-        ) : error ? (
-          <div className="py-10 text-center text-red-500">{error}</div>
-        ) : cards.length === 0 ? (
-          <div className="flex flex-col items-center justify-center gap-3 py-10 text-center text-gray-500">
-            검색 결과가 없습니다.
-            <br />
-            다른 카테고리를 선택해주세요.
-            <NoData className="h-24 w-24" />
-          </div>
-        ) : (
-          cards.map((item, idx) => (
-            <div key={idx}>
-              <Card
-                {...item}
-                onClick={() => {
-                  router.push(`/jobs/${item.boardId}`);
-                }}
-              />
+    <div>
+      <Header title="구직" centerTitle={false} showBackButton={false} />
+      <div className="flex flex-col items-center gap-9 px-6 py-3">
+        <div className="grid grid-cols-4 gap-3">
+          {badgeData.map((item) => (
+            <Badge
+              key={item.id}
+              active={selectedCategory === item.id}
+              text={item.text}
+              onClick={() => setSelectedCategory(item.id)}
+            />
+          ))}
+        </div>
+        <div className="flex w-full flex-col gap-3">
+          {loading ? (
+            <div className="py-10 text-center text-gray-500">불러오는 중…</div>
+          ) : error ? (
+            <div className="py-10 text-center text-red-500">{error}</div>
+          ) : cards.length === 0 ? (
+            <div className="flex flex-col items-center justify-center gap-3 py-10 text-center text-gray-500">
+              검색 결과가 없습니다.
+              <br />
+              다른 카테고리를 선택해주세요.
+              <NoData className="h-24 w-24" />
             </div>
-          ))
-        )}
-      </div>
-      {showButtons && (
-        <div
-          className="fixed inset-0 z-10"
-          onClick={() => setShowButtons(false)}
-        />
-      )}
-      <div className="fixed right-6 bottom-26 z-30 flex flex-col items-end">
+          ) : (
+            cards.map((item, idx) => (
+              <div key={idx}>
+                <Card
+                  {...item}
+                  onClick={() => {
+                    router.push(`/jobs/${item.boardId}`);
+                  }}
+                />
+              </div>
+            ))
+          )}
+        </div>
         {showButtons && (
-          <div className="mb-2 flex flex-col gap-0 rounded-lg bg-white p-0 shadow-lg">
-            <button
-              onClick={() => {
-                setShowButtons(false);
-                router.push('/jobs/new');
-              }}
-              className="hover:bg-hanagreen-light flex items-center gap-3 rounded-md px-4 py-3 text-base text-gray-700"
-            >
-              <EditIcon width={24} height={24} />
-              구직 글 등록
-            </button>
-            <button
-              onClick={() => {
-                setShowButtons(false);
-                router.push('/jobs/my');
-              }}
-              className="hover:bg-hanagreen-light flex items-center gap-3 rounded-md px-4 py-3 text-base text-gray-700"
-            >
-              <BoardIcon width={24} height={24} />
-              내가 쓴 글 보기
-            </button>
-          </div>
+          <div
+            className="fixed inset-0 z-10"
+            onClick={() => setShowButtons(false)}
+          />
         )}
-        <button
-          className="bg-hanagreen-normal hover:bg-hanagreen-normal-hover flex h-14 w-14 items-center justify-center rounded-full text-white shadow-lg"
-          onClick={() => setShowButtons((prev) => !prev)}
-        >
-          <PlusIcon width={28} height={28} />
-        </button>
+        <div className="fixed right-6 bottom-26 z-30 flex flex-col items-end">
+          {showButtons && (
+            <div className="mb-2 flex flex-col gap-0 rounded-lg bg-white p-0 shadow-lg">
+              <button
+                onClick={() => {
+                  setShowButtons(false);
+                  router.push('/jobs/new');
+                }}
+                className="hover:bg-hanagreen-light flex items-center gap-3 rounded-md px-4 py-3 text-base text-gray-700"
+              >
+                <EditIcon width={24} height={24} />
+                구직 글 등록
+              </button>
+              <button
+                onClick={() => {
+                  setShowButtons(false);
+                  router.push('/jobs/my');
+                }}
+                className="hover:bg-hanagreen-light flex items-center gap-3 rounded-md px-4 py-3 text-base text-gray-700"
+              >
+                <BoardIcon width={24} height={24} />
+                내가 쓴 글 보기
+              </button>
+            </div>
+          )}
+          <button
+            className="bg-hanagreen-normal hover:bg-hanagreen-normal-hover flex h-14 w-14 items-center justify-center rounded-full text-white shadow-lg"
+            onClick={() => setShowButtons((prev) => !prev)}
+          >
+            <PlusIcon width={28} height={28} />
+          </button>
+        </div>
       </div>
     </div>
   );
