@@ -16,8 +16,9 @@ export type JobDetailProps = Partial<JobsProps> & {
   nickname: string;
   profileUrl: string;
   trust: number;
-  mine?: boolean;
-  userId?: string;
+  mine: boolean;
+  userId: string;
+  chatRoomCnt: number;
 };
 
 export type JobBoard = JobsProps & {
@@ -30,7 +31,7 @@ export type JobBoard = JobsProps & {
   phone?: string;
 } & Pick<
     JobDetailProps,
-    'nickname' | 'trust' | 'profileUrl' | 'mine' | 'userId'
+    'nickname' | 'trust' | 'profileUrl' | 'mine' | 'userId' | 'chatRoomCnt'
   >;
 
 export type RegisterData = {
