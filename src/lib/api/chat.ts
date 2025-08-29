@@ -49,7 +49,7 @@ export async function writeReview(
   roomId: number,
   score: number,
 ): Promise<void> {
-  await apiClient(`/chat/${roomId}/report`, {
+  await apiClient(`/chat/${roomId}/review`, {
     method: 'POST',
     body: JSON.stringify({ score: score }),
   });
