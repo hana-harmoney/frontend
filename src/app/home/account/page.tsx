@@ -3,12 +3,38 @@
 import Header from '@/components/common/header';
 import { copyAccountNumber, formatNumber } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
-import { useRouter } from 'next/navigation';
-import { sampleHistories } from '@/lib/utils';
+import { useRouter, useSearchParams } from 'next/navigation';
 import History from '@/components/home/History';
+import { useEffect, useMemo, useState } from 'react';
+import { fetchAccountDetail } from '@/lib/api/home';
+import { AccountDetail } from '@/types/accountDetail';
+import { groupHistoryByDay } from '@/lib/groupHistoryByDay';
 
 const AccountPage = () => {
   const router = useRouter();
+
+  const params = useSearchParams();
+  const accountId = Number(params.get('accountId')) ?? 0;
+
+  const [account, setAccount] = useState<AccountDetail>({
+    accountId: 0,
+    accountNum: '',
+    ownerName: '',
+    accountBalance: 0,
+    history: [],
+  });
+
+  useEffect(() => {
+    (async () => {
+      const acc = await fetchAccountDetail(accountId);
+      setAccount(acc.result);
+    })();
+  }, [accountId]);
+
+  const groupByDay = useMemo(
+    () => groupHistoryByDay(account.history),
+    [account.history],
+  );
   const accountNumber = '592-910508-29670';
 
   return (
@@ -20,9 +46,9 @@ const AccountPage = () => {
             <div className="flex flex-col gap-3">
               <div className="flex items-center justify-between">
                 <span className="text-2xl font-semibold">하모니 계좌</span>
-                <span className="text-gray text-xl font-light">
+                {/* <span className="text-gray text-xl font-light">
                   상세보기 &gt;
-                </span>
+                </span> */}
               </div>
               <div className="text-gray flex items-end gap-2 font-light">
                 <span className="text-2xl">{accountNumber}</span>
@@ -37,7 +63,7 @@ const AccountPage = () => {
               </div>
             </div>
             <div className="flex items-center gap-2">
-              {formatNumber(13456778)}
+              {formatNumber(account.accountBalance)}
               <span className="font-light">원</span>
             </div>
           </div>
@@ -53,8 +79,13 @@ const AccountPage = () => {
         <div className="flex w-full flex-col gap-6 font-semibold">
           <h1 className="text-3xl">거래 내역</h1>
           <div className="flex flex-col gap-6">
-            {sampleHistories.map((item, idx) => (
-              <History key={idx} date={item.date} histories={item.histories} />
+            {groupByDay.map((group, idx) => (
+              <History
+                key={idx}
+                id={group.id}
+                date={group.date}
+                histories={group.histories}
+              />
             ))}
           </div>
         </div>

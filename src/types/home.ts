@@ -1,3 +1,5 @@
+import { AccountHistoryItem } from './accountDetail';
+
 export type BalanceProps = {
   balance: number;
   isAccount: boolean;
@@ -11,14 +13,17 @@ export interface BalanceCardProps extends BalanceProps {
 }
 
 export type HistoryCardProps = {
+  id: number;
   time: string;
-  title: string;
-  money: number;
+  amountSigned: string; // "+5,000" / "-15,000"
+  isDeposit: boolean;
+  counterparty: string;
 };
 
 export type HistoryProps = {
+  id: number;
   date: string;
-  histories: HistoryCardProps[];
+  histories: AccountHistoryItem[];
 };
 
 export type Tab = {

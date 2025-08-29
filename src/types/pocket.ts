@@ -9,6 +9,7 @@ export interface Pocket {
 export interface AccountInfo {
   totalAssets: number;
   account: string;
+  accountId: number;
   accountBalance: number;
   pocketLists: Pocket[];
 }
