@@ -102,7 +102,7 @@ const FillPage = () => {
         name={pocket}
         amount={Number(targetStr)}
         onClose={() => setOpen(false)}
-        onSubmit={({ type, name, amount, account }) => {
+        onSubmit={async ({ type, name, amount, account }) => {
           console.log('[SUBMIT]', { type, name, amount, account });
           setOpen(false);
         }}

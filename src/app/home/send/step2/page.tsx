@@ -110,7 +110,7 @@ const SendStep2Page = () => {
           amount={Number(targetStr)}
           account={accountNumber}
           onClose={() => setOpen(false)}
-          onSubmit={({ type, name, amount, account }) => {
+          onSubmit={async ({ type, name, amount, account }) => {
             console.log('[SUBMIT]', { type, name, amount, account });
             setOpen(false);
           }}

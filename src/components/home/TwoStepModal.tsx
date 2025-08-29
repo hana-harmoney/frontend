@@ -48,9 +48,9 @@ export default function TwoStepModal({
     return '회수 금액';
   })();
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     try {
-      onSubmit({
+      await onSubmit({
         type,
         name: name.trim(),
         amount,
@@ -59,6 +59,7 @@ export default function TwoStepModal({
 
       setStep(2);
     } catch {
+      onClose();
       toast.error('송금에 실패했습니다.');
     }
   };
