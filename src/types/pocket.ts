@@ -6,6 +6,18 @@ export interface Pocket {
   amount: number;
 }
 
+export interface PocketCreateRequest {
+  name: string;
+  targetAmount: number;
+  initialAmount?: number;
+}
+
+export interface PocketResponse {
+  pocketName: string;
+  targetAmount: number;
+  currentAmount: number;
+}
+
 export interface AccountInfo {
   totalAssets: number;
   account: string;
