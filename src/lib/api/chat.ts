@@ -74,9 +74,11 @@ export async function transferInChatRoom(
   });
 }
 
-export async function createChatRoom(boardId: number): Promise<void> {
-  await apiClient(`/chat`, {
+export async function createChatRoom(boardId: number): Promise<number> {
+  const data = await apiClient(`/chat`, {
     method: 'POST',
     body: JSON.stringify({ boardId: boardId }),
   });
+
+  return data.result.roomId;
 }
