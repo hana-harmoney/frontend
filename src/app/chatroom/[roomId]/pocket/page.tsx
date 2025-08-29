@@ -2,19 +2,20 @@
 
 import ChatPocketCard from '@/components/chat/ChatPocketCard';
 import ReviewDialog from '@/components/chat/ReviewDialog';
-import Header from '@/components/common/header';
 import { Button } from '@/components/ui/button';
 import { useAccount } from '@/hooks/useAccount';
 import { fillPocket } from '@/lib/api/home';
 import { useChatAmountStore } from '@/stores/useChatRoomsStore';
+import Link from 'next/link';
 import { useParams, useRouter } from 'next/navigation';
 import { useState } from 'react';
 import toast from 'react-hot-toast';
+import NoData from '@/assets/images/no-data.svg';
 
 export default function ChatPocketPage() {
   const params = useParams();
   const roomId = Number(params.roomId);
-  const { data: account } = useAccount();
+  const { data: account, isLoading, isError } = useAccount();
   const [openReview, setOpenReview] = useState(false);
   const [selected, setSelected] = useState<number>();
   const amount = useChatAmountStore((state) => state.amount);
@@ -31,7 +32,7 @@ export default function ChatPocketPage() {
       return;
     }
     try {
-      await fillPocket(roomId, amount);
+      await fillPocket(selected, amount);
 
       toast.success('주머니로 옮기기가 완료되었습니다.');
       setOpenReview(true);
@@ -40,9 +41,28 @@ export default function ChatPocketPage() {
     }
   };
 
+  if (isLoading || isError) {
+    return (
+      <div className="flex flex-col items-center justify-center gap-4 py-48 text-2xl text-gray-500">
+        {isLoading ? '주머니 불러오는 중...' : '에러 발생'}
+        {isLoading && <NoData className="size-24" />}
+      </div>
+    );
+  }
+
+  if (account?.pocketLists.length === 0) {
+    return (
+      <div className="flex flex-col items-center justify-center gap-4 py-48 text-2xl text-gray-500">
+        아직 만들어진 주머니가 없습니다.
+        <Link href={'/home/pocket/new'}>
+          <Button className="h-10 p-6 text-2xl">주머니 만들러 가기</Button>
+        </Link>
+      </div>
+    );
+  }
+
   return (
     <div>
-      <Header title="주머니로 옮기기" centerTitle={false} />
       <div className="flex flex-col gap-6 p-6">
         {account?.pocketLists.map((pocket) => (
           <ChatPocketCard

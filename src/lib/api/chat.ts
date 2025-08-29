@@ -49,7 +49,7 @@ export async function writeReview(
   roomId: number,
   score: number,
 ): Promise<void> {
-  await apiClient(`/chat/${roomId}/report`, {
+  await apiClient(`/chat/${roomId}/review`, {
     method: 'POST',
     body: JSON.stringify({ score: score }),
   });
@@ -62,5 +62,12 @@ export async function transferInChatRoom(
   await apiClient(`/chat/${roomId}/transfer/send`, {
     method: 'POST',
     body: JSON.stringify({ amount: amount }),
+  });
+}
+
+export async function createChatRoom(boardId: number): Promise<void> {
+  await apiClient(`/chat`, {
+    method: 'POST',
+    body: JSON.stringify({ boardId: boardId }),
   });
 }

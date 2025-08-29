@@ -8,28 +8,34 @@ import toast from 'react-hot-toast';
 type State = {
   items: ChatMessageDTO[];
   loading: boolean;
-  error: Error | null;
+  error: boolean;
 };
 
 export function useChatMessages(roomId: number) {
   const [state, setState] = useState<State>({
     items: [],
     loading: false,
-    error: null,
+    error: false,
   });
 
   useEffect(() => {
-    setState((s) => ({ ...s, loading: true, error: null }));
+    setState((s) => ({ ...s, loading: true, error: false }));
     try {
       fetchChatMessages(roomId)
         .then((messages) => {
           setState(() => ({
             items: messages,
             loading: false,
-            error: null,
+            error: false,
           }));
         })
-        .catch((e) => {});
+        .catch((e) => {
+          setState(() => ({
+            items: state.items,
+            loading: false,
+            error: true,
+          }));
+        });
     } catch (e) {
       toast.error('메세지 목록 조회에 실패했습니다.');
     }
