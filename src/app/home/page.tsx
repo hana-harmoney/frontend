@@ -1,5 +1,4 @@
 'use client';
-import Balance from '@/components/home/Balance';
 import { Button } from '@/components/ui/button';
 import BalanceCard from '@/components/home/BalanceCard';
 import { useRouter } from 'next/navigation';
@@ -22,6 +21,7 @@ const HomePage = () => {
   const [account, setAccount] = useState<AccountInfo>({
     totalAssets: 0,
     account: '',
+    accountId: 0,
     accountBalance: 0,
     pocketLists: [],
   });
@@ -49,9 +49,9 @@ const HomePage = () => {
           <div className="flex items-center justify-between">
             <span className="text-2xl font-semibold">하모니 계좌</span>
             <span
-              className="text-gray text-xl font-light"
+              className="text-gray cursor-pointer text-xl font-light"
               onClick={() => {
-                router.push('/home/account');
+                router.push(`/home/account?accountId=${account.accountId}`);
               }}
             >
               상세보기 &gt;
