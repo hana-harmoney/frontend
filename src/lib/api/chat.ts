@@ -54,3 +54,13 @@ export async function writeReview(
     body: JSON.stringify({ score: score }),
   });
 }
+
+export async function transferInChatRoom(
+  roomId: number,
+  amount: number,
+): Promise<void> {
+  await apiClient(`/chat/${roomId}/transfer/send`, {
+    method: 'POST',
+    body: JSON.stringify({ amount: amount }),
+  });
+}
