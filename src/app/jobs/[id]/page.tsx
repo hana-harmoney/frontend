@@ -97,6 +97,11 @@ const JobDetailPage = () => {
 
   const handleChat = async () => {
     if (!boardData) return;
+    if (boardData.chatRoomId) {
+      router.push(`/chatroom/${boardData.chatRoomId}`);
+      return;
+    }
+
     try {
       const roomId = await createChatRoom(boardData.boardId);
 
