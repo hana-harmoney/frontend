@@ -14,6 +14,6 @@ export type TwoStepModalProps = {
     name: string;
     amount: number;
     account: string;
-  }) => void;
+  }) => Promise<void>;
   onComplete?: () => void;
 };

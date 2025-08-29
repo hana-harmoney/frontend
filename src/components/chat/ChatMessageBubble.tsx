@@ -37,7 +37,7 @@ export default function ChatMessageBubble({
       {isIncoming &&
         (showProfile ? (
           <div className="mr-2 flex-none self-start">
-            <Link href={`/card/${message.senderId}`}>
+            <Link href={`/profile/${message.senderId}`}>
               <ChatProfileImage
                 size={50}
                 imageUrl={message.senderProfileImg ?? ''}

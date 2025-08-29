@@ -97,9 +97,15 @@ const JobDetailPage = () => {
 
   const handleChat = async () => {
     if (!boardData) return;
-    try {
-      await createChatRoom(boardData.boardId);
+    if (boardData.chatRoomId) {
+      router.push(`/chatroom/${boardData.chatRoomId}`);
+      return;
+    }
 
+    try {
+      const roomId = await createChatRoom(boardData.boardId);
+
+      router.push(`/chatroom/${roomId}`);
       toast.success('채팅방이 성공적으로 생성되었습니다.');
     } catch (e) {
       toast.success('채팅방 생성에 실패했습니다.');

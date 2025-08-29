@@ -8,6 +8,7 @@ import { useAccount } from '@/hooks/useAccount';
 import { useChatRoomDetailStore } from '@/stores/useChatRoomsStore';
 import { useParams, useRouter } from 'next/navigation';
 import { transferInChatRoom } from '@/lib/api/chat';
+import toast from 'react-hot-toast';
 
 export default function ChatTransferPage() {
   const params = useParams();
@@ -111,8 +112,8 @@ export default function ChatTransferPage() {
         name={roomInfo?.name}
         amount={Number(targetStr)}
         onClose={() => setOpen(false)}
-        onSubmit={({ amount }) => {
-          handleTransfer(amount);
+        onSubmit={async ({ amount }) => {
+          await handleTransfer(amount);
         }}
         onComplete={handleComplete}
       />
