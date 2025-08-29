@@ -157,7 +157,7 @@ const JobDetailPage = () => {
   return (
     <>
       <Header
-        title={'게시글 정보'}
+        title={''}
         centerTitle={false}
         showBackButton={true}
         backClick={() => router.push('/jobs')}
