@@ -1,4 +1,5 @@
 import { apiClient } from './client';
+
 export const fetchAccountName = async (accountNumber: string) => {
   const request = { account_num: accountNumber };
 
@@ -26,4 +27,22 @@ export const transfer = async (
   });
 
   return res;
+};
+
+export const minusPocket = async (amount: number, pocketId: number) => {
+  const request = { amount: amount };
+
+  return await apiClient(`/transfer/${pocketId}/minus`, {
+    method: 'PATCH',
+    body: JSON.stringify(request),
+  });
+};
+
+export const plusPocket = async (amount: number, pocketId: number) => {
+  const request = { amount: amount };
+
+  return await apiClient(`/transfer/${pocketId}/plus`, {
+    method: 'PATCH',
+    body: JSON.stringify(request),
+  });
 };

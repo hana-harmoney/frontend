@@ -213,32 +213,27 @@ export default function TwoStepModalHome({
                     <span>송금 실패</span>
                     <CircleError className="h-12 w-12" />
                   </div>
+                ) : type === 'fill' ? (
+                  <div
+                    data-testid="fill-step2"
+                    className="flex min-h-[80px] flex-col items-center gap-2 text-2xl font-semibold"
+                  >
+                    <span>출금 실패</span>
+                    {result?.message && (
+                      <p className="mt-2 text-gray-600">{result.message}</p>
+                    )}
+                    <CircleError className="h-12 w-12" />
+                  </div>
                 ) : (
                   <div
-                    data-testid="fill-take-step2"
-                    className="flex min-h-[80px] flex-col items-center gap-2 text-2xl"
+                    data-testid="take-step2"
+                    className="flex min-h-[80px] flex-col items-center gap-2 text-2xl font-semibold"
                   >
-                    <div className="flex items-end gap-1">
-                      <span className="text-3xl font-semibold">{name}</span>
-                      <span className="font-light">
-                        {type === 'fill' ? '에' : '에서'}
-                      </span>
-                    </div>
-                    <div className="flex items-end gap-1 font-light text-black">
-                      <span className="text-3xl font-semibold">
-                        {formatNumber(amount)}
-                      </span>
-                      <span className="text-gray">원</span>
-                      <span>
-                        {type === 'fill' ? '채우기 완료!' : '꺼내기 완료!'}
-                      </span>
-                    </div>
-                    <CheckCircle className="h-12 w-12" />
+                    <span>출금 실패</span>
                     {result?.message && (
-                      <p className="mt-2 text-base text-gray-600">
-                        {result.message}
-                      </p>
+                      <p className="mt-2 text-gray-600">{result.message}</p>
                     )}
+                    <CircleError className="h-12 w-12" />
                   </div>
                 )}
                 <Button

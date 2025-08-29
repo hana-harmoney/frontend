@@ -1,14 +1,18 @@
 'use client';
 import Header from '@/components/common/header';
 import { NumericKeypad } from '@/components/home/NumericKeypad';
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState } from 'react';
 import { formatNumber } from '@/lib/utils';
-import TwoStepModal from '@/components/home/TwoStepModal';
+import TwoStepModalHome from '@/components/home/TwoStepModalHome';
+import { plusPocket } from '@/lib/api/transfer';
+import { useParams } from 'next/navigation';
 
 const FillPage = () => {
   const [amount, setAmount] = useState<number>(0);
   const [pocket, setPocket] = useState<string>('');
   const [open, setOpen] = useState(false);
+  const params = useParams();
+  const pocketId = params.id;
 
   const [targetStr, setTargetStr] = useState('');
   const increaseTarget = (value: number) => {
@@ -37,6 +41,24 @@ const FillPage = () => {
   const clickComplete = () => {
     openModal();
     console.log('clickComplete');
+  };
+
+  const handlePocketSubmit = async ({
+    amount,
+  }: {
+    type: string;
+    name: string;
+    amount: number;
+    account: string;
+  }): Promise<{ ok: boolean; message?: string }> => {
+    try {
+      const res = await plusPocket(amount, Number(pocketId));
+      const ok = res?.ok ?? (res?.code === 200 || res?.code === '200');
+      const message: string | undefined = res?.message;
+      return { ok: !!ok, message };
+    } catch (e) {
+      return { ok: false, message: '계좌 잔액이 부족합니다.' };
+    }
   };
 
   return (
@@ -96,16 +118,13 @@ const FillPage = () => {
           />
         </div>
       </div>
-      <TwoStepModal
+      <TwoStepModalHome
         open={open}
         type={'fill'}
         name={pocket}
         amount={Number(targetStr)}
         onClose={() => setOpen(false)}
-        onSubmit={async ({ type, name, amount, account }) => {
-          console.log('[SUBMIT]', { type, name, amount, account });
-          setOpen(false);
-        }}
+        onSubmit={handlePocketSubmit}
       />
     </div>
   );

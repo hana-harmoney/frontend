@@ -29,3 +29,10 @@ export type TwoStepModalPropsWithVoidSubmit = Omit<
     account: string;
   }) => Promise<{ ok: boolean; message?: string }>;
 };
+
+export type PocketSubmitModalProps = Omit<TwoStepModalProps, 'onSubmit'> & {
+  onSubmit: (payload: {
+    amount: number;
+    pocketId: number;
+  }) => Promise<{ ok: boolean; message?: string }>;
+};
