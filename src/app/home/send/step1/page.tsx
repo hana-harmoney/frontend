@@ -18,17 +18,17 @@ const SendStep1Page = () => {
     { id: 0, name: '최근' },
     { id: 1, name: '자주' },
   ];
-  const gugu = [
-    { name: '송유림', accountNumber: '592-910508-29671' },
-    { name: '송유림', accountNumber: '592-910508-29672' },
-    { name: '송유림', accountNumber: '592-910508-29673' },
+  const recentHistory = [
+    { name: '김지민', accountNumber: '569-174604-33224' },
+    { name: '유우림', accountNumber: '110-159-162975' },
+    { name: '효준리', accountNumber: '251-412008-51289' },
   ];
-  const gugu2 = [
-    { name: '송유림', accountNumber: '592-910508-29674' },
-    { name: '송유림', accountNumber: '592-910508-29675' },
-    { name: '송유림', accountNumber: '592-910508-29676' },
-    { name: '송유림', accountNumber: '592-910508-29677' },
-    { name: '송유림', accountNumber: '592-910508-29678' },
+  const oftenHistory = [
+    { name: '곽희건', accountNumber: '022-560098-70519' },
+    { name: '미야옹', accountNumber: '409-995828-53054' },
+    { name: '아아아', accountNumber: '110-123-456789' },
+    { name: '고고', accountNumber: '154-784206-04861' },
+    { name: '희건희', accountNumber: '853-824140-57853' },
   ];
 
   return (
@@ -59,7 +59,7 @@ const SendStep1Page = () => {
           />
           <div className="flex flex-col gap-4">
             {selectedId == 0 &&
-              gugu.map((item, idx) => {
+              recentHistory.map((item, idx) => {
                 return (
                   <AccountHistory
                     key={idx}
@@ -70,7 +70,7 @@ const SendStep1Page = () => {
                 );
               })}
             {selectedId == 1 &&
-              gugu2.map((item, idx) => {
+              oftenHistory.map((item, idx) => {
                 return (
                   <AccountHistory
                     key={idx}

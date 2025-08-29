@@ -4,12 +4,14 @@ import { NumericKeypad } from '@/components/home/NumericKeypad';
 import { useEffect, useState, useRef } from 'react';
 import { formatNumber } from '@/lib/utils';
 import { useAccountStore } from '@/stores/accountStore';
-import { FlowType } from '@/types/modal';
-import TwoStepModal from '@/components/home/TwoStepModal';
+import TwoStepModalHome from '@/components/home/TwoStepModalHome';
+import { fetchAccountName, transfer } from '@/lib/api/transfer';
+import toast from 'react-hot-toast';
 
 const SendStep2Page = () => {
-  const [receiver, setReceiver] = useState<string>('');
+  const [receiver, setReceiver] = useState<string>('사용자');
   const { accountNumber, reset } = useAccountStore();
+  const [account, setAccount] = useState<string>('');
 
   const ignoreFirstCleanup = useRef(true);
 
@@ -33,7 +35,7 @@ const SendStep2Page = () => {
     setTargetStr(String(next));
   };
 
-  const gun = [
+  const priceList = [
     { text: '+1만', value: 10000 },
     { text: '+5만', value: 50000 },
     { text: '+10만', value: 100000 },
@@ -42,16 +44,48 @@ const SendStep2Page = () => {
   ];
 
   useEffect(() => {
-    setReceiver('송유림');
-  }, []);
+    (async () => {
+      try {
+        if (accountNumber) {
+          const data = await fetchAccountName(accountNumber);
+          setReceiver(data.name);
+        }
+      } catch (e) {
+        console.error(e);
+      }
+    })();
+  }, [account]);
+
+  useEffect(() => {
+    setAccount(accountNumber);
+  }, [accountNumber]);
 
   const openModal = () => {
     setOpen(true);
   };
 
   const clickComplete = () => {
+    if (Number(targetStr) === 0) {
+      toast.error('금액을 입력해주세요.');
+      return;
+    }
     openModal();
-    console.log('clickComplete');
+  };
+
+  const handleModalSubmit = async ({
+    name,
+    amount,
+    account,
+  }: {
+    name: string;
+    amount: number;
+    account: string;
+  }) => {
+    const res = await transfer(account, name, amount);
+    if (res.code === '200') {
+      return { ok: true };
+    }
+    return { ok: false };
   };
 
   return (
@@ -75,7 +109,7 @@ const SendStep2Page = () => {
           </span>
           <div className="flex flex-col gap-11">
             <div className="flex gap-1">
-              {gun.map((item, idx) => (
+              {priceList.map((item, idx) => (
                 <div
                   key={idx}
                   className="flex-1 rounded-md bg-[#EFF0F4] px-3 py-2 text-center"
@@ -103,17 +137,14 @@ const SendStep2Page = () => {
             />
           </div>
         </div>
-        <TwoStepModal
+        <TwoStepModalHome
           open={open}
           type={'send'}
           name={receiver}
           amount={Number(targetStr)}
           account={accountNumber}
           onClose={() => setOpen(false)}
-          onSubmit={async ({ type, name, amount, account }) => {
-            console.log('[SUBMIT]', { type, name, amount, account });
-            setOpen(false);
-          }}
+          onSubmit={handleModalSubmit}
         />
       </div>
     </div>
