@@ -148,7 +148,7 @@ export default function ChatRoomPage() {
           roomId={roomId}
           messages={messages}
           isLoading={loading}
-          isError={false}
+          isError={error}
           showRecord={showRecord}
         />
       }
