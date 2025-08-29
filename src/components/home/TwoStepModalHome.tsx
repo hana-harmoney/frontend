@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { formatNumber } from '@/lib/utils';
 import CheckCircle from '@/assets/icons/check_circle.svg';
 import CircleError from '@/assets/icons/circle_error.svg';
+import { useRouter } from 'next/navigation';
 
 type SubmitResult = { ok: boolean; message?: string };
 
@@ -17,6 +18,7 @@ export default function TwoStepModalHome({
   onSubmit,
   onComplete,
 }: TwoStepModalPropsWithVoidSubmit) {
+  const router = useRouter();
   const [step, setStep] = useState<1 | 2>(1);
   const [name, setName] = useState(initialName);
   const [amount, setAmount] = useState<number>(initialAmount);
@@ -66,6 +68,11 @@ export default function TwoStepModalHome({
   const handleComplete = () => {
     onClose();
     onComplete?.();
+    if (type === 'send') {
+      router.replace('/home');
+    } else {
+      router.back();
+    }
   };
 
   return (
@@ -186,11 +193,6 @@ export default function TwoStepModalHome({
                       </span>
                     </div>
                     <CheckCircle className="h-12 w-12" />
-                    {result?.message && (
-                      <p className="mt-2 text-base text-gray-600">
-                        {result.message}
-                      </p>
-                    )}
                   </div>
                 )}
                 <Button
