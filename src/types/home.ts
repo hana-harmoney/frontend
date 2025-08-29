@@ -1,4 +1,5 @@
 import { AccountHistoryItem } from './accountDetail';
+import { PocketTransaction } from './pocket';
 
 export type BalanceProps = {
   balance: number;
@@ -23,7 +24,7 @@ export type HistoryCardProps = {
 export type HistoryProps = {
   id: number;
   date: string;
-  histories: AccountHistoryItem[];
+  histories: (AccountHistoryItem | PocketTransaction)[];
 };
 
 export type Tab = {

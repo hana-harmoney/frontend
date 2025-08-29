@@ -3,8 +3,6 @@ import type { ApiResponse } from './apiResponse';
 export const TRANSACTION_TYPES = ['입금', '출금'] as const;
 export type TransactionType = (typeof TRANSACTION_TYPES)[number];
 
-export type ISODateTimeString = string;
-
 export interface AccountHistoryItem {
   transactionId: number;
   transactionType: TransactionType;

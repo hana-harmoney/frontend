@@ -5,6 +5,8 @@ import { Button } from '@/components/ui/button';
 import Header from '@/components/common/header';
 import { NumericKeypad } from '@/components/home/NumericKeypad';
 import { useRouter } from 'next/navigation';
+import { createPocket } from '@/lib/api/pocket';
+import { PocketCreateRequest } from '@/types/pocket';
 
 const CreatePocketPage = () => {
   const router = useRouter();
@@ -22,6 +24,17 @@ const CreatePocketPage = () => {
     const current = targetStr === '' ? 0 : Number(targetStr);
     const next = current + value;
     setTargetStr(String(next));
+  };
+
+  const handleCreatePocket = async (name: string, targetAmount: number) => {
+    const data: PocketCreateRequest = {
+      name,
+      targetAmount,
+      initialAmount: 0,
+    };
+    await createPocket(data);
+
+    router.push('/home');
   };
 
   return (
@@ -57,22 +70,6 @@ const CreatePocketPage = () => {
                 </div>
               ))}
             </div>
-            <div className="flex flex-col gap-3">
-              <span className="text-2xl font-light">주머니 이름</span>
-              <div className="flex gap-1">
-                {gun.map((item, idx) => (
-                  <div
-                    key={idx}
-                    className="flex-1 rounded-md bg-[#EFF0F4] px-3 py-2 text-center"
-                    onClick={() => {
-                      increaseTarget(item.value);
-                    }}
-                  >
-                    {item.text}
-                  </div>
-                ))}
-              </div>
-            </div>
             <NumericKeypad
               value={targetStr}
               onChange={(v) => setTargetStr(v)}
@@ -84,7 +81,12 @@ const CreatePocketPage = () => {
               showWonSuffix={true}
               className="mt-2"
             />
-            <Button className="py-7 text-xl font-semibold">작성 완료</Button>
+            <Button
+              onClick={() => handleCreatePocket(pocketName, Number(targetStr))}
+              className="py-7 text-xl font-semibold"
+            >
+              작성 완료
+            </Button>
           </div>
         </div>
       </div>

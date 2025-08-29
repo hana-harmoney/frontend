@@ -1,7 +1,6 @@
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 import { fetchProfileResponse } from '@/types/profile';
-import { HistoryProps } from '@/types/home';
 import toast from 'react-hot-toast';
 
 export function cn(...inputs: ClassValue[]) {
