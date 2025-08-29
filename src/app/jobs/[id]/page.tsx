@@ -242,7 +242,9 @@ const JobDetailPage = () => {
               <span className="text-3xl font-semibold">{boardData.title}</span>
               <Badge active={true} text={boardData.category || '카테고리'} />
             </div>
-            <span className="text-xl font-semibold">{boardData.content}</span>
+            <span className="text-xl font-semibold whitespace-pre-line">
+              {boardData.content}
+            </span>
           </div>
           <div className="flex flex-col gap-1">
             <div className="flex items-center gap-2">
