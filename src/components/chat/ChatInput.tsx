@@ -97,7 +97,12 @@ export default function ChatInput({
           onChange={handleChangeText}
         />
         <button type="submit" onClick={handleSend}>
-          <Send className="size-10" />
+          <Send
+            className={cn(
+              'size-10 duration-300',
+              text ? 'fill-hana-green' : 'fill-gray',
+            )}
+          />
         </button>
       </div>
       {showRecord && (
