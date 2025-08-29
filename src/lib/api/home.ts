@@ -12,9 +12,8 @@ export const fetchPocketList = async (): Promise<PocketListResponse> => {
 export const fetchAccountDetail = async (
   accountId: number,
 ): Promise<AccountDetailResponse> => {
-  const res = await apiClient('/home/history', {
-    method: 'POST',
-    body: JSON.stringify({ accountId }),
+  const res = await apiClient(`/home/history?accountId=${accountId}`, {
+    method: 'GET',
   });
 
   if (res.code !== '200') throw new Error('계좌 상세 조회 실패');

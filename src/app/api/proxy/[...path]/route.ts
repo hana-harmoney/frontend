@@ -12,6 +12,9 @@ async function handler(
   const path = `/${(params.path ?? []).join('/')}`;
   const url = new URL(path, BACKEND);
 
+  const incoming = new URL(req.url);
+  url.search = incoming.search;
+
   const headers = new Headers(req.headers);
   headers.delete('host');
   headers.delete('content-length');
