@@ -64,3 +64,10 @@ export async function transferInChatRoom(
     body: JSON.stringify({ amount: amount }),
   });
 }
+
+export async function createChatRoom(boardId: number): Promise<void> {
+  await apiClient(`/chat`, {
+    method: 'POST',
+    body: JSON.stringify({ boardId: boardId }),
+  });
+}
