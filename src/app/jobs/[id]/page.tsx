@@ -18,6 +18,7 @@ import Edit from '@/assets/icons/edit.svg';
 import Trash from '@/assets/icons/trash.svg';
 import { deleteJob } from '@/lib/api/jobs';
 import toast from 'react-hot-toast';
+import { createChatRoom } from '@/lib/api/chat';
 
 const JobDetailPage = () => {
   useKakaoLoader();
@@ -87,6 +88,17 @@ const JobDetailPage = () => {
       setShowConfirm(false);
     } finally {
       setDeleting(false);
+    }
+  };
+
+  const handleChat = async () => {
+    if (!boardData) return;
+    try {
+      await createChatRoom(boardData.boardId);
+
+      toast.success('채팅방이 성공적으로 생성되었습니다.');
+    } catch (e) {
+      toast.success('채팅방 생성에 실패했습니다.');
     }
   };
 
@@ -217,6 +229,7 @@ const JobDetailPage = () => {
                 <Button
                   variant="destructive"
                   className="min-w-0 flex-1 !py-6 text-2xl"
+                  onClick={handleChat}
                 >
                   채팅하기
                 </Button>

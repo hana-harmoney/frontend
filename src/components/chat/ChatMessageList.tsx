@@ -26,7 +26,7 @@ export default function ChatMessageList({
 
   if (isLoading || isError)
     return (
-      <div className="content-h text-text-secondary flex flex-col items-center justify-center">
+      <div className="flex flex-col items-center justify-center py-48 text-2xl text-gray-500">
         {isLoading ? '채팅 불러오는 중...' : isError ? '에러 발생' : ''}
       </div>
     );

@@ -4,6 +4,7 @@ import ChatRoomTile from '@/components/chat/ChatRoomTile';
 import { fetchChatRooms } from '@/lib/api/chat';
 import { useChatRoomListStore } from '@/stores/useChatRoomsStore';
 import { useEffect, useState } from 'react';
+import NoData from '@/assets/images/no-data.svg';
 
 export default function ChatPage() {
   const [isLoading, setIsLoading] = useState(true);
@@ -21,10 +22,23 @@ export default function ChatPage() {
         setIsLoading(false);
       }
     })();
-  }, [setChatRooms]);
+  }, [isLoading, setChatRooms]);
 
   if (isLoading) {
-    <div>Loading...</div>;
+    return (
+      <div className="flex flex-col items-center justify-center gap-3 py-10 text-center text-gray-500">
+        불러오는 중…
+        <NoData className="h-24 w-24" />
+      </div>
+    );
+  }
+
+  if (chatRooms.length === 0) {
+    return (
+      <div className="flex flex-col items-center justify-center py-20 text-2xl text-gray-500">
+        채팅 목록이 없습니다.
+      </div>
+    );
   }
 
   return (
