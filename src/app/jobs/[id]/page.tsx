@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { Map, MapMarker } from 'react-kakao-maps-sdk';
 import useKakaoLoader from '@/components/use-kakao-loader';
@@ -19,6 +19,7 @@ import Trash from '@/assets/icons/trash.svg';
 import { deleteJob } from '@/lib/api/jobs';
 import toast from 'react-hot-toast';
 import { createChatRoom } from '@/lib/api/chat';
+import Close from '@/assets/icons/close.svg';
 
 const JobDetailPage = () => {
   useKakaoLoader();
@@ -39,6 +40,7 @@ const JobDetailPage = () => {
   const [userId, setUserId] = useState<string>();
   const [chatRoomCnt, setChatRoomCnt] = useState(0);
   const [boardId, setBoardId] = useState<string>();
+  const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
@@ -78,6 +80,16 @@ const JobDetailPage = () => {
     })();
   }, [jobId]);
 
+  useEffect(() => {
+    if (showModal) {
+      const prev = document.body.style.overflow;
+      document.body.style.overflow = 'hidden';
+      return () => {
+        document.body.style.overflow = prev;
+      };
+    }
+  }, [showModal]);
+
   const handleDelete = async () => {
     if (!boardData) return;
     try {
@@ -104,6 +116,14 @@ const JobDetailPage = () => {
     } catch (e) {
       toast.success('채팅방 생성에 실패했습니다.');
     }
+  };
+
+  const gun = () => {
+    console.log('gmlgml');
+    setShowModal(true);
+  };
+  const gugu = () => {
+    setShowModal(false);
   };
 
   if (loading)
@@ -162,7 +182,8 @@ const JobDetailPage = () => {
           <img
             src={boardData.imageUrl}
             alt="profile"
-            className="w-full object-cover object-center"
+            className="max-h-[400px] w-full object-cover object-center"
+            onClick={gun}
           />
         )}
         <div className="flex w-full flex-col gap-5 px-6">
@@ -284,6 +305,19 @@ const JobDetailPage = () => {
                   {deleting ? '삭제 중…' : '삭제하기'}
                 </Button>
               </div>
+            </div>
+          </div>
+        )}
+        {showModal && (
+          <div className="fixed inset-0 z-[51] flex items-center justify-center bg-black/70 p-4">
+            <div className="flex w-full max-w-5xl flex-col items-end gap-2 overflow-auto">
+              <Close className="h-20 w-20" onClick={gugu} />
+
+              <img
+                src={boardData.imageUrl}
+                alt="profile"
+                className="w-full rounded-lg object-contain"
+              />
             </div>
           </div>
         )}
