@@ -16,7 +16,10 @@ const navItems = [
 const HIDDEN_NAVBAR_PATHS = ['/auth', '/chatroom', '/profile/new'];
 export default function BottomNav() {
   const pathname = usePathname();
-  if (HIDDEN_NAVBAR_PATHS.some((path) => pathname.startsWith(path)))
+  if (
+    pathname === '/' ||
+    HIDDEN_NAVBAR_PATHS.some((path) => pathname.startsWith(path))
+  )
     return null;
   return (
     <nav>
