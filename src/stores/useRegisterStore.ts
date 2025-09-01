@@ -9,6 +9,8 @@ type RegisterData = {
   loginId: string;
   password: string;
   agreements: Record<AgreementKey, boolean>;
+  latitude: string;
+  longitude: string;
 };
 
 type RegisterStore = {
@@ -39,6 +41,8 @@ export const useRegisterStore = create<RegisterStore>((set) => ({
     loginId: '',
     password: '',
     agreements: initialAgreements,
+    latitude: '',
+    longitude: '',
   },
   setField: (field, value) =>
     set((state) => ({
@@ -65,6 +69,8 @@ export const useRegisterStore = create<RegisterStore>((set) => ({
         loginId: '',
         password: '',
         agreements: initialAgreements,
+        latitude: '',
+        longitude: '',
       },
     }),
 }));

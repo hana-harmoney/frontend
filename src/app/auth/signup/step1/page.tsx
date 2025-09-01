@@ -8,6 +8,7 @@ import { useRegisterStore } from '@/stores/useRegisterStore';
 import { useRouter } from 'next/navigation';
 import Script from 'next/script';
 import LeftArrow from '@/assets/icons/left_arrow.svg';
+const isValidKoreanName = (name: string) => /^[가-힣]+$/.test(name);
 
 export default function Step1Page() {
   const { data, setField } = useRegisterStore();
@@ -15,10 +16,13 @@ export default function Step1Page() {
 
   const formValid = !!(
     data.name &&
+    isValidKoreanName(data.name) &&
     data.birth &&
     data.gender &&
     data.phone &&
-    data.address
+    data.address &&
+    data.latitude &&
+    data.longitude
   );
 
   return (
@@ -69,6 +73,11 @@ export default function Step1Page() {
             value={data.name}
             onChange={(e) => setField('name', e.target.value)}
           />
+          {!isValidKoreanName(data.name) && data.name && (
+            <p className="text-sm text-red-500">
+              이름은 한글만 사용할 수 있습니다.
+            </p>
+          )}
         </div>
 
         <div className="flex w-full flex-col gap-3 py-2 text-2xl font-light">

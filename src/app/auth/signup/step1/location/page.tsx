@@ -6,8 +6,11 @@ import { useRegisterStore } from '@/stores/useRegisterStore';
 import LeftArrow from '@/assets/icons/left_arrow.svg';
 import DaumPostcode from 'react-daum-postcode';
 import Header from '@/components/common/header';
+import useKakaoLoader from '@/components/use-kakao-loader';
 
 const LocationSearchPage = () => {
+  useKakaoLoader();
+
   const router = useRouter();
   const { setField } = useRegisterStore();
   const [scriptLoaded, setScriptLoaded] = useState(false);
@@ -29,6 +32,17 @@ const LocationSearchPage = () => {
   }, []);
 
   const onCompletePost = (data: { address: string }) => {
+    const geocoder = new kakao.maps.services.Geocoder();
+    geocoder.addressSearch(data.address, (result, status) => {
+      if (status === kakao.maps.services.Status.OK) {
+        const { x, y } = result[0];
+        const lng = parseFloat(x);
+        const lat = parseFloat(y);
+        setField('longitude', String(lng));
+        setField('latitude', String(lat));
+      }
+    });
+
     setField('address', data.address || '');
     router.push('/auth/signup/step1');
   };
