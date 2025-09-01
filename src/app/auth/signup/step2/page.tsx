@@ -8,7 +8,8 @@ import { useRegisterStore } from '@/stores/useRegisterStore';
 import { useRouter } from 'next/navigation';
 
 const isValidLoginId = (id: string) => /^[a-zA-Z0-9]{6,}$/.test(id);
-const isValidPassword = (pw: string) => /^.{8,}$/.test(pw);
+const isValidPassword = (pw: string) =>
+  /^(?=\S{8,}$)(?=.*[A-Za-z])(?=.*\d)(?=.*[^\w\s]).*$/.test(pw);
 
 export default function Step2Page() {
   const { data, setField } = useRegisterStore();
@@ -72,7 +73,7 @@ export default function Step2Page() {
           />
           {!isValidPassword(data.password) && data.password && (
             <p className="text-sm text-red-500">
-              비밀번호는 8자 이상이어야 합니다.
+              비밀번호는 8자 이상, 영문, 숫자, 특수문자를 포함해야 합니다.
             </p>
           )}
         </div>
