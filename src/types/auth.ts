@@ -13,4 +13,6 @@ export interface SignupPayload {
   gender: 'MALE' | 'FEMALE';
   address: string;
   phone: string;
+  longitude: string;
+  latitude: string;
 }

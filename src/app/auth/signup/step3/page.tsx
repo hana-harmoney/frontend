@@ -74,6 +74,8 @@ export default function Step3Page() {
         gender: genderValue,
         address: data.address,
         phone: data.phone,
+        latitude: data.latitude,
+        longitude: data.longitude,
       });
 
       if (result?.code === '200') {
