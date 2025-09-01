@@ -2,7 +2,6 @@
 
 import Header from '@/components/common/header';
 import BottomButton from '@/components/common/bottomButton';
-import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useRegisterStore } from '@/stores/useRegisterStore';
 import { AgreementKey } from '@/types/auth';
@@ -28,7 +27,6 @@ const AGREEMENT_ID: Record<AgreementKey, number> = {
 };
 
 export default function Step3Page() {
-  const [modalKey, setModalKey] = useState<AgreementKey | null>(null);
   const router = useRouter();
 
   const { data, toggleAgreement, setField } = useRegisterStore();
@@ -86,6 +84,7 @@ export default function Step3Page() {
       }
     } catch (error) {
       console.error('회원가입 오류:', error);
+
       toast.error('회원가입 중 오류가 발생했습니다.');
     }
   };

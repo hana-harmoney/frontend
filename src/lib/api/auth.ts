@@ -1,6 +1,16 @@
 import { apiClient } from './client';
 import { SignupPayload } from '@/types/auth';
 
+export async function checkDuplicateId(loginId: string) {
+  try {
+    const res = await apiClient(`/auth/check-id?loginId=${loginId}`);
+
+    return res;
+  } catch (error) {
+    throw error;
+  }
+}
+
 export async function signupUser(payload: SignupPayload) {
   try {
     const res = await apiClient('/auth/signup', {
