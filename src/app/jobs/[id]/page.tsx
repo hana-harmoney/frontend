@@ -232,7 +232,9 @@ const JobDetailPage = () => {
             <div className="flex flex-col">
               <div className="flex items-end gap-1">
                 <span className="text-2xl">{boardData.nickname}</span>
-                <span className="text-hana-green">Lv.{boardData.trust}</span>
+                <span className="text-hana-green">
+                  Lv.{Math.floor(boardData.trust)}
+                </span>
               </div>
               {boardData.address}
             </div>

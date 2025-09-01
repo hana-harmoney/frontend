@@ -49,7 +49,7 @@ function isValidDate(date: Date | undefined) {
 
 export function DatePicker({
   label = '',
-  placeholder = '1960-01-01',
+  placeholder = '1960년 1월 1일',
   id = 'date',
   value,
   defaultValue,
@@ -98,7 +98,7 @@ export function DatePicker({
           name={name}
           value={inputValue}
           placeholder={placeholder}
-          className="w-full px-4 py-6 text-xl font-normal"
+          className="w-full px-4 py-6 text-xl font-normal placeholder:text-xl"
           disabled={disabled}
           required={required}
           onChange={(e) => {
@@ -112,6 +112,7 @@ export function DatePicker({
               setMonth(parsed);
             }
           }}
+          readOnly={true}
           onBlur={() => {
             // 포맷 정규화: 포커스 아웃 시 보기 좋게 포맷 적용
             setInputValue(formatDate(date));

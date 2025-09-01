@@ -14,14 +14,12 @@ const ProfilePage = () => {
   const [profile, setProfile] = useState<fetchProfileResponse>(initialProfile);
   const params = useParams();
   const userId = Number(params.id);
-  const [userName, setUserName] = useState<string>('');
 
   useEffect(() => {
     (async () => {
       try {
         const data = await fetchProfileById(userId);
         setProfile(data);
-        setUserName(profile.nickname);
       } catch (e) {
       } finally {
       }
