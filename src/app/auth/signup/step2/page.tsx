@@ -6,13 +6,17 @@ import BottomButton from '@/components/common/bottomButton';
 import { useState } from 'react';
 import { useRegisterStore } from '@/stores/useRegisterStore';
 import { useRouter } from 'next/navigation';
+import { checkDuplicateId } from '@/lib/api/auth';
+import toast from 'react-hot-toast';
 
 const isValidLoginId = (id: string) => /^[a-zA-Z0-9]{6,}$/.test(id);
-const isValidPassword = (pw: string) => /^.{8,}$/.test(pw);
+const isValidPassword = (pw: string) =>
+  /^(?=\S{8,}$)(?=.*[A-Za-z])(?=.*\d)(?=.*[^\w\s]).*$/.test(pw);
 
 export default function Step2Page() {
   const { data, setField } = useRegisterStore();
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [isDuplicatedId, setIsDuplicatedId] = useState(false);
   const router = useRouter();
 
   const formValid = !!(
@@ -21,6 +25,21 @@ export default function Step2Page() {
     confirmPassword &&
     data.password === confirmPassword
   );
+
+  const handleNext = async () => {
+    try {
+      const res = await checkDuplicateId(data.loginId);
+
+      if (res.result.exists) {
+        setIsDuplicatedId(true);
+      } else {
+        setIsDuplicatedId(false);
+        router.push('/auth/signup/step3');
+      }
+    } catch {
+      toast.error('아이디 중복체크하는데 실패했어요.');
+    }
+  };
 
   return (
     <div className="px-6 pt-5 pb-24">
@@ -53,11 +72,17 @@ export default function Step2Page() {
           <CustomInput
             placeholder="영문, 숫자 조합 6자 이상"
             value={data.loginId}
-            onChange={(e) => setField('loginId', e.target.value)}
+            onChange={(e) => {
+              setIsDuplicatedId(false);
+              setField('loginId', e.target.value);
+            }}
           />
-          {!isValidLoginId(data.loginId) && data.loginId && (
+          {(isDuplicatedId ||
+            (!isValidLoginId(data.loginId) && data.loginId)) && (
             <p className="text-sm text-red-500">
-              영문/숫자 조합 6자 이상이어야 합니다.
+              {isDuplicatedId
+                ? '이미 사용중인 아이디입니다.'
+                : '영문/숫자 조합 6자 이상이어야 합니다.'}
             </p>
           )}
         </div>
@@ -72,7 +97,7 @@ export default function Step2Page() {
           />
           {!isValidPassword(data.password) && data.password && (
             <p className="text-sm text-red-500">
-              비밀번호는 8자 이상이어야 합니다.
+              비밀번호는 8자 이상, 영문, 숫자, 특수문자를 포함해야 합니다.
             </p>
           )}
         </div>
@@ -93,10 +118,7 @@ export default function Step2Page() {
         </div>
       </div>
 
-      <BottomButton
-        disabled={!formValid}
-        onClick={() => router.push('/auth/signup/step3')}
-      >
+      <BottomButton disabled={!formValid} onClick={handleNext}>
         다음으로
       </BottomButton>
 

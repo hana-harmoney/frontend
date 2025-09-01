@@ -2,11 +2,11 @@
 
 import Header from '@/components/common/header';
 import BottomButton from '@/components/common/bottomButton';
-import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useRegisterStore } from '@/stores/useRegisterStore';
 import { AgreementKey } from '@/types/auth';
 import { signupUser } from '@/lib/api/auth';
+import toast from 'react-hot-toast';
 
 const TERMS_DETAIL: Record<AgreementKey, string> = {
   service:
@@ -27,7 +27,6 @@ const AGREEMENT_ID: Record<AgreementKey, number> = {
 };
 
 export default function Step3Page() {
-  const [modalKey, setModalKey] = useState<AgreementKey | null>(null);
   const router = useRouter();
 
   const { data, toggleAgreement, setField } = useRegisterStore();
@@ -78,13 +77,15 @@ export default function Step3Page() {
       });
 
       if (result?.code === '200') {
+        toast.success('회원가입에 성공했습니다.');
         router.push('/auth/login');
       } else {
-        alert(`회원가입 실패: ${result?.message ?? '알 수 없는 오류'}`);
+        toast.error(`회원가입 실패: ${result?.message ?? '알 수 없는 오류'}`);
       }
     } catch (error) {
       console.error('회원가입 오류:', error);
-      alert('회원가입 중 오류가 발생했습니다.');
+
+      toast.error('회원가입 중 오류가 발생했습니다.');
     }
   };
 
