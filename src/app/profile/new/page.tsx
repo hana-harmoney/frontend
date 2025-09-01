@@ -146,7 +146,7 @@ export default function ProfileNewPage() {
           소개글
           <Textarea
             placeholder="제육볶음 달인!"
-            className="placeholder:text-gray h-44 text-xl font-normal placeholder:text-xl"
+            className="placeholder:text-gray h-44 !text-xl font-normal placeholder:text-xl"
             value={bio}
             onChange={(e) => setProfileField('bio', e.target.value)}
             maxLength={500}

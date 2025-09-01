@@ -52,7 +52,7 @@ const PocketDetailPage = () => {
       <div className="flex flex-col gap-6">
         <div className="flex flex-col gap-1 font-semibold">
           <div className="flex flex-row items-baseline justify-start gap-3">
-            <span className="text-3xl">손주 용돈 주머니</span>
+            <span className="text-3xl">{pocket.pocketName} 주머니</span>
             <span
               onClick={() => handleDelete(Number(id))}
               className="text-hanagreen-normal cursor-pointer text-[1.3rem] font-normal underline"

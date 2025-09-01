@@ -143,14 +143,6 @@ const JobDetailPage = () => {
     }
   };
 
-  const gun = () => {
-    console.log('gmlgml');
-    setShowModal(true);
-  };
-  const gugu = () => {
-    setShowModal(false);
-  };
-
   if (loading)
     return (
       <div className="flex flex-col items-center justify-center gap-3 py-10 text-center text-gray-500">
@@ -165,7 +157,7 @@ const JobDetailPage = () => {
   return (
     <>
       <Header
-        title={boardData.title}
+        title={'게시글 정보'}
         centerTitle={false}
         showBackButton={true}
         backClick={() => router.push('/jobs')}
@@ -219,7 +211,7 @@ const JobDetailPage = () => {
             src={boardData.imageUrl}
             alt="profile"
             className="max-h-[400px] w-full object-cover object-center"
-            onClick={gun}
+            onClick={() => setShowModal(true)}
           />
         )}
         <div className="flex w-full flex-col gap-5 px-6">
@@ -310,6 +302,7 @@ const JobDetailPage = () => {
               variant="destructive"
               className="!py-7 text-2xl"
               onClick={() => router.push(`/chat/my/${boardId}`)}
+              disabled={chatRoomCnt === 0}
             >
               대화중인 채팅 {chatRoomCnt}
             </Button>
@@ -347,7 +340,10 @@ const JobDetailPage = () => {
         {showModal && (
           <div className="fixed inset-0 z-[51] flex items-center justify-center bg-black/70 p-4">
             <div className="flex w-full max-w-5xl flex-col items-end gap-2 overflow-auto">
-              <Close className="h-20 w-20" onClick={gugu} />
+              <Close
+                className="h-20 w-20"
+                onClick={() => setShowModal(false)}
+              />
 
               <img
                 src={boardData.imageUrl}

@@ -27,7 +27,7 @@ export default function ChatTransferPage() {
     setTargetStr(String(next));
   };
 
-  const gun = [
+  const priceList = [
     { text: '+1만', value: 10000 },
     { text: '+5만', value: 50000 },
     { text: '+10만', value: 100000 },
@@ -78,7 +78,7 @@ export default function ChatTransferPage() {
         </span>
         <div className="flex flex-col gap-11">
           <div className="flex gap-1">
-            {gun.map((item, idx) => (
+            {priceList.map((item, idx) => (
               <div
                 key={idx}
                 className="flex-1 rounded-md bg-[#EFF0F4] px-3 py-2 text-center"

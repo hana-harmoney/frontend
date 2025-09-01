@@ -19,8 +19,6 @@ const JobsEditLocationPage = () => {
   useKakaoLoader();
   const params = useParams() as { id?: string; jobId?: string };
   const jobId = params.jobId ?? params.id ?? '';
-  // console.log('route params : ', params, ' / jobId: ', jobId);
-  console.log('jobId: ', jobId);
   const router = useRouter();
   const { data: registerData, setData } = useJobEditStore();
   const [selectedPosition, setSelectedPosition] = useState<{

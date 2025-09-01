@@ -42,7 +42,7 @@ const HomePage = () => {
           <div className="flex flex-col justify-center gap-2 px-2 pt-6 text-2xl font-semibold">
             <div>총 자산</div>
             <div className="text-main flex items-center gap-1 text-3xl">
-              {formatNumber(account.accountBalance)}
+              {formatNumber(account.totalAssets)}
               <span className="text-text">원</span>
             </div>
           </div>
