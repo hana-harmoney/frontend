@@ -107,8 +107,16 @@ export default function Step1Page() {
             placeholder="010-1234-5678"
             value={data.phone}
             onChange={(e) => {
-              const onlyNum = e.target.value.replace(/[^0-9]/g, '');
-              setField('phone', onlyNum);
+              const raw = e.target.value.replace(/[^0-9]/g, '');
+              let formatted = raw;
+              if (raw.length < 4) {
+                formatted = raw;
+              } else if (raw.length < 8) {
+                formatted = `${raw.slice(0, 3)}-${raw.slice(3)}`;
+              } else {
+                formatted = `${raw.slice(0, 3)}-${raw.slice(3, 7)}-${raw.slice(7, 11)}`;
+              }
+              setField('phone', formatted);
             }}
           />
         </div>

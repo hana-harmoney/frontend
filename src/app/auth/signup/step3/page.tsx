@@ -66,10 +66,6 @@ export default function Step3Page() {
 
     const genderValue = data.gender === '남자' ? 'MALE' : 'FEMALE';
 
-    const formatPhone = data.phone
-      .replace(/[^0-9]/g, '')
-      .replace(/(\d{3})(\d{3,4})(\d{4})/, '$1-$2-$3');
-
     try {
       const result = await signupUser({
         loginId: data.loginId,
@@ -78,7 +74,7 @@ export default function Step3Page() {
         birth: formatBirth,
         gender: genderValue,
         address: data.address,
-        phone: formatPhone,
+        phone: data.phone,
       });
 
       if (result?.code === '200') {

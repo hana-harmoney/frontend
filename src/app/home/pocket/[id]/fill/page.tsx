@@ -6,10 +6,12 @@ import { formatNumber } from '@/lib/utils';
 import TwoStepModalHome from '@/components/home/TwoStepModalHome';
 import { plusPocket } from '@/lib/api/transfer';
 import { useParams } from 'next/navigation';
+import { fetchPocketList } from '@/lib/api/home';
+import { fetchPocketDetail } from '@/lib/api/pocket';
+import { PocketDetail } from '@/types/pocket';
 
 const FillPage = () => {
   const [amount, setAmount] = useState<number>(0);
-  const [pocket, setPocket] = useState<string>('');
   const [open, setOpen] = useState(false);
   const params = useParams();
   const pocketId = params.id;
@@ -21,7 +23,15 @@ const FillPage = () => {
     setTargetStr(String(next));
   };
 
-  const gun = [
+  const [pocket, setPocket] = useState<PocketDetail>({
+    pocketId: 0,
+    pocketName: '',
+    targetAmount: 0,
+    currentAmount: 0,
+    transactions: [],
+  });
+
+  const priceList = [
     { text: '+1만', value: 10000 },
     { text: '+5만', value: 50000 },
     { text: '+10만', value: 100000 },
@@ -29,10 +39,20 @@ const FillPage = () => {
     { text: '+30만', value: 300000 },
   ];
 
+  // useEffect(() => {
+  //   // setPocket('손주 용돈 주머니');
+  //   setAmount(13489203);
+  // }, []);
+
   useEffect(() => {
-    setPocket('손주 용돈 주머니');
-    setAmount(13489203);
-  }, []);
+    (async () => {
+      const resAccount = await fetchPocketList();
+      const res = await fetchPocketDetail(Number(pocketId));
+
+      setAmount(resAccount.result.accountBalance);
+      setPocket(res.result);
+    })();
+  }, [pocketId]);
 
   const openModal = () => {
     setOpen(true);
@@ -40,7 +60,6 @@ const FillPage = () => {
 
   const clickComplete = () => {
     openModal();
-    console.log('clickComplete');
   };
 
   const handlePocketSubmit = async ({
@@ -68,7 +87,7 @@ const FillPage = () => {
         <div className="flex flex-col gap-4 text-2xl">
           <div className="flex flex-col">
             <div className="flex gap-2">
-              <span className="font-semibold">내 기본 주머니</span>
+              <span className="font-semibold">내 계좌</span>
               에서
             </div>
             <div className="text-gray flex gap-1 text-xl font-light">
@@ -77,7 +96,7 @@ const FillPage = () => {
             </div>
           </div>
           <div className="flex items-center gap-1 text-2xl">
-            <span className="font-semibold">{pocket}</span>
+            <span className="font-semibold">{pocket.pocketName}</span>
             <span className="font-light">로</span>
           </div>
         </div>
@@ -90,7 +109,7 @@ const FillPage = () => {
         </span>
         <div className="flex flex-col gap-11">
           <div className="flex gap-1">
-            {gun.map((item, idx) => (
+            {priceList.map((item, idx) => (
               <div
                 key={idx}
                 className="flex-1 rounded-md bg-[#EFF0F4] px-3 py-2 text-center"
@@ -121,7 +140,7 @@ const FillPage = () => {
       <TwoStepModalHome
         open={open}
         type={'fill'}
-        name={pocket}
+        name={pocket.pocketName}
         amount={Number(targetStr)}
         onClose={() => setOpen(false)}
         onSubmit={handlePocketSubmit}
