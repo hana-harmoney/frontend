@@ -7,7 +7,7 @@ import {
 import { apiClient } from './client';
 
 export const fetchJobList = async (): Promise<JobListResponse> => {
-  const res = await apiClient('/board');
+  const res = await apiClient('/board/nearby');
 
   if (res.code !== '200') throw new Error('일자리 조회 실패');
   return res;

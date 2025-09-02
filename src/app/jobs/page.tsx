@@ -83,9 +83,7 @@ const JobsPage = () => {
             <div className="py-10 text-center text-red-500">{error}</div>
           ) : cards.length === 0 ? (
             <div className="flex flex-col items-center justify-center gap-3 py-10 text-center text-gray-500">
-              검색 결과가 없습니다.
-              <br />
-              다른 카테고리를 선택해주세요.
+              내 주변에 게시글이 없어요.
               <NoData className="h-24 w-24" />
             </div>
           ) : (
