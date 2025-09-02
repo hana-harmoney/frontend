@@ -117,7 +117,10 @@ const JobsLocationPage = () => {
               주소 검색
             </Button>
           </DialogTrigger>
-          <DialogContent className="max-w-[90vw] p-0">
+          <DialogContent
+            className="max-w-[90vw] overflow-hidden p-0"
+            showCloseButton={false}
+          >
             <DialogTitle asChild>
               <VisuallyHidden>주소 검색</VisuallyHidden>
             </DialogTitle>
