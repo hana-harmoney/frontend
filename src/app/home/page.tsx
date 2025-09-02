@@ -3,12 +3,88 @@ import { copyAccountNumber, formatNumber } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import BalanceCard from '@/components/home/BalanceCard';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
 import { fetchPocketList } from '@/lib/api/home';
 import { AccountInfo } from '@/types/pocket';
 import Header from '@/components/common/header';
+import { firebaseApp } from '@/firebase';
+import {
+  getMessaging,
+  onMessage,
+  isSupported,
+  getToken,
+} from 'firebase/messaging';
+import { useEffect, useState } from 'react';
+
+const requestPermission = async () => {
+  if (!('Notification' in window)) {
+    console.warn('This browser does not support notifications.');
+    return;
+  }
+  const permission = Notification.permission;
+  console.log('Permission: ' + permission);
+  if (permission === 'granted') {
+    return;
+  } else {
+    Notification.requestPermission().then((permission) => {
+      console.log('permission', permission);
+    });
+    return;
+  }
+};
+
+const getMessagingIfSupported = async () => {
+  try {
+    const supported = await isSupported();
+    if (supported) {
+      return getMessaging(firebaseApp);
+    }
+    return null;
+  } catch (err) {
+    console.error(err);
+    return null;
+  }
+};
 
 const HomePage = () => {
+  const [token, setToken] = useState<string | null>(null);
+
+  useEffect(() => {
+    const onMessageListener = async () => {
+      const messagingResolve = await getMessagingIfSupported();
+      if (messagingResolve) {
+        const token = await getToken(messagingResolve);
+        setToken(token);
+        onMessage(messagingResolve, (payload) => {
+          if (!('Notification' in window)) {
+            return;
+          }
+          const permission = Notification.permission;
+          const title = payload.notification?.title + ' foreground';
+          const redirectUrl = '/';
+          const body = payload.notification?.body;
+          if (permission === 'granted') {
+            console.log('payload', payload);
+            if (payload.data) {
+              const notification = new Notification(title, {
+                body,
+                // icon: '/icons/icon-96.png',
+              });
+              notification.onclick = () => {
+                window.open(redirectUrl, '_blank')?.focus();
+              };
+            }
+          }
+        });
+      }
+    };
+    onMessageListener();
+    requestPermission();
+  }, []);
+
+  useEffect(() => {
+    console.log('token : ', token);
+  }, [token]);
+
   const labelBg = [
     'bg-label0',
     'bg-label1',

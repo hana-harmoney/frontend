@@ -3,6 +3,7 @@ import './globals.css';
 import localFont from 'next/font/local';
 import { Toaster } from 'react-hot-toast';
 import BottomNav from '@/components/common/navbar/BottomNav';
+import Script from 'next/script';
 
 const pretendard = localFont({
   src: '../fonts/PretendardVariable.woff2',
@@ -23,6 +24,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <Script src="/service-worker.js" />
       <body
         className={`${pretendard.className} overflow-x-hidden`}
         // style={{
