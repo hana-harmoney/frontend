@@ -24,7 +24,8 @@ export default function ChatMessageBubble({
 }: Props) {
   const setAmount = useChatAmountStore((state) => state.setAmount);
   const isIncoming = message.direction === 'incoming';
-  const showProfile = isIncoming && isFirstOfGroup && message.senderProfileImg;
+  const showProfile =
+    isIncoming && isFirstOfGroup && Boolean(message.senderProfileImg);
 
   return (
     <div
@@ -34,19 +35,20 @@ export default function ChatMessageBubble({
       )}
     >
       {/* 상대방 이미지 (상대방 그룹의 첫번째 메세지일 경우만) */}
-      {isIncoming &&
-        (showProfile ? (
-          <div className="mr-2 flex-none self-start">
+      {isIncoming && (
+        <div className="w-15 flex-none self-start">
+          {showProfile ? (
             <Link href={`/profile/${message.senderId}`}>
               <ChatProfileImage
                 size={50}
                 imageUrl={message.senderProfileImg ?? ''}
               />
             </Link>
-          </div>
-        ) : (
-          <div className="mr-5 h-[37px] w-[37px]" />
-        ))}
+          ) : (
+            <div />
+          )}
+        </div>
+      )}
       {/* 메세지 */}
       <div className="flex flex-col">
         <Message model={message}>
