@@ -6,89 +6,20 @@ import { useRouter } from 'next/navigation';
 import { fetchPocketList } from '@/lib/api/home';
 import { AccountInfo } from '@/types/pocket';
 import Header from '@/components/common/header';
-import { firebaseApp } from '@/firebase';
-import {
-  getMessaging,
-  onMessage,
-  isSupported,
-  getToken,
-} from 'firebase/messaging';
 import { useEffect, useState } from 'react';
-import { requestToken } from '@/lib/api/fcm';
-
-const requestPermission = async () => {
-  if (!('Notification' in window)) {
-    console.warn('This browser does not support notifications.');
-    return;
-  }
-  const permission = Notification.permission;
-  console.log('Permission: ' + permission);
-  if (permission === 'granted') {
-    return;
-  } else {
-    Notification.requestPermission().then((permission) => {
-      console.log('permission', permission);
-    });
-    return;
-  }
-};
-
-const getMessagingIfSupported = async () => {
-  try {
-    const supported = await isSupported();
-    if (supported) {
-      return getMessaging(firebaseApp);
-    }
-    return null;
-  } catch (err) {
-    console.error(err);
-    return null;
-  }
-};
+import { initFcmOnce } from '@/lib/fcm';
 
 const HomePage = () => {
-  const [token, setToken] = useState<string | null>(null);
-
-  useEffect(() => {
-    const onMessageListener = async () => {
-      const messagingResolve = await getMessagingIfSupported();
-      if (messagingResolve) {
-        const token = await getToken(messagingResolve);
-        setToken(token);
-        onMessage(messagingResolve, (payload) => {
-          if (!('Notification' in window)) {
-            return;
-          }
-          const permission = Notification.permission;
-          const title = payload.notification?.title + ' foreground';
-          const redirectUrl = '/';
-          const body = payload.notification?.body;
-          if (permission === 'granted') {
-            console.log('payload', payload);
-            if (payload.data) {
-              const notification = new Notification(title, {
-                body,
-                // icon: '/icons/icon-96.png',
-              });
-              notification.onclick = () => {
-                window.open(redirectUrl, '_blank')?.focus();
-              };
-            }
-          }
-        });
-      }
-    };
-    onMessageListener();
-    requestPermission();
-  }, []);
-
   useEffect(() => {
     (async () => {
-      if (token) {
-        await requestToken(token);
+      await initFcmOnce(); // 토큰 발급/등록 등 초기화 (이미 허용돼 있다면 바로 진행)
+      if (typeof window !== 'undefined' && 'Notification' in window) {
+        if (Notification.permission === 'default') {
+          await Notification.requestPermission();
+        }
       }
     })();
-  }, [token]);
+  }, []);
 
   const labelBg = [
     'bg-label0',

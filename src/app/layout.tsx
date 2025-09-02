@@ -4,6 +4,7 @@ import localFont from 'next/font/local';
 import { Toaster } from 'react-hot-toast';
 import BottomNav from '@/components/common/navbar/BottomNav';
 import Script from 'next/script';
+import NotificationProvider from '@/app/NotificationProvider';
 
 const pretendard = localFont({
   src: '../fonts/PretendardVariable.woff2',
@@ -34,9 +35,11 @@ export default function RootLayout({
         //   paddingRight: 'env(safe-area-inset-right)',
         // }}
       >
-        {children}
-        <BottomNav />
-        <Toaster position="top-center" reverseOrder={false} />
+        <NotificationProvider>
+          {children}
+          <BottomNav />
+          <Toaster position="top-center" reverseOrder={false} />
+        </NotificationProvider>
       </body>
     </html>
   );
