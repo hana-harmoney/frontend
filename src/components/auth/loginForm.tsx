@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { Button } from '../ui/button';
 import InputWithLabel from '../common/inputWithLabel';
 import { useRouter } from 'next/navigation';
+import ProfileRegisterSelectDialog from '../profile/ProfileRegisterSelectDialog';
 
 export default function LoginForm() {
   const router = useRouter();
@@ -12,6 +13,7 @@ export default function LoginForm() {
   const [password, setPassword] = useState('');
   const [err, setErr] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
   const handleChangeId = (event: React.ChangeEvent<HTMLInputElement>) => {
     setId(event.target.value);
@@ -38,7 +40,7 @@ export default function LoginForm() {
       if (data.profile_registered) {
         router.push('/home');
       } else {
-        router.push('/profile/new');
+        setIsOpen(true);
       }
     } catch (e) {
       setErr('아이디 또는 비밀번호를 확인해 주세요.');
@@ -47,6 +49,14 @@ export default function LoginForm() {
       setLoading(false);
     }
   }
+
+  const navigateToProfileRegister = () => {
+    router.push('/profile/new');
+  };
+
+  const copyLink = (link: string) => {
+    navigator.clipboard.writeText(link);
+  };
 
   return (
     <div className="flex w-full flex-col items-center gap-2">
@@ -80,6 +90,13 @@ export default function LoginForm() {
       <Link className="" href={'/auth/signup/step1'}>
         <p className="text-text-secondary text-xl">회원가입 하러가기</p>
       </Link>
+
+      <ProfileRegisterSelectDialog
+        isOpen={isOpen}
+        onAction1={navigateToProfileRegister}
+        onAction2={copyLink}
+        onClose={() => setIsOpen(false)}
+      />
     </div>
   );
 }
