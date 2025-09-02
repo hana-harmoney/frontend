@@ -8,11 +8,18 @@ import React from 'react';
 import Image from 'next/image';
 import PlusGray from '@/assets/icons/plus_gray.svg';
 import CircleRemove from '@/assets/icons/circle_remove.svg';
+import CircleInfo from '@/assets/icons/circle_info.svg';
 import { badgeData } from '@/lib/utils';
 import Badge from '@/components/common/badge';
 import { Textarea } from '@/components/ui/textarea';
 import { createProfile } from '@/lib/api/profile';
 import toast from 'react-hot-toast';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip';
 
 export default function ProfileNewPage() {
   const router = useRouter();
@@ -81,8 +88,24 @@ export default function ProfileNewPage() {
   return (
     <div className="px-6 pt-5 pb-24">
       <div className="flex flex-col gap-7">
-        <div className="text-gray mb-2 w-full py-3 text-center text-3xl font-medium">
-          프로필 등록하기
+        <div className="mb-2 flex items-center justify-center py-3">
+          <div className="text-gray relative text-3xl font-medium">
+            프로필 등록하기
+            <TooltipProvider>
+              <Tooltip open>
+                <TooltipTrigger asChild>
+                  <CircleInfo className="stroke-gray fill-gray absolute top-1.5 -right-8 size-6" />
+                </TooltipTrigger>
+                <TooltipContent
+                  side="bottom"
+                  align="end"
+                  className="bg-gray pointer-events-none text-lg"
+                >
+                  이 버튼을 눌러 예시를 참고하세요.
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          </div>
         </div>
         <div className="flex w-full flex-col gap-3 text-2xl font-light">
           닉네임
