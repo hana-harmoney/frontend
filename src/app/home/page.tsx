@@ -3,12 +3,24 @@ import { copyAccountNumber, formatNumber } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import BalanceCard from '@/components/home/BalanceCard';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
 import { fetchPocketList } from '@/lib/api/home';
 import { AccountInfo } from '@/types/pocket';
 import Header from '@/components/common/header';
+import { useEffect, useState } from 'react';
+import { initFcmOnce } from '@/lib/fcm';
 
 const HomePage = () => {
+  useEffect(() => {
+    (async () => {
+      await initFcmOnce(); // 토큰 발급/등록 등 초기화 (이미 허용돼 있다면 바로 진행)
+      if (typeof window !== 'undefined' && 'Notification' in window) {
+        if (Notification.permission === 'default') {
+          await Notification.requestPermission();
+        }
+      }
+    })();
+  }, []);
+
   const labelBg = [
     'bg-label0',
     'bg-label1',
