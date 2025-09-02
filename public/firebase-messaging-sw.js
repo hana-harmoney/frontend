@@ -20,8 +20,18 @@ messaging.onBackgroundMessage((payload) => {
   const title = payload.notification.title + ' (onBackgroundMessage)';
   const notificationOptions = {
     body: payload.notification.body,
-    icon: 'https://avatars.githubusercontent.com/sasha1107',
+    // icon: 'https://avatars.githubusercontent.com/sasha1107',
   };
 
   self.registration.showNotification(title, notificationOptions);
 });
+//
+// onMessage(messaging, (payload) => {
+//   const title = payload.notification.title + ' (fore)';
+//   const notificationOptions = {
+//     body: payload.notification.body,
+//     // icon: 'https://avatars.githubusercontent.com/sasha1107',
+//   };
+//
+//   self.registration.showNotification(title, notificationOptions);
+// });

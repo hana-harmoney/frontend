@@ -14,6 +14,7 @@ import {
   getToken,
 } from 'firebase/messaging';
 import { useEffect, useState } from 'react';
+import { requestToken } from '@/lib/api/fcm';
 
 const requestPermission = async () => {
   if (!('Notification' in window)) {
@@ -82,7 +83,11 @@ const HomePage = () => {
   }, []);
 
   useEffect(() => {
-    console.log('token : ', token);
+    (async () => {
+      if (token) {
+        await requestToken(token);
+      }
+    })();
   }, [token]);
 
   const labelBg = [
