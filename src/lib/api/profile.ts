@@ -1,4 +1,8 @@
-import { CreateProfilePayload, EditProfilePayload } from '@/types/profile';
+import {
+  CreateProfilePayload,
+  DelegateToken,
+  EditProfilePayload,
+} from '@/types/profile';
 import { apiClient } from '@/lib/api/client';
 
 const CATEGORY_ID_MAP: Record<string, number> = {
@@ -128,4 +132,12 @@ export async function updateProfile(payload: EditProfilePayload) {
   });
 
   return res;
+}
+
+export async function createDelegateToken(): Promise<DelegateToken> {
+  const res = await apiClient('/delegate/links/create', {
+    method: 'POST',
+  });
+
+  return res.result;
 }
