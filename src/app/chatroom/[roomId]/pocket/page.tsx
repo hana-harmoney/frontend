@@ -11,6 +11,7 @@ import { useState } from 'react';
 import toast from 'react-hot-toast';
 import NoData from '@/assets/images/no-data.svg';
 import { plusPocket } from '@/lib/api/transfer';
+import { usePocketAchieveStore } from '@/stores/usePocketAchieveStore';
 
 export default function ChatPocketPage() {
   const params = useParams();
@@ -19,6 +20,7 @@ export default function ChatPocketPage() {
   const [openReview, setOpenReview] = useState(false);
   const [selected, setSelected] = useState<number>();
   const amount = useChatAmountStore((state) => state.amount);
+  const setIsAchieved = usePocketAchieveStore((state) => state.setIsAchieved);
   const router = useRouter();
 
   const selectPocket = (id: number) => {
@@ -37,6 +39,9 @@ export default function ChatPocketPage() {
 
       if (!ok) throw Error();
       toast.success('주머니로 옮기기가 완료되었습니다.');
+      if (res.result.pocketAmount >= res.result.targetAmount) {
+        setIsAchieved(true);
+      }
 
       setOpenReview(true);
     } catch {

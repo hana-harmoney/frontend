@@ -32,7 +32,10 @@ export default function PocketCompleteLottie({
   return (
     <>
       {show && (
-        <div className="fixed inset-0 z-55 flex items-center justify-center bg-white/80">
+        <div
+          className="fixed inset-0 z-55 flex items-center justify-center bg-white/80"
+          onClick={handleBackdropClick}
+        >
           <div
             className="pointer-events-none absolute -top-32"
             style={{ width: size, height: size }}
