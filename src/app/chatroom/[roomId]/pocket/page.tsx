@@ -4,13 +4,13 @@ import ChatPocketCard from '@/components/chat/ChatPocketCard';
 import ReviewDialog from '@/components/chat/ReviewDialog';
 import { Button } from '@/components/ui/button';
 import { useAccount } from '@/hooks/useAccount';
-import { fillPocket } from '@/lib/api/home';
 import { useChatAmountStore } from '@/stores/useChatRoomsStore';
 import Link from 'next/link';
 import { useParams, useRouter } from 'next/navigation';
 import { useState } from 'react';
 import toast from 'react-hot-toast';
 import NoData from '@/assets/images/no-data.svg';
+import { plusPocket } from '@/lib/api/transfer';
 
 export default function ChatPocketPage() {
   const params = useParams();
@@ -25,16 +25,19 @@ export default function ChatPocketPage() {
     setSelected(id);
   };
 
-  const handleFillPocket = async () => {
+  const handlePlusPocket = async () => {
     if (!selected) return;
     if (amount === 0) {
       toast.error('0원은 옮길 수 없습니다.');
       return;
     }
     try {
-      await fillPocket(selected, amount);
+      const res = await plusPocket(amount, selected);
+      const ok = res?.ok ?? (res?.code === 200 || res?.code === '200');
 
+      if (!ok) throw Error();
       toast.success('주머니로 옮기기가 완료되었습니다.');
+
       setOpenReview(true);
     } catch {
       toast.error('주머니로 옮기기가 실패했습니다.');
@@ -75,7 +78,7 @@ export default function ChatPocketPage() {
         <Button
           className="h-14 text-xl font-semibold"
           disabled={!selected}
-          onClick={handleFillPocket}
+          onClick={handlePlusPocket}
         >
           주머니로 옮기기
         </Button>

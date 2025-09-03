@@ -19,13 +19,3 @@ export const fetchAccountDetail = async (
   if (res.code !== '200') throw new Error('계좌 상세 조회 실패');
   return res;
 };
-
-export async function fillPocket(
-  pocketId: number,
-  amount: number,
-): Promise<void> {
-  await apiClient(`/transfer/${pocketId}/plus`, {
-    method: 'PATCH',
-    body: JSON.stringify({ amount: amount }),
-  });
-}
