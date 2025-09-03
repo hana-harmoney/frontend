@@ -10,9 +10,12 @@ import { deletePocket, fetchPocketDetail } from '@/lib/api/pocket';
 import { PocketDetail } from '@/types/pocket';
 import { groupHistoryByDay } from '@/lib/groupHistoryByDay';
 import toast from 'react-hot-toast';
+import { usePocketAchieveStore } from '@/stores/usePocketAchieveStore';
+import PocketCompleteLottie from '@/components/pocket/PocketCompleteLottie';
 const PocketDetailPage = () => {
   const router = useRouter();
   const { id } = useParams<{ id: string }>();
+  const { isAchieved, setIsAchieved } = usePocketAchieveStore((state) => state);
 
   const [pocket, setPocket] = useState<PocketDetail>({
     pocketId: 0,
@@ -28,6 +31,8 @@ const PocketDetailPage = () => {
       setPocket(res.result);
     })();
   }, [id]);
+
+  useEffect(() => {}, [isAchieved, setIsAchieved]);
 
   const groupedByday = groupHistoryByDay(pocket?.transactions);
 
@@ -109,6 +114,10 @@ const PocketDetailPage = () => {
           </div>
         </div>
       </div>
+      <PocketCompleteLottie
+        show={isAchieved}
+        onClose={() => setIsAchieved(false)}
+      />
     </div>
   );
 };

@@ -12,6 +12,8 @@ export default function ChatPocketCard({
   isSelected,
   onSelect,
 }: Props) {
+  const remainAmount = pocket.targetAmount - pocket.amount;
+
   return (
     <div
       className={cn(
@@ -25,13 +27,15 @@ export default function ChatPocketCard({
         {`${formatNumber(pocket.amount)} `}
         <span className="text-text">원</span>
       </p>
-      <p className="text-gray pt-1 text-center text-lg font-normal">
-        목표 금액까지{' '}
-        <span className="text-hana-green font-bold">
-          {formatNumber(pocket.targetAmount - pocket.amount)}
-        </span>
-        원 남았어요!
-      </p>
+      {remainAmount > 0 && (
+        <p className="text-gray pt-1 text-center text-lg font-normal">
+          목표 금액까지{' '}
+          <span className="text-hana-green font-bold">
+            {formatNumber(remainAmount)}
+          </span>
+          원 남았어요!
+        </p>
+      )}
     </div>
   );
 }

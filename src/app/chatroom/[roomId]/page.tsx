@@ -16,6 +16,8 @@ import { useChatMessages } from '@/hooks/useChatMessages';
 import ChatMessageList from '@/components/chat/ChatMessageList';
 import { useMyProfile } from '@/hooks/useMyProdfile';
 import { useStomp } from '@/hooks/useStomp';
+import PocketCompleteLottie from '@/components/pocket/PocketCompleteLottie';
+import { usePocketAchieveStore } from '@/stores/usePocketAchieveStore';
 
 export default function ChatRoomPage() {
   const params = useParams();
@@ -24,6 +26,7 @@ export default function ChatRoomPage() {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [isWriter, setIsWriter] = useState(false);
   const [showRecord, setShowRecord] = useState(false);
+  const { isAchieved, setIsAchieved } = usePocketAchieveStore((state) => state);
 
   const { data: roomInfo } = useChatRoomInfo(roomId);
   const { data: myProfile } = useMyProfile();
@@ -102,6 +105,8 @@ export default function ChatRoomPage() {
     setMessages(parsedMessages);
   }, [roomId, roomInfo, myProfile, chatHistory]);
 
+  useEffect(() => {}, [isAchieved, setIsAchieved]);
+
   // 메세지 전송
   const handleSendMessage = (text: string) => {
     if (!connected) return;
@@ -164,6 +169,10 @@ export default function ChatRoomPage() {
           setShowRecord={setShowRecord}
         />
       </div>
+      <PocketCompleteLottie
+        show={isAchieved}
+        onClose={() => setIsAchieved(false)}
+      />
     </div>
   );
 }
