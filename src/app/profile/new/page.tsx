@@ -24,6 +24,7 @@ import ProfileExampleBottomSheet from '@/components/profile/ProfileExampleBottom
 
 export default function ProfileNewPage() {
   const [isOpenExample, setIsOpenExample] = useState(false);
+  const [isShowTooltip, setIsShowTooltip] = useState(true);
   const router = useRouter();
 
   const {
@@ -95,12 +96,13 @@ export default function ProfileNewPage() {
             <div className="text-gray relative text-3xl font-medium">
               프로필 등록하기
               <TooltipProvider>
-                <Tooltip open>
+                <Tooltip open={isShowTooltip}>
                   <TooltipTrigger asChild>
                     <button
                       type="button"
                       onClick={() => {
                         setIsOpenExample(true);
+                        setIsShowTooltip(false);
                       }}
                       className="absolute top-1.5 -right-8 inline-flex size-6 items-center justify-center"
                     >
