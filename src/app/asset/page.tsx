@@ -5,9 +5,18 @@ import TabBar from '@/components/home/TabBar';
 import { formatNumber } from '@/lib/utils';
 import { imgUrlItem } from '@/types/profile';
 import ImageSlider from '@/components/profile/ImageSlider';
+import { fetchProfile } from '@/lib/api/profile';
+import { fetchExpense, fetchIncome } from '@/lib/api/finance';
+import { AssetData } from '@/types/finance';
 
 const AssetPage = () => {
   const [userName, setUserName] = useState('');
+
+  const [assetData, setAssetData] = useState<AssetData>({
+    userName: '',
+    incomeData: [],
+    expenseData: [],
+  });
 
   const [selectedId, setSelectedId] = useState(0);
   const tabs = [
@@ -16,22 +25,37 @@ const AssetPage = () => {
   ];
 
   useEffect(() => {
-    setUserName('송유림');
+    (async () => {
+      try {
+        const data = await fetchProfile();
+        const incomeResponse = await fetchIncome(8);
+        const expenseResponse = await fetchExpense(8);
+        setUserName(data.nickname);
+
+        const incomeData = [
+          { id: 0, name: '연금', amount: incomeResponse.pension },
+          { id: 1, name: '임대소득', amount: incomeResponse.rentIncome },
+          { id: 2, name: '하모니', amount: incomeResponse.harmoneyIncome },
+          { id: 3, name: '기타', amount: incomeResponse.otherIncome },
+        ];
+
+        const expenseData = [
+          { id: 0, name: '생활비', amount: expenseResponse.livingExpense },
+          { id: 1, name: '의료비', amount: expenseResponse.medicalExpense },
+          { id: 2, name: '여가비', amount: expenseResponse.leisureExpense },
+          { id: 3, name: '기타', amount: expenseResponse.otherExpense },
+        ];
+
+        setAssetData({
+          userName: data.nickname,
+          incomeData: incomeData,
+          expenseData: expenseData,
+        });
+      } catch (e) {
+      } finally {
+      }
+    })();
   }, []);
-
-  const incomeData = [
-    { id: 0, name: '연금', amount: 720000 },
-    { id: 1, name: '임대소득', amount: 1500000 },
-    { id: 2, name: '하모니', amount: 300000 },
-    { id: 3, name: '기타', amount: 50000 },
-  ];
-
-  const expenseData = [
-    { id: 0, name: '생활', amount: 500000 },
-    { id: 1, name: '의료', amount: 200000 },
-    { id: 2, name: '여가', amount: 120000 },
-    { id: 3, name: '기타', amount: 40000 },
-  ];
 
   const imageData: imgUrlItem[] = [
     { id: 1, url: '/images/asset/banner-1.png' },
@@ -75,11 +99,11 @@ const AssetPage = () => {
           />
           <div className="flex flex-col gap-3">
             {selectedId == 0 &&
-              incomeData.map((income) => {
+              assetData.incomeData.map((income, idx) => {
                 return (
                   <div
                     className="flex items-center justify-between text-lg font-semibold"
-                    key={income.id}
+                    key={idx}
                   >
                     {income.name}
                     <div className="flex items-center gap-1">
@@ -90,11 +114,11 @@ const AssetPage = () => {
                 );
               })}
             {selectedId == 1 &&
-              expenseData.map((expense) => {
+              assetData.expenseData.map((expense, idx) => {
                 return (
                   <div
                     className="flex items-center justify-between text-lg font-semibold"
-                    key={expense.id}
+                    key={idx}
                   >
                     {expense.name}
                     <div className="flex items-center gap-1">
