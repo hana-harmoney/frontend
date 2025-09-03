@@ -37,6 +37,7 @@ const AssetPage = () => {
           { id: 1, name: '임대소득', amount: incomeResponse.rentIncome },
           { id: 2, name: '하모니', amount: incomeResponse.harmoneyIncome },
           { id: 3, name: '기타', amount: incomeResponse.otherIncome },
+          { id: 4, name: '합계', amount: incomeResponse.totalIncome },
         ];
 
         const expenseData = [
@@ -44,6 +45,7 @@ const AssetPage = () => {
           { id: 1, name: '의료비', amount: expenseResponse.medicalExpense },
           { id: 2, name: '여가비', amount: expenseResponse.leisureExpense },
           { id: 3, name: '기타', amount: expenseResponse.otherExpense },
+          { id: 4, name: '합계', amount: expenseResponse.totalExpense },
         ];
 
         setAssetData({
@@ -102,7 +104,7 @@ const AssetPage = () => {
               assetData.incomeData.map((income, idx) => {
                 return (
                   <div
-                    className="flex items-center justify-between text-lg font-semibold"
+                    className={`flex items-center justify-between text-lg font-semibold ${income.id == 4 && 'border-t-teduri border-t pt-3'}`}
                     key={idx}
                   >
                     {income.name}
@@ -117,7 +119,7 @@ const AssetPage = () => {
               assetData.expenseData.map((expense, idx) => {
                 return (
                   <div
-                    className="flex items-center justify-between text-lg font-semibold"
+                    className={`flex items-center justify-between text-lg font-semibold ${expense.id == 4 && 'border-t-teduri border-t pt-3'}`}
                     key={idx}
                   >
                     {expense.name}
