@@ -53,3 +53,11 @@ export type UpdateProfilePayload = {
 
   descImagesDeleteIds?: number[];
 };
+
+export type DelegateToken = {
+  expiresAt: string | null;
+  delegateToken: string;
+  shareLink: string;
+};
+
+export type DelegatePageStatus = 'init' | 'writing' | 'success' | 'error';

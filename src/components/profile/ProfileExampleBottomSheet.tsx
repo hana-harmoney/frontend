@@ -5,15 +5,24 @@ import { CustomInput } from '../common/customInput';
 import { Textarea } from '../ui/textarea';
 import Image from 'next/image';
 
+type WriteType = 'oneself' | 'delegate';
+
 type Props = {
   open: boolean;
   onClose: () => void;
+  type?: WriteType;
 };
 
-export default function ProfileExampleBottomSheet({ open, onClose }: Props) {
+export default function ProfileExampleBottomSheet({
+  open,
+  onClose,
+  type = 'oneself',
+}: Props) {
   const categories = ['요리', '청소'];
   const content =
-    '집밥 같은 건강식 반찬을 정성껏 준비해요.\n냉장고 속 재료로 알뜰하게 식단을 구성하고, 조리 후 주방 정리까지 깔끔하게 마무리합니다.\n어르신·아이 간편식도 가능합니다.';
+    type === 'oneself'
+      ? '집밥 같은 건강식 반찬을 정성껏 준비해요.\n냉장고 속 재료로 알뜰하게 식단을 구성하고, 조리 후 주방 정리까지 깔끔하게 마무리합니다.\n어르신·아이 간편식도 가능합니다.'
+      : '저희 어머니는요~ 집밥 같은 건강식 반찬의 달인이시고, 냉장고 속 재료로 알뜰하게 메뉴를 구성하는 걸 잘하세요. 조리 후 주방 정리도 매번 깔끔하게 마무리하십니다. 10년간 가정식 케이터링을 도와오셔서 위생 관리와 손 빠른 작업이 보통 사람들과는 다른 수준이에요.';
   const profileImage = '/images/senior_profile_example.png';
   const introImages = [
     '/images/senior_intro_example1.jpg',

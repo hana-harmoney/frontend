@@ -1,11 +1,18 @@
 'use client';
 
-import { ComponentType, PropsWithChildren, SVGProps, useState } from 'react';
+import {
+  ComponentType,
+  PropsWithChildren,
+  SVGProps,
+  useEffect,
+  useState,
+} from 'react';
 import PhoneStarboy from '@/assets/images/phone_starboy.svg';
 import LaptopStarboy from '@/assets/images/laptop_starboy.svg';
 import { Button } from '../ui/button';
 import { cn } from '@/lib/utils';
 import toast from 'react-hot-toast';
+import { createDelegateToken } from '@/lib/api/profile';
 
 type Props = {
   isOpen: boolean;
@@ -47,6 +54,21 @@ export default function ProfileRegisterSelectDialog({
 }: PropsWithChildren<Props>) {
   const [selected, setSelected] = useState(1);
   const [link, setLink] = useState('');
+  const origin = typeof window !== 'undefined' ? window.location.origin : '';
+
+  useEffect(() => {
+    if (!isOpen) return;
+    (async () => {
+      try {
+        const data = await createDelegateToken();
+        const link = `${origin}/profile/delegate?token=${data.delegateToken}`;
+        setLink(link);
+      } catch (e) {
+        console.log(e);
+      }
+    })();
+  }, [origin, isOpen]);
+
   const handleBackdropClick = (e: React.MouseEvent<HTMLDivElement>) => {
     if (e.target === e.currentTarget) {
       onClose();

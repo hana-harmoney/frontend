@@ -13,7 +13,12 @@ const navItems = [
   { key: 'education', label: '교육', path: '/education', Icon: EducationIcon },
   { key: 'profile', label: '내정보', path: '/profile', Icon: ProfileIcon },
 ] as const;
-const HIDDEN_NAVBAR_PATHS = ['/auth', '/chatroom', '/profile/new'];
+const HIDDEN_NAVBAR_PATHS = [
+  '/auth',
+  '/chatroom',
+  '/profile/new',
+  '/profile/delegate',
+];
 export default function BottomNav() {
   const pathname = usePathname();
   if (
