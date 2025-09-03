@@ -16,17 +16,19 @@ export default function ProfileDelegatePage() {
   useEffect(() => {
     (async () => {
       try {
-        await fetch('/api/auth/delegate', {
+        const res = await fetch('/api/auth/delegate', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ token: token }),
         });
+
+        if (res.status !== 200) throw Error();
       } catch (e) {
         setStatus('error');
         console.error(e);
       }
     })();
-  }, [token, status, setStatus]);
+  }, [setStatus]);
 
   if (status === 'init') {
     return <DelegateInitPage />;

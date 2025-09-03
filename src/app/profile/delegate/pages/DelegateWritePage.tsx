@@ -24,6 +24,7 @@ import { useDelegatePageStatus } from '@/stores/useDelegatePageStatus';
 
 export default function DelegateWritePage() {
   const setStatus = useDelegatePageStatus((state) => state.setStatus);
+  const [isShowTooltip, setIsShowTooltip] = useState(true);
   const [isOpenExample, setIsOpenExample] = useState(false);
 
   const {
@@ -91,12 +92,13 @@ export default function DelegateWritePage() {
             <div className="text-gray relative text-3xl font-medium">
               프로필 등록하기
               <TooltipProvider>
-                <Tooltip open>
+                <Tooltip open={isShowTooltip}>
                   <TooltipTrigger asChild>
                     <button
                       type="button"
                       onClick={() => {
                         setIsOpenExample(true);
+                        setIsShowTooltip(false);
                       }}
                       className="absolute top-1.5 -right-8 inline-flex size-6 items-center justify-center"
                     >
