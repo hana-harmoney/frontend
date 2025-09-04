@@ -8,17 +8,20 @@ import { imgUrlItem } from '@/types/profile';
 
 interface ImageSliderProps {
   images: imgUrlItem[];
+  autoplay?: boolean;
 }
 
-const ImageSlider = ({ images }: ImageSliderProps) => {
+const ImageSlider = ({ images, autoplay }: ImageSliderProps) => {
   const [currentSlide, setCurrentSlide] = useState(0);
 
   const settings = {
     dots: false,
-    infinite: false,
+    infinite: true,
     speed: 500,
     slidesToShow: 1,
     slidesToScroll: 1,
+    autoplay: autoplay,
+    autoplaySpeed: 3000,
     afterChange: (current: number) => setCurrentSlide(current),
   };
 

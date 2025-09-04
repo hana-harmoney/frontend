@@ -9,12 +9,14 @@ import { useParams } from 'next/navigation';
 import { fetchPocketList } from '@/lib/api/home';
 import { fetchPocketDetail } from '@/lib/api/pocket';
 import { PocketDetail } from '@/types/pocket';
+import { usePocketAchieveStore } from '@/stores/usePocketAchieveStore';
 
 const FillPage = () => {
   const [amount, setAmount] = useState<number>(0);
   const [open, setOpen] = useState(false);
   const params = useParams();
   const pocketId = params.id;
+  const setIsAchieved = usePocketAchieveStore((state) => state.setIsAchieved);
 
   const [targetStr, setTargetStr] = useState('');
   const increaseTarget = (value: number) => {
@@ -74,6 +76,10 @@ const FillPage = () => {
       const res = await plusPocket(amount, Number(pocketId));
       const ok = res?.ok ?? (res?.code === 200 || res?.code === '200');
       const message: string | undefined = res?.message;
+
+      if (res.result.pocketAmount >= res.result.targetAmount) {
+        setIsAchieved(true);
+      }
       return { ok: !!ok, message };
     } catch (e) {
       return { ok: false, message: '계좌 잔액이 부족합니다.' };

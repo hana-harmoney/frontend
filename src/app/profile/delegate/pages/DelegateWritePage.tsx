@@ -1,7 +1,6 @@
 'use client';
 
 import BottomButton from '@/components/common/bottomButton';
-import { useRouter } from 'next/navigation';
 import { useProfileRegister } from '@/stores/useProfileRegister';
 import { CustomInput } from '@/components/common/customInput';
 import React, { useState } from 'react';
@@ -21,11 +20,12 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip';
 import ProfileExampleBottomSheet from '@/components/profile/ProfileExampleBottomSheet';
+import { useDelegatePageStatus } from '@/stores/useDelegatePageStatus';
 
-export default function ProfileNewPage() {
-  const [isOpenExample, setIsOpenExample] = useState(false);
+export default function DelegateWritePage() {
+  const setStatus = useDelegatePageStatus((state) => state.setStatus);
   const [isShowTooltip, setIsShowTooltip] = useState(true);
-  const router = useRouter();
+  const [isOpenExample, setIsOpenExample] = useState(false);
 
   const {
     nickname,
@@ -71,14 +71,10 @@ export default function ProfileNewPage() {
         descImageUrls: introImageUrls,
       });
       toast.success('프로필이 성공적으로 등록되었습니다.');
+      setStatus('success');
       reset();
-      router.push('/home');
     } catch (error) {
-      alert(
-        error instanceof Error
-          ? error.message
-          : '회원가입 중 오류가 발생했습니다.',
-      );
+      toast.error('프로필 등록 중 오류가 발생했습니다.');
     }
   };
 
@@ -123,7 +119,7 @@ export default function ProfileNewPage() {
           <div className="flex w-full flex-col gap-3 text-2xl font-light">
             닉네임
             <CustomInput
-              placeholder="예: 집밥 요리 도우미 구합니다"
+              placeholder="시니어분들의 닉네임을 작성해주세요"
               value={nickname}
               onChange={(e) => setProfileField('nickname', e.target.value)}
             />
@@ -181,7 +177,7 @@ export default function ProfileNewPage() {
           <div className="flex w-full flex-col gap-3 text-2xl font-light">
             소개글
             <Textarea
-              placeholder="제육볶음 달인!"
+              placeholder="시니어분들을 표현할 수 있는 소개글을 작성해주세요."
               className="placeholder:text-gray h-44 !text-xl font-normal placeholder:text-xl"
               value={bio}
               onChange={(e) => setProfileField('bio', e.target.value)}
@@ -238,6 +234,7 @@ export default function ProfileNewPage() {
       <ProfileExampleBottomSheet
         open={isOpenExample}
         onClose={() => setIsOpenExample(false)}
+        type="delegate"
       />
     </div>
   );

@@ -2,7 +2,7 @@
 import HomeIcon from '@/assets/icons/home.svg';
 import JobIcon from '@/assets/icons/job.svg';
 import ChatIcon from '@/assets/icons/chat.svg';
-import EducationIcon from '@/assets/icons/education.svg';
+import AssetIcon from '@/assets/icons/asset.svg';
 import ProfileIcon from '@/assets/icons/profile.svg';
 import BottomNavButton from './BottomNavTab';
 import { usePathname } from 'next/navigation';
@@ -10,10 +10,15 @@ const navItems = [
   { key: 'home', label: '홈', path: '/home', Icon: HomeIcon },
   { key: 'jobs', label: '구직', path: '/jobs', Icon: JobIcon },
   { key: 'chat', label: '채팅', path: '/chat', Icon: ChatIcon },
-  { key: 'education', label: '교육', path: '/education', Icon: EducationIcon },
+  { key: 'asset', label: '자산', path: '/asset', Icon: AssetIcon },
   { key: 'profile', label: '내정보', path: '/profile', Icon: ProfileIcon },
 ] as const;
-const HIDDEN_NAVBAR_PATHS = ['/auth', '/chatroom', '/profile/new'];
+const HIDDEN_NAVBAR_PATHS = [
+  '/auth',
+  '/chatroom',
+  '/profile/new',
+  '/profile/delegate',
+];
 export default function BottomNav() {
   const pathname = usePathname();
   if (

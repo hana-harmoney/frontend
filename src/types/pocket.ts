@@ -4,6 +4,7 @@ export interface Pocket {
   pocketId: number;
   name: string;
   amount: number;
+  targetAmount: number;
 }
 
 export interface PocketCreateRequest {
