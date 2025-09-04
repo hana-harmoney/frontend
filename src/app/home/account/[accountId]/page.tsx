@@ -3,7 +3,7 @@
 import Header from '@/components/common/header';
 import { copyAccountNumber, formatNumber } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import History from '@/components/home/History';
 import { useEffect, useMemo, useState } from 'react';
 import { fetchAccountDetail } from '@/lib/api/home';
@@ -11,10 +11,9 @@ import { AccountDetail } from '@/types/accountDetail';
 import { groupHistoryByDay } from '@/lib/groupHistoryByDay';
 
 const AccountPage = () => {
+  const params = useParams();
+  const accountId = Number(params.accountId);
   const router = useRouter();
-
-  const params = useSearchParams();
-  const accountId = Number(params.get('accountId')) ?? 0;
 
   const [account, setAccount] = useState<AccountDetail>({
     accountId: 0,

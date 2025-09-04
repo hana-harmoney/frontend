@@ -66,7 +66,7 @@ const HomePage = () => {
               <span
                 className="text-gray cursor-pointer text-xl font-light"
                 onClick={() => {
-                  router.push(`/home/account?accountId=${account.accountId}`);
+                  router.push(`/home/account/${account.accountId}`);
                 }}
               >
                 상세보기 &gt;
