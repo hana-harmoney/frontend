@@ -1,0 +1,8 @@
+{
+  "servers": {
+    "Sentry": {
+      "url": "https://mcp.sentry.dev/mcp/hanaro/javascript-nextjs",
+      "type": "http"
+    }
+  }
+}
