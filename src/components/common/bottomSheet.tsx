@@ -7,11 +7,13 @@ import BottomButton from './bottomButton';
 type Props = {
   open: boolean;
   onClose: () => void;
+  contentClassName?: string;
 };
 
 export default function BottomSheet({
   open,
   onClose,
+  contentClassName,
   children,
 }: PropsWithChildren<Props>) {
   useEffect(() => {
@@ -44,6 +46,7 @@ export default function BottomSheet({
         className={cn(
           'frame-container fixed right-0 bottom-0 left-0 z-50 h-full transition-transform duration-300',
           open ? 'translate-y-0' : 'translate-y-full',
+          contentClassName,
         )}
         style={{ maxHeight: '90vh', zIndex: 60 }}
       >
