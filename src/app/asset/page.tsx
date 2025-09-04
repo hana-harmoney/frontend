@@ -8,6 +8,8 @@ import ImageSlider from '@/components/profile/ImageSlider';
 import { fetchProfile } from '@/lib/api/profile';
 import { fetchExpense, fetchIncome } from '@/lib/api/finance';
 import { AssetData } from '@/types/finance';
+import StackedBarChart from '@/components/ui/barChart';
+import { stackedBarData } from '@/types/stackedBar';
 
 const AssetPage = () => {
   const [userName, setUserName] = useState('');
@@ -17,6 +19,9 @@ const AssetPage = () => {
     incomeData: [],
     expenseData: [],
   });
+
+  const [incomeBarData, setIncomeBarData] = useState<stackedBarData[]>([]);
+  const [expenseBarData, setExpenseBarData] = useState<stackedBarData[]>([]);
 
   const [selectedId, setSelectedId] = useState(0);
   const tabs = [
@@ -47,6 +52,50 @@ const AssetPage = () => {
           { id: 3, name: '기타', amount: expenseResponse.otherExpense },
           { id: 4, name: '합계', amount: expenseResponse.totalExpense },
         ];
+
+        const res1: stackedBarData[] = [
+          { label: '연금', value: incomeResponse.pension, color: '#4D5DAB' },
+          {
+            label: '임대소득',
+            value: incomeResponse.rentIncome,
+            color: '#85BBF3',
+          },
+          {
+            label: '하모니',
+            value: incomeResponse.harmoneyIncome,
+            color: '#BDDEFF',
+          },
+          {
+            label: '기타',
+            value: incomeResponse.otherIncome,
+            color: '#C8C7DE',
+          },
+        ];
+        const res2: stackedBarData[] = [
+          {
+            label: '생활',
+            value: expenseResponse.livingExpense,
+            color: '#8E81C6',
+          },
+          {
+            label: '의료',
+            value: expenseResponse.medicalExpense,
+            color: '#B1A1F8',
+          },
+          {
+            label: '여가',
+            value: expenseResponse.leisureExpense,
+            color: '#E7E2FD',
+          },
+          {
+            label: '기타',
+            value: expenseResponse.otherExpense,
+            color: '#F3F1FE',
+          },
+        ];
+
+        setIncomeBarData(res1);
+        setExpenseBarData(res2);
 
         setAssetData({
           userName: data.nickname,
@@ -93,6 +142,22 @@ const AssetPage = () => {
             <span className="text-main">50,000</span> 원
           </div>
         </div>
+        <div className="flex flex-col gap-2">
+          <div className="px-1 text-xl font-semibold">8월 수입·지출</div>
+          <div className="flex flex-col gap-4 rounded-md p-3">
+            <StackedBarChart
+              name="수익"
+              data={incomeBarData}
+              total={assetData.incomeData.at(-1)?.amount ?? 0}
+            />
+            <StackedBarChart
+              name="지출"
+              data={expenseBarData}
+              total={assetData.expenseData.at(-1)?.amount ?? 0}
+            />
+          </div>
+        </div>
+
         <div className="flex flex-col gap-2">
           <TabBar
             tabs={tabs}
