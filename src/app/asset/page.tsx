@@ -10,9 +10,11 @@ import { fetchExpense, fetchIncome } from '@/lib/api/finance';
 import { AssetData } from '@/types/finance';
 import StackedBarChart from '@/components/ui/barChart';
 import { stackedBarData } from '@/types/stackedBar';
+import IncomePastHistoryBottomSheet from '@/components/asset/IncomePastHistoryBottomSheet';
 
 const AssetPage = () => {
   const [userName, setUserName] = useState('');
+  const [openBottomSheet, setOpenBottomSheet] = useState(false);
 
   const [assetData, setAssetData] = useState<AssetData>({
     userName: '',
@@ -120,7 +122,7 @@ const AssetPage = () => {
   ];
 
   const pastClick = () => {
-    console.log('pastClick');
+    setOpenBottomSheet(true);
   };
 
   return (
@@ -199,6 +201,10 @@ const AssetPage = () => {
         </div>
         <ImageSlider images={imageData} autoplay={true} />
       </div>
+      <IncomePastHistoryBottomSheet
+        open={openBottomSheet}
+        onClose={() => setOpenBottomSheet(false)}
+      />
     </div>
   );
 };

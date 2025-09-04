@@ -16,7 +16,7 @@ type Props = {
 
 export default function PocketCompleteLottie({
   show,
-  size = 800,
+  size = 1000,
   baseClassName = '',
   overlayClassName = '',
   baseSpeed = 1,
@@ -37,7 +37,7 @@ export default function PocketCompleteLottie({
           onClick={handleBackdropClick}
         >
           <div
-            className="pointer-events-none absolute -top-32"
+            className="pointer-events-none absolute"
             style={{ width: size, height: size }}
           >
             <LottiePlayer
@@ -45,19 +45,19 @@ export default function PocketCompleteLottie({
               speed={baseSpeed}
               className={`absolute inset-0 ${baseClassName}`}
             />
-            <div className="absolute inset-0 flex items-center justify-center">
+            <div className="absolute inset-0 flex flex-col items-center justify-center">
               <LottiePlayer
                 animationData={ClappingHands}
                 speed={overlaySpeed}
                 className={`size-50 ${overlayClassName}`}
               />
+              <p className="pt-10 text-center text-2xl font-semibold">
+                축하드립니다!
+                <br />
+                주머니를 모두 채우셨습니다.
+              </p>
             </div>
           </div>
-          <p className="absolute bottom-40 text-center text-2xl font-semibold">
-            축하드립니다!
-            <br />
-            주머니를 모두 채우셨습니다.
-          </p>
         </div>
       )}
     </>
