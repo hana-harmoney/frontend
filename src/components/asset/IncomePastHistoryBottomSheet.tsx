@@ -56,7 +56,8 @@ export default function IncomePastHistoryBottomSheet({ open, onClose }: Props) {
               income: income.monthlyAmount,
             };
           })
-          .sort((a, b) => a.date.getTime() - b.date.getTime());
+          .sort((a, b) => a.date.getTime() - b.date.getTime())
+          .slice(Math.max(res.length - 4, 0));
 
         const incomeThis = parsed[parsed.length - 1].income;
         const incomePrev = parsed[parsed.length - 2].income;
