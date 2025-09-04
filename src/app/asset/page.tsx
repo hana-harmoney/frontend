@@ -8,9 +8,11 @@ import ImageSlider from '@/components/profile/ImageSlider';
 import { fetchProfile } from '@/lib/api/profile';
 import { fetchExpense, fetchIncome } from '@/lib/api/finance';
 import { AssetData } from '@/types/finance';
+import IncomePastHistoryBottomSheet from '@/components/asset/IncomePastHistoryBottomSheet';
 
 const AssetPage = () => {
   const [userName, setUserName] = useState('');
+  const [openBottomSheet, setOpenBottomSheet] = useState(false);
 
   const [assetData, setAssetData] = useState<AssetData>({
     userName: '',
@@ -71,7 +73,7 @@ const AssetPage = () => {
   ];
 
   const pastClick = () => {
-    console.log('pastClick');
+    setOpenBottomSheet(true);
   };
 
   return (
@@ -134,6 +136,10 @@ const AssetPage = () => {
         </div>
         <ImageSlider images={imageData} autoplay={true} />
       </div>
+      <IncomePastHistoryBottomSheet
+        open={openBottomSheet}
+        onClose={() => setOpenBottomSheet(false)}
+      />
     </div>
   );
 };
