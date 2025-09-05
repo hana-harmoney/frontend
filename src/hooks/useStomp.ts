@@ -14,32 +14,49 @@ export function useStomp() {
 
   // 1회만 생성/연결
   useEffect(() => {
-    const client = new Client({
-      webSocketFactory: () => new SockJS(WS_URL),
-      reconnectDelay: 3000,
-      heartbeatIncoming: 10000,
-      heartbeatOutgoing: 10000,
-      debug: (m) => console.log('[STOMP]', m),
-      onConnect: (_frame: IFrame) => {
-        setConnected(true);
-      },
-      onDisconnect: () => setConnected(false),
-      onStompError: (f) => {
-        console.error('[STOMP ERROR]', f.headers['message'], f.body);
-      },
-      onWebSocketError: (e) => {
-        console.error('[WS ERROR]', e);
-      },
-    });
+    let cancelled = false;
 
-    clientRef.current = client;
-    client.activate();
+    (async () => {
+      // 1) 서버(Next API)에서 HttpOnly 쿠키를 읽어 WS 토큰 받기
+      const r = await fetch('/api/ws-token', { cache: 'no-store' });
+      if (!r.ok) {
+        console.error('WS token fetch failed', r.status);
+        return;
+      }
+      const { token } = await r.json();
+
+      if (cancelled) return;
+
+      // 2) STOMP 클라이언트 생성 시 connectHeaders에 토큰 주입
+      const client = new Client({
+        webSocketFactory: () => new SockJS(WS_URL),
+        reconnectDelay: 3000,
+        heartbeatIncoming: 10000,
+        heartbeatOutgoing: 10000,
+        debug: (m) => console.log('[STOMP]', m),
+        connectHeaders: {
+          Authorization: `Bearer ${token}`,
+        },
+        onConnect: (_frame: IFrame) => setConnected(true),
+        onDisconnect: () => setConnected(false),
+        onStompError: (f) => {
+          console.error('[STOMP ERROR]', f.headers['message'], f.body);
+        },
+        onWebSocketError: (e) => {
+          console.error('[WS ERROR]', e);
+        },
+      });
+
+      clientRef.current = client;
+      client.activate();
+    })();
 
     return () => {
       // 모든 구독 해제 후 비활성화
+      cancelled = true;
       subsRef.current.forEach((s) => s.unsubscribe());
       subsRef.current.clear();
-      client.deactivate(); // 연결 여부와 상관없이 안전
+      clientRef.current?.deactivate();
       clientRef.current = null;
       setConnected(false);
     };
