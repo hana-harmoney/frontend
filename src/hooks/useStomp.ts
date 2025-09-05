@@ -5,7 +5,7 @@ import { Client, IMessage, StompSubscription, IFrame } from '@stomp/stompjs';
 import SockJS from 'sockjs-client';
 import type { ReceivedChatMessage, SendChatMessage } from '@/types/chat';
 
-const WS_URL = process.env.NEXT_PUBLIC_WS_URL ?? '/ws-stomp'; // SockJS는 http(s) 엔드포인트 사용
+const WS_URL = '/ws-stomp'; // SockJS는 http(s) 엔드포인트 사용
 
 export function useStomp() {
   const clientRef = useRef<Client | null>(null);
