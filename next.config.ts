@@ -24,15 +24,6 @@ const nextConfig: NextConfig = {
       },
     ],
   },
-  async rewrites() {
-    const backend = process.env.NEXT_PUBLIC_WS_URL!;
-    return [
-      {
-        source: '/ws-stomp/:path*',
-        destination: `${backend}/:path*`,
-      },
-    ];
-  },
 };
 
 export default nextConfig;
