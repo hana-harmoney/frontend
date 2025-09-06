@@ -8,6 +8,7 @@ import { AccountInfo } from '@/types/pocket';
 import Header from '@/components/common/header';
 import { useEffect, useState } from 'react';
 import { initFcmOnce } from '@/lib/fcm';
+import ManualButton from '@/components/manual/ManualButton';
 
 const HomePage = () => {
   useEffect(() => {
@@ -88,14 +89,17 @@ const HomePage = () => {
             {formatNumber(account.accountBalance)}
             <span className="font-light">원</span>
           </div>
-          <Button
-            className="py-7 text-xl font-semibold"
-            onClick={() => {
-              router.push('/home/send/step1');
-            }}
-          >
-            송금하기
-          </Button>
+          <div className="flex items-center gap-2">
+            <Button
+              className="flex-1 py-7 text-xl font-semibold"
+              onClick={() => {
+                router.push('/home/send/step1');
+              }}
+            >
+              송금하기
+            </Button>
+            <ManualButton type={'transfer'} />
+          </div>
         </div>
         {account.pocketLists?.map((pocket, idx) => (
           <BalanceCard
@@ -107,14 +111,17 @@ const HomePage = () => {
             bgColor={labelBg[(idx + 1) % labelBg.length]}
           />
         ))}
-        <Button
-          className="py-7 text-xl font-semibold"
-          onClick={() => {
-            router.push('/home/pocket/new');
-          }}
-        >
-          주머니 만들기
-        </Button>
+        <div className="flex items-center gap-2">
+          <Button
+            className="flex-1 py-7 text-xl font-semibold"
+            onClick={() => {
+              router.push('/home/pocket/new');
+            }}
+          >
+            주머니 만들기
+          </Button>
+          <ManualButton type={'pocket'} />
+        </div>
       </div>
     </div>
   );

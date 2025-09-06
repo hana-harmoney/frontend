@@ -11,6 +11,8 @@ import { fetchJobList } from '@/lib/api/jobs';
 import type { JobBoard } from '@/types/jobs';
 import { useRouter } from 'next/navigation';
 import Header from '@/components/common/header';
+import ManualBottomSheet from '@/components/manual/ManualBottomSheet';
+import CircleInfo from '@/assets/icons/circle_info.svg';
 
 const JobsPage = () => {
   const [selectedCategory, setSelectedCategory] = useState(0);
@@ -19,6 +21,7 @@ const JobsPage = () => {
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
   const [showButtons, setShowButtons] = useState(false);
+  const [showManual, setShowManual] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -64,7 +67,17 @@ const JobsPage = () => {
 
   return (
     <div>
-      <Header title="구직" centerTitle={false} showBackButton={false} />
+      <Header title="구직" centerTitle={false} showBackButton={false}>
+        <div className="mr-6">
+          <button
+            type="button"
+            className="block"
+            onClick={() => setShowManual(true)}
+          >
+            <CircleInfo className="stroke-gray fill-gray size-8" />
+          </button>
+        </div>
+      </Header>
       <div className="flex flex-col items-center gap-9 px-6 py-3">
         <div className="grid grid-cols-4 gap-3">
           {badgeData.map((item) => (
@@ -140,6 +153,12 @@ const JobsPage = () => {
           </button>
         </div>
       </div>
+
+      <ManualBottomSheet
+        open={showManual}
+        onClose={() => setShowManual(false)}
+        type={'job'}
+      />
     </div>
   );
 };

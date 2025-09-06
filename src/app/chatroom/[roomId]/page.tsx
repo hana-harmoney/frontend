@@ -18,6 +18,7 @@ import { useMyProfile } from '@/hooks/useMyProdfile';
 import { useStomp } from '@/hooks/useStomp';
 import PocketCompleteLottie from '@/components/pocket/PocketCompleteLottie';
 import { usePocketAchieveStore } from '@/stores/usePocketAchieveStore';
+import ManualButton from '@/components/manual/ManualButton';
 
 export default function ChatRoomPage() {
   const params = useParams();
@@ -129,6 +130,7 @@ export default function ChatRoomPage() {
         titleClassName="text-xl"
       >
         <div className="flex gap-3 pr-6">
+          <ManualButton type={'voice'} />
           <PhoneCallButton number={'010-1234-5678'} />
           <ReportButton roomId={roomId} />
         </div>
