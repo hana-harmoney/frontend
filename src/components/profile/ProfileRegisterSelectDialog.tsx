@@ -108,13 +108,13 @@ export default function ProfileRegisterSelectDialog({
                   <div
                     key={item.id}
                     className={cn(
-                      'flex flex-1 flex-col items-center gap-2 rounded-xl border-[1px] px-3 py-4',
+                      'flex flex-1 flex-col items-center justify-center gap-2 rounded-xl border-[1px] px-3 py-4',
                       isActive ? 'border-main' : 'border-teduri',
                     )}
                     onClick={() => setSelected(item.id)}
                   >
                     <Icon className="h-20 w-full" />
-                    <p className="text-gray text-lg font-semibold">
+                    <p className="text-gray text-center text-lg font-semibold">
                       {item.label}
                     </p>
                   </div>

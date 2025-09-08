@@ -8,7 +8,7 @@ export default function DelegateInitPage() {
   return (
     <div className="flex min-h-screen flex-col items-center justify-center gap-5 p-8 sm:p-20">
       <div className="text-4xl font-bold">하나하모니</div>
-      <div className="text-2xl font-semibold">
+      <div className="text-center text-2xl font-semibold">
         여러분의 시니어를 소개해주세요.
       </div>
       <div className="text-center text-2xl font-light">

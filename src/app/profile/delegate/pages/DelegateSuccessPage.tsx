@@ -4,7 +4,7 @@ export default function DelegateSuccessPage() {
   return (
     <div className="flex min-h-screen flex-col items-center justify-center gap-5 p-8 sm:p-20">
       <div className="text-4xl font-bold">작성 완료</div>
-      <div className="text-2xl font-semibold">
+      <div className="text-center text-2xl font-semibold">
         성공적으로 프로필이 작성되었습니다.
       </div>
       <div className="text-center text-2xl font-light">
