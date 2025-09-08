@@ -6,7 +6,7 @@ export default function Home() {
   return (
     <div className="flex min-h-screen flex-col items-center justify-center gap-5 p-8 sm:p-20">
       <div className="text-4xl font-bold">하나하모니</div>
-      <div className="text-2xl font-semibold">
+      <div className="text-center text-2xl font-semibold">
         경험을 소득으로, 시간을 자산으로
       </div>
       <div className="text-center text-2xl font-light">

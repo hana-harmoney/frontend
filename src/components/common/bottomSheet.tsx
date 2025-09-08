@@ -8,12 +8,14 @@ type Props = {
   open: boolean;
   onClose: () => void;
   contentClassName?: string;
+  buttonClassName?: string;
 };
 
 export default function BottomSheet({
   open,
   onClose,
   contentClassName,
+  buttonClassName,
   children,
 }: PropsWithChildren<Props>) {
   useEffect(() => {
@@ -53,7 +55,9 @@ export default function BottomSheet({
         <div className="relative flex h-full w-full flex-col items-center rounded-t-3xl bg-white">
           {children}
           {/* 바텀시트 하단버튼 */}
-          <BottomButton onClick={onClose}>확인</BottomButton>
+          <BottomButton className={buttonClassName} onClick={onClose}>
+            확인
+          </BottomButton>
         </div>
       </div>
     </div>
