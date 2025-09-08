@@ -9,8 +9,12 @@ import Header from '@/components/common/header';
 import { useEffect, useState } from 'react';
 import { initFcmOnce } from '@/lib/fcm';
 import ManualButton from '@/components/manual/ManualButton';
+import ManualGuideBottomSheet from '@/components/manual/ManualGuideBottomSheet';
+
+const GUIDE_KEY = 'guide_seen';
 
 const HomePage = () => {
+  const [showGuide, setShowGuide] = useState<boolean>(false);
   useEffect(() => {
     (async () => {
       await initFcmOnce(); // 토큰 발급/등록 등 초기화 (이미 허용돼 있다면 바로 진행)
@@ -45,6 +49,11 @@ const HomePage = () => {
       const response = await fetchPocketList();
       setAccount(response.result);
     })();
+  }, []);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    setShowGuide(localStorage.getItem(GUIDE_KEY) !== '1');
   }, []);
 
   return (
@@ -123,6 +132,15 @@ const HomePage = () => {
           <ManualButton type={'pocket'} />
         </div>
       </div>
+      <ManualGuideBottomSheet
+        open={showGuide}
+        onClose={() => {
+          try {
+            localStorage.setItem(GUIDE_KEY, '1');
+          } catch {}
+          setShowGuide(false);
+        }}
+      />
     </div>
   );
 };
