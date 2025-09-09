@@ -35,11 +35,16 @@ const AssetPage = () => {
   ];
 
   useEffect(() => {
+    let ignore = false;
     (async () => {
       try {
-        const data = await fetchProfile();
-        const incomeResponse = await fetchIncome(8);
-        const expenseResponse = await fetchExpense(8);
+        const [data, incomeResponse, expenseResponse] = await Promise.all([
+          fetchProfile(),
+          fetchIncome(8),
+          fetchExpense(8),
+        ]);
+        if (ignore) return;
+
         setUserName(data.nickname);
 
         const incomeData = [
@@ -58,7 +63,7 @@ const AssetPage = () => {
           { id: 4, name: '합계', amount: expenseResponse.totalExpense },
         ];
 
-        const res1: stackedBarData[] = [
+        setIncomeBarData([
           { label: '연금', value: incomeResponse.pension, color: '#4D5DAB' },
           {
             label: '임대소득',
@@ -75,8 +80,9 @@ const AssetPage = () => {
             value: incomeResponse.otherIncome,
             color: '#C8C7DE',
           },
-        ];
-        const res2: stackedBarData[] = [
+        ]);
+
+        setExpenseBarData([
           {
             label: '생활',
             value: expenseResponse.livingExpense,
@@ -97,20 +103,16 @@ const AssetPage = () => {
             value: expenseResponse.otherExpense,
             color: '#F3F1FE',
           },
-        ];
+        ]);
 
-        setIncomeBarData(res1);
-        setExpenseBarData(res2);
-
-        setAssetData({
-          userName: data.nickname,
-          incomeData: incomeData,
-          expenseData: expenseData,
-        });
+        setAssetData({ userName: data.nickname, incomeData, expenseData });
       } catch (e) {
-      } finally {
+        console.error(e);
       }
     })();
+    return () => {
+      ignore = true;
+    };
   }, []);
 
   const imageData: imgUrlItem[] = [
