@@ -3,22 +3,24 @@ import BottomSheet from '../common/bottomSheet';
 import BarChart from '@/assets/icons/bar_chart.svg';
 import IncomePastHistoryChart from './IncomePastHistoryChart';
 import { useEffect, useState } from 'react';
-import { fetchPastHarmoneyIncome } from '@/lib/api/report';
+import { IncomeData } from '@/types/report';
 
 type Props = {
   open: boolean;
   onClose: () => void;
+  data: IncomeData[];
 };
 
-type IncomeData = {
-  date: Date;
-  month: number;
-  income: number;
+type ParsedData = IncomeData & {
   height: number;
 };
 
-export default function IncomePastHistoryBottomSheet({ open, onClose }: Props) {
-  const [datas, setDatas] = useState<IncomeData[]>([]);
+export default function IncomePastHistoryBottomSheet({
+  open,
+  onClose,
+  data,
+}: Props) {
+  const [datas, setDatas] = useState<ParsedData[]>([]);
   const [incomeDiffFromPrevMonth, setIncomeDiffFromPrevMonth] = useState(0);
 
   function getHeights(
@@ -43,32 +45,12 @@ export default function IncomePastHistoryBottomSheet({ open, onClose }: Props) {
   }
 
   useEffect(() => {
-    (async () => {
-      try {
-        const res = await fetchPastHarmoneyIncome();
+    const incomeThis = data[data.length - 1]?.income ?? 0;
+    const incomePrev = data[data.length - 2]?.income ?? 0;
 
-        const parsed = res
-          .map((income) => {
-            const date = new Date(income.month);
-            return {
-              date: date,
-              month: date.getMonth() + 1,
-              income: income.monthlyAmount,
-            };
-          })
-          .sort((a, b) => a.date.getTime() - b.date.getTime())
-          .slice(Math.max(res.length - 4, 0));
-
-        const incomeThis = parsed[parsed.length - 1].income;
-        const incomePrev = parsed[parsed.length - 2].income;
-
-        setIncomeDiffFromPrevMonth(incomeThis - incomePrev);
-        setDatas(getHeights(parsed));
-      } catch (e) {
-      } finally {
-      }
-    })();
-  }, []);
+    setIncomeDiffFromPrevMonth(incomeThis - incomePrev);
+    setDatas(getHeights(data));
+  }, [data]);
 
   return (
     <BottomSheet open={open} onClose={onClose} contentClassName="h-fit">

@@ -13,6 +13,8 @@ import { stackedBarData } from '@/types/stackedBar';
 import IncomePastHistoryBottomSheet from '@/components/asset/IncomePastHistoryBottomSheet';
 import EconomicEdu from '@/assets/images/economic_edu.svg';
 import { useRouter } from 'next/navigation';
+import { fetchPastHarmoneyIncome } from '@/lib/api/report';
+import { IncomeData } from '@/types/report';
 
 const AssetPage = () => {
   const [userName, setUserName] = useState('');
@@ -27,6 +29,10 @@ const AssetPage = () => {
 
   const [incomeBarData, setIncomeBarData] = useState<stackedBarData[]>([]);
   const [expenseBarData, setExpenseBarData] = useState<stackedBarData[]>([]);
+  const [harmoneyIncomeData, setHarmoneyIncomeData] = useState<IncomeData[]>(
+    [],
+  );
+  const [thisMonthHarmoneyIncome, setThisMonthHarmoneyIncome] = useState(0);
 
   const [selectedId, setSelectedId] = useState(0);
   const tabs = [
@@ -44,6 +50,26 @@ const AssetPage = () => {
           fetchExpense(8),
         ]);
         if (ignore) return;
+
+        const harmoneyIncomeResponse = await fetchPastHarmoneyIncome();
+
+        const today = new Date(Date.now());
+        const parsed = harmoneyIncomeResponse
+          .map((income) => {
+            const date = new Date(income.month);
+
+            if (date.getMonth() === today.getMonth()) {
+              setThisMonthHarmoneyIncome(income.monthlyAmount);
+            }
+
+            return {
+              date: date,
+              month: date.getMonth() + 1,
+              income: income.monthlyAmount,
+            };
+          })
+          .sort((a, b) => a.date.getTime() - b.date.getTime())
+          .slice(Math.max(harmoneyIncomeResponse.length - 4, 0));
 
         setUserName(data.nickname);
 
@@ -106,6 +132,7 @@ const AssetPage = () => {
         ]);
 
         setAssetData({ userName: data.nickname, incomeData, expenseData });
+        setHarmoneyIncomeData(parsed);
       } catch (e) {
         console.error(e);
       }
@@ -153,7 +180,10 @@ const AssetPage = () => {
             </span>
           </div>
           <div>
-            <span className="text-main">50,000</span> 원
+            <span className="text-main">
+              {formatNumber(thisMonthHarmoneyIncome)}
+            </span>{' '}
+            원
           </div>
         </div>
         <div className="flex flex-col gap-2">
@@ -216,6 +246,7 @@ const AssetPage = () => {
       <IncomePastHistoryBottomSheet
         open={openBottomSheet}
         onClose={() => setOpenBottomSheet(false)}
+        data={harmoneyIncomeData}
       />
     </div>
   );
