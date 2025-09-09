@@ -11,10 +11,13 @@ import { AssetData } from '@/types/finance';
 import StackedBarChart from '@/components/ui/barChart';
 import { stackedBarData } from '@/types/stackedBar';
 import IncomePastHistoryBottomSheet from '@/components/asset/IncomePastHistoryBottomSheet';
+import EconomicEdu from '@/assets/images/economic_edu.svg';
+import { useRouter } from 'next/navigation';
 
 const AssetPage = () => {
   const [userName, setUserName] = useState('');
   const [openBottomSheet, setOpenBottomSheet] = useState(false);
+  const router = useRouter();
 
   const [assetData, setAssetData] = useState<AssetData>({
     userName: '',
@@ -133,6 +136,13 @@ const AssetPage = () => {
         showBackButton={false}
       />
       <div className="flex flex-col gap-6 px-6">
+        <div
+          onClick={() => {
+            router.push('/education');
+          }}
+        >
+          <EconomicEdu className="mt-3 -mb-2 h-[76px] w-full" />
+        </div>
         <div className="bg-hana-green-light flex w-full flex-col gap-4 rounded-md px-4 py-6 text-2xl font-semibold">
           <div className="flex items-center justify-between">
             9월 하모니 수입
