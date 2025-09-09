@@ -27,7 +27,6 @@ const HomePage = () => {
   }, []);
 
   const labelBg = [
-    'bg-label0',
     'bg-label1',
     'bg-label2',
     'bg-label3',

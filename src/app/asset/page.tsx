@@ -11,10 +11,13 @@ import { AssetData } from '@/types/finance';
 import StackedBarChart from '@/components/ui/barChart';
 import { stackedBarData } from '@/types/stackedBar';
 import IncomePastHistoryBottomSheet from '@/components/asset/IncomePastHistoryBottomSheet';
+import EconomicEdu from '@/assets/images/economic_edu.svg';
+import { useRouter } from 'next/navigation';
 
 const AssetPage = () => {
   const [userName, setUserName] = useState('');
   const [openBottomSheet, setOpenBottomSheet] = useState(false);
+  const router = useRouter();
 
   const [assetData, setAssetData] = useState<AssetData>({
     userName: '',
@@ -32,11 +35,16 @@ const AssetPage = () => {
   ];
 
   useEffect(() => {
+    let ignore = false;
     (async () => {
       try {
-        const data = await fetchProfile();
-        const incomeResponse = await fetchIncome(8);
-        const expenseResponse = await fetchExpense(8);
+        const [data, incomeResponse, expenseResponse] = await Promise.all([
+          fetchProfile(),
+          fetchIncome(8),
+          fetchExpense(8),
+        ]);
+        if (ignore) return;
+
         setUserName(data.nickname);
 
         const incomeData = [
@@ -55,7 +63,7 @@ const AssetPage = () => {
           { id: 4, name: '합계', amount: expenseResponse.totalExpense },
         ];
 
-        const res1: stackedBarData[] = [
+        setIncomeBarData([
           { label: '연금', value: incomeResponse.pension, color: '#4D5DAB' },
           {
             label: '임대소득',
@@ -72,8 +80,9 @@ const AssetPage = () => {
             value: incomeResponse.otherIncome,
             color: '#C8C7DE',
           },
-        ];
-        const res2: stackedBarData[] = [
+        ]);
+
+        setExpenseBarData([
           {
             label: '생활',
             value: expenseResponse.livingExpense,
@@ -94,20 +103,16 @@ const AssetPage = () => {
             value: expenseResponse.otherExpense,
             color: '#F3F1FE',
           },
-        ];
+        ]);
 
-        setIncomeBarData(res1);
-        setExpenseBarData(res2);
-
-        setAssetData({
-          userName: data.nickname,
-          incomeData: incomeData,
-          expenseData: expenseData,
-        });
+        setAssetData({ userName: data.nickname, incomeData, expenseData });
       } catch (e) {
-      } finally {
+        console.error(e);
       }
     })();
+    return () => {
+      ignore = true;
+    };
   }, []);
 
   const imageData: imgUrlItem[] = [
@@ -133,6 +138,13 @@ const AssetPage = () => {
         showBackButton={false}
       />
       <div className="flex flex-col gap-6 px-6">
+        <div
+          onClick={() => {
+            router.push('/education');
+          }}
+        >
+          <EconomicEdu className="mt-3 -mb-2 h-[76px] w-full" />
+        </div>
         <div className="bg-hana-green-light flex w-full flex-col gap-4 rounded-md px-4 py-6 text-2xl font-semibold">
           <div className="flex items-center justify-between">
             9월 하모니 수입
