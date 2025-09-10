@@ -80,11 +80,11 @@ export default function ReviewDialog({
               type="button"
               onClick={() => setSelected(candi.id)}
               className={cn(
-                'flex flex-col items-center gap-2 rounded-xl border-2 p-3',
+                'flex flex-1 flex-col items-center gap-2 rounded-xl border-2 p-3',
                 isActive ? 'border-main' : 'border-teduri',
               )}
             >
-              <Icon className="size-24" />
+              <Icon className="h-full max-h-24 w-full max-w-24" />
               <p className="text-base font-normal text-black">{candi.label}</p>
             </button>
           );

@@ -3,3 +3,9 @@ export type HarmoneyIncome = {
   monthlyAmount: number;
   monthlyCount: number;
 };
+
+export type IncomeData = {
+  date: Date;
+  month: number;
+  income: number;
+};
